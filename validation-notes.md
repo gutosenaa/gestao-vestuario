@@ -136,3 +136,4 @@ O diagnóstico confirmou que a procedure `products.list` já retornava as coluna
 ## Ajuste de estoque em produto existente
 
 Na sessão Admin, o produto COD001 exibiu a ação `+ Estoque`, renomeada para `Ajustar estoque` para tornar a função mais clara. O formulário aceitou quantidade 1 e custo unitário de R$ 100,00; a operação retornou `Estoque atualizado.` e o catálogo passou a mostrar 1 unidade disponível. A correção adicional invalida explicitamente `products.list`, `dashboard.overview` e `dashboard.inventory`, e fecha o detalhe antigo ao abrir o ajuste para evitar exibir saldo desatualizado. Nenhum produto foi apagado.
+O formulário de edição recebeu preview da foto atual persistida e indicação de nova foto antes do salvamento. A captura em produção realizada antes do novo checkpoint ainda mostrou a versão anterior, sem o preview; será repetida após a publicação desta alteração.

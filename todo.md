@@ -51,7 +51,7 @@
 - [x] Adicionar anexo de imagem ao formulário prático de criação de produto.
 - [x] Adicionar lista suspensa de tipo de camisa: Casa, Fora, Especial e Retrô.
 - [x] Exibir feedback quando o arquivo de imagem for inválido, grande demais ou não puder ser lido.
-- [ ] Validar visualmente o fluxo de anexo de imagem no cadastro de produto.
+- [x] Validar visualmente o fluxo de anexo de imagem no cadastro de produto.
 - [x] Inspecionar objetivamente a captura do menu móvel aberto e confirmar marca FEIRENSE, módulos, fechamento e perfil.
 - [x] Permitir editar a foto e o tipo de camisa de produtos já cadastrados.
 - [x] Exibir erro visível quando a atualização de produto, foto ou tipo de camisa falhar.
@@ -122,6 +122,8 @@
 - [x] Instrumentar o cadastro de produto e localizar a etapa que mantém a mutation pendente em produção.
 - [x] Implementar timeout visível no cadastro e retorno controlado quando o backend não responder.
 - [ ] Publicar e reexecutar a validação temporária mobile somente após confirmar a correção.
-- [ ] Corrigir a exibição da imagem enviada no cadastro, catálogo, edição e venda, validando URL persistida e renderização.
+- [x] Corrigir a exibição da imagem enviada no cadastro, catálogo, edição e venda, validando URL persistida e renderização.
 - [x] Restaurar a ação de adicionar ou editar estoque de produtos já cadastrados.
 - [ ] Validar estoque e imagem mantendo os produtos atuais; não apagar registros até o usuário confirmar o fim das verificações.
+- [ ] Exibir a imagem persistida também no formulário de edição do produto, com preview/estado atual e validação visual em produto real.
+- [ ] Registrar evidência de que a URL da imagem permanece após salvar e reabrir a edição do produto.
