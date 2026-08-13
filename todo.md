@@ -48,3 +48,7 @@
 - [x] Limpar produtos cadastrados e os movimentos comerciais relacionados para reiniciar o preenchimento.
 - [x] Verificar a substituição da marca por FEIRENSE no menu mobile e salvar a versão atualizada.
 - [ ] Salvar e confirmar visualmente o menu mobile aberto com a marca FEIRENSE.
+- [x] Adicionar anexo de imagem ao formulário prático de criação de produto.
+- [x] Adicionar lista suspensa de tipo de camisa: Casa, Fora, Especial e Retrô.
+- [x] Exibir feedback quando o arquivo de imagem for inválido, grande demais ou não puder ser lido.
+- [ ] Validar visualmente o fluxo de anexo de imagem no cadastro de produto.
