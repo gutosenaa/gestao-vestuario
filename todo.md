@@ -140,3 +140,8 @@
 - [ ] Corrigir nomes acessíveis, foco, estados ARIA, mensagens de erro e navegação por teclado encontrados na auditoria dos módulos restantes.
 - [ ] Registrar evidências objetivas da auditoria de acessibilidade por módulo.
 - [ ] Limpar os dados de teste autorizados após a validação da venda e verificar catálogo, estoque, vendas, financeiro, alertas, auditoria e vínculos relacionados.
+
+- [ ] Garantir que o desconto da venda seja exclusivamente manual, iniciado em zero, sem aplicar desconto automático de canal ou plataforma.
+- [ ] Reexecutar a venda mobile com desconto zero por padrão e aplicar desconto somente após entrada explícita do usuário.
+
+- [ ] Corrigir controles sem nome acessível encontrados em Produtos, Estoque, Compras, Despesas e Configurações pela varredura estática.
