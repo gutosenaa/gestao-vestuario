@@ -37,7 +37,7 @@
 - [x] Aplicar guardas de interface por perfil dentro das telas de compras, despesas, financeiro e configurações.
 - [x] Evitar consultas protegidas antes da autenticação para manter a tela de acesso estável.
 - [x] Validar no navegador as telas autenticadas principais em desktop e mobile.
-- [ ] Exibir estados de erro para consultas principais do painel, catálogo, estoque e financeiro.
+- [x] Exibir estados de erro para consultas principais do painel, catálogo, estoque e financeiro.
 - [ ] Executar uma verificação básica de acessibilidade da interface principal.
 - [x] Corrigir a ordem de hooks do DashboardLayout para eliminar a falha de renderização após autenticação.
 - [x] Permitir editar produtos existentes diretamente pelo catálogo.
@@ -82,3 +82,7 @@
 - [ ] Adicionar seleção de tamanho ou variação à venda rápida e persistir a opção na experiência comercial.
 - [x] Incluir forma de pagamento e tamanho ou variação no resumo compartilhável da venda.
 - [ ] Validar a venda rápida mobile completa, incluindo desconto, margem, compartilhamento e lançamento financeiro.
+- [ ] Executar e registrar uma checagem de acessibilidade de teclado, foco, rótulos, contraste e leitura de estados nas telas principais.
+- [ ] Revisar acessibilidade das telas dashboard, produtos, venda, financeiro e relatórios, cobrindo teclado, foco, rótulos e contraste.
+- [ ] Corrigir achados de acessibilidade nos formulários e ações operacionais principais.
+- [ ] Registrar evidências de acessibilidade por tela e critério revisado.
