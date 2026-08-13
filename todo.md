@@ -57,7 +57,7 @@
 - [ ] Validar o fluxo completo de edição de foto e tipo de camisa em produto existente.
 - [x] Auditar os módulos atuais e preservar regras de custo histórico, vendas, compras, estoque e financeiro.
 - [x] Ampliar o dashboard executivo com indicadores de decisão, metas, comparativos e variações percentuais.
-- [ ] Criar saúde do estoque, relatório de estoque parado, giro, valor parado e recomendações de reposição.
+- [x] Criar saúde do estoque, relatório de estoque parado, giro, valor parado e recomendações de reposição.
 - [x] Evoluir a precificação com preço promocional, simulador de desconto e bloqueio confirmado para margem abaixo do mínimo.
 - [x] Implementar metas de faturamento, lucro e peças com progresso, projeção e ritmo diário necessário.
 - [ ] Simplificar a venda rápida para celular com variação, desconto, margem e atualização financeira imediata.
@@ -73,7 +73,7 @@
 - [ ] Concluir integralmente os módulos restantes da segunda rodada, preservando todas as funcionalidades já publicadas.
 - [x] Criar telas de cadastro e edição para fornecedores, clientes, canais de venda e formas de pagamento.
 - [x] Adicionar filtros de período reais no dashboard e nos relatórios.
-- [ ] Implementar classificação ABC e relatórios dedicados de giro e estoque parado.
+- [x] Implementar classificação ABC e relatórios dedicados de giro e estoque parado.
 - [ ] Ampliar a central de alertas para contas vencidas, giro, margens e reposição.
 - [x] Expandir a edição de produtos para todos os atributos comerciais modelados.
 - [x] Adicionar simulador de desconto e promoção com recálculo imediato na precificação.
