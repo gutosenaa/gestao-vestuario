@@ -176,3 +176,9 @@
 - [x] Adicionar filtro por status pago, pendente e todos na tela de despesas.
 - [x] Exibir histórico visual de alterações de status das despesas.
 - [x] Adicionar testes de reabertura, filtro e histórico financeiro.
+
+- [ ] Diagnosticar o 404 do GitHub Pages e configurar uma publicação web compatível com o projeto.
+- [ ] Documentar que a aplicação full-stack completa permanece hospedada no Manus, enquanto o Pages serve apenas uma versão estática se configurada.
+
+- [ ] Corrigir o botão de notificações para abrir o painel e exibir alertas, estados de carregamento e estado vazio corretamente.
+- [ ] Adicionar teste ou evidência visual da abertura e leitura das notificações.
