@@ -91,3 +91,5 @@ Os registros locais mostram o Vite e o coletor de depuração iniciando normalme
 Foi criado um catálogo centralizado de principais clubes por Brasileirão, Copa do Brasil, Libertadores, Champions League, Premier League e La Liga. No cadastro e na edição, a escolha da liga antecede o time; trocar a liga limpa o time anterior e a lista é atualizada. A checagem de tipos, os **8 testes** e o build passaram; a verificação manual com dados reais continua condicionada à sessão OAuth.
 
 A cobertura do catálogo foi incorporada à suíte oficial: `server/clubCatalog.test.ts` valida todas as ligas cadastradas, a presença de clubes e o fallback `Outro` para competição personalizada. Agora são **10 testes aprovados em 4 arquivos**, além da checagem de tipos.
+
+O catálogo foi revisado visualmente em desktop (1280px) e mobile (375px). O botão de adicionar produto, o estado vazio e a navegação inferior permanecem visíveis e utilizáveis; o modal de campos dependentes segue condicionado à abertura do cadastro e à sessão autenticada.
