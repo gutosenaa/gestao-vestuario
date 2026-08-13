@@ -63,9 +63,18 @@ const trpcClient = trpc.createClient({
         return {};
       },
       fetch(input, init) {
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), 20000);
+        const callerSignal = init?.signal;
+        const abortFromCaller = () => controller.abort();
+        callerSignal?.addEventListener("abort", abortFromCaller, { once: true });
         return globalThis.fetch(input, {
           ...(init ?? {}),
+          signal: controller.signal,
           credentials: "include",
+        }).finally(() => {
+          window.clearTimeout(timeout);
+          callerSignal?.removeEventListener("abort", abortFromCaller);
         });
       },
     }),

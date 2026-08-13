@@ -131,14 +131,21 @@ export const commerceRouter = router({
     }),
     create: protectedProcedure.input(z.object({ name: z.string().min(2), team: z.string().optional(), league: z.string().optional(), collection: z.string().optional(), category: z.string().optional(), shirtType: z.enum(["Casa", "Fora", "Especial", "Retrô"]).optional(), size: z.string().optional(), predominantColor: z.string().optional(), supplierId: z.number().optional(), supplierUrl: z.string().url().optional().or(z.literal("")), notes: z.string().optional(), listPriceCents: z.number().int().nonnegative(), usdValueCents: z.number().int().nonnegative(), quoteMicros: z.number().int().nonnegative().optional(), internationalShippingCents: z.number().int().nonnegative().default(0), domesticShippingCents: z.number().int().nonnegative().default(0), importFeesCents: z.number().int().nonnegative().default(0), packagingCostCents: z.number().int().nonnegative().default(0), otherCostsCents: z.number().int().nonnegative().default(0), initialQuantity: z.number().int().nonnegative().default(0), initialUnitCostCents: z.number().int().nonnegative().optional(), imageDataUrl: z.string().max(5_500_000).optional() })).mutation(async ({ ctx, input }) => {
       restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
+      const startedAt = Date.now();
+      const trace = (step: string) => console.info(`[ProductCreate] ${step} +${Date.now() - startedAt}ms`);
+      trace("start");
       const db = await dbOrThrow();
+      trace("db-ready");
       const settings = await ensureSettings();
+      trace("settings-ready");
       const last = await db.select({ code: products.code }).from(products).orderBy(desc(products.id)).limit(1);
+      trace("last-code-ready");
       const code = makeProductCode(last[0]?.code);
       const { imageDataUrl, initialQuantity, initialUnitCostCents, ...productInput } = input;
       const values = { ...productInput, code, supplierId: input.supplierId ?? null, supplierUrl: input.supplierUrl || null, team: input.team || null, league: input.league || null, collection: input.collection || null, category: input.category || null, shirtType: input.shirtType || null, size: input.size || null, predominantColor: input.predominantColor || null, notes: input.notes || null, quoteMicros: input.quoteMicros || settings.dollarQuoteMicros, createdByUserId: ctx.user.id };
       const result = await db.insert(products).values(values);
       const id = Number(result[0].insertId);
+      trace(`product-inserted:${id}`);
       if (imageDataUrl) {
         const match = imageDataUrl.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
         if (!match) throw new TRPCError({ code: "BAD_REQUEST", message: "A imagem enviada é inválida." });
@@ -148,12 +155,18 @@ export const commerceRouter = router({
       }
       if (initialQuantity > 0) {
         const unitCostCents = initialUnitCostCents ?? input.usdValueCents;
+        trace("stock-transaction-start");
         await db.transaction(async tx => {
           await tx.insert(inventoryLots).values({ productId: id, sourceType: "entrada_manual", receivedAt: new Date(), initialQuantity, availableQuantity: initialQuantity, unitCostCents });
+          trace("lot-inserted");
           await tx.insert(inventoryMovements).values({ productId: id, type: "entrada_manual", quantity: initialQuantity, unitCostCents, notes: "Estoque inicial informado no cadastro", occurredAt: new Date(), createdByUserId: ctx.user.id });
+          trace("movement-inserted");
         });
+        trace("stock-transaction-complete");
       }
+      trace("before-audit");
       await db.insert(auditLogs).values({ userId: ctx.user.id, entityType: "produto", entityId: id, action: "criado", afterData: { code, name: input.name } });
+      trace("complete");
       return { id, code };
     }),
     update: protectedProcedure.input(z.object({ id: z.number(), name: z.string().min(2).optional(), team: z.string().optional(), league: z.string().optional(), collection: z.string().optional(), category: z.string().optional(), shirtType: z.enum(["Casa", "Fora", "Especial", "Retrô"]).optional(), size: z.string().optional(), predominantColor: z.string().optional(), supplierId: z.number().nullable().optional(), supplierUrl: z.string().url().optional().nullable().or(z.literal("")), status: z.enum(["ativo", "inativo"]).optional(), listPriceCents: z.number().int().nonnegative().optional(), usdValueCents: z.number().int().nonnegative().optional(), quoteMicros: z.number().int().nonnegative().optional(), internationalShippingCents: z.number().int().nonnegative().optional(), domesticShippingCents: z.number().int().nonnegative().optional(), importFeesCents: z.number().int().nonnegative().optional(), packagingCostCents: z.number().int().nonnegative().optional(), otherCostsCents: z.number().int().nonnegative().optional(), notes: z.string().optional(), imageDataUrl: z.string().max(5_500_000).optional() })).mutation(async ({ ctx, input }) => {

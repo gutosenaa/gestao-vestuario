@@ -12,7 +12,7 @@ import { trpc } from "@/lib/trpc";
 import { leagueOptions, teamsForLeague } from "@/lib/clubCatalog";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { AlertTriangle, ArrowDownRight, ArrowUpRight, BarChart3, Box, CircleDollarSign, Download, PackagePlus, Plus, ReceiptText, Search, Share2, ShoppingBag, Sparkles, Store, Target, TrendingUp, Users, Wallet } from "lucide-react";
 
@@ -68,7 +68,16 @@ export default function Home() {
   const sales = trpc.commerce.sales.list.useQuery(undefined, { enabled: Boolean(user) && (activeView === "financeiro" || activeView === "relatorios") });
   const cashflow = trpc.commerce.finance.cashflow.useQuery(undefined, { enabled: Boolean(user) && activeView === "financeiro" });
   const settings = trpc.commerce.settings.get.useQuery(undefined, { enabled: Boolean(user) });
-  const createProduct = trpc.commerce.products.create.useMutation({ onSuccess: data => { toast.success(`${data.code} cadastrado com sucesso.`); setProductDialog(false); utils.commerce.products.list.invalidate(); }, onError: error => toast.error(error.message) });
+  const createProduct = trpc.commerce.products.create.useMutation({ onSuccess: data => { toast.success(`${data.code} cadastrado com sucesso.`); setProductDialog(false); utils.commerce.products.list.invalidate(); }, onError: error => { const message = error.message.toLowerCase(); if (message.includes("abort") || message.includes("signal") || message.includes("timeout")) { toast.error("O cadastro foi interrompido por demora na conexão. Verifique Produtos antes de tentar novamente."); return; } toast.error(error.message); } });
+  const productCreateGuardRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (productCreateGuardRef.current !== null) window.clearTimeout(productCreateGuardRef.current);
+    if (!createProduct.isPending) return;
+    productCreateGuardRef.current = window.setTimeout(() => {
+      toast.warning("O cadastro está demorando mais que o esperado. Aguarde até 20 segundos; a requisição será interrompida automaticamente se não responder.");
+    }, 15000);
+    return () => { if (productCreateGuardRef.current !== null) window.clearTimeout(productCreateGuardRef.current); };
+  }, [createProduct.isPending]);
   const updateProduct = trpc.commerce.products.update.useMutation({ onSuccess: () => { toast.success("Produto atualizado."); utils.commerce.products.list.invalidate(); }, onError: error => toast.error(error.message || "Não foi possível atualizar o produto.") });
   const addProductStock = trpc.commerce.products.addStock.useMutation({ onSuccess: () => { toast.success("Estoque atualizado."); utils.invalidate(); }, onError: error => toast.error(error.message) });
   const createPurchase = trpc.commerce.purchases.create.useMutation({ onSuccess: () => { toast.success("Compra registrada e estoque atualizado."); utils.invalidate(); }, onError: error => toast.error(error.message) });
