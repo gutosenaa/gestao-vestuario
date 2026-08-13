@@ -14,7 +14,7 @@
 - [x] Implementar despesas, contas a pagar, contas a receber e fluxo de caixa.
 - [ ] Implementar painel executivo com KPIs, metas, gráficos, rankings e filtros por período.
 - [ ] Implementar controle de estoque por movimentações, indicadores de reposição, itens parados e classificação ABC.
-- [ ] Implementar central de alertas para estoque, margens, metas e contas em atraso.
+- [x] Implementar central de alertas para estoque, margens, metas e contas em atraso.
 - [ ] Implementar relatórios filtráveis e exportáveis para CSV, com arquitetura preparada para Excel e PDF.
 - [x] Implementar busca global por produtos, clientes, fornecedores e documentos comerciais.
 - [x] Criar navegação desktop com barra lateral e experiência mobile com atalhos, cards e venda rápida.
@@ -64,7 +64,7 @@
 - [x] Ampliar clientes com histórico, classificação automática e dados de relacionamento.
 - [x] Criar rankings de vendas, faturamento, lucro, margem, giro e produtos parados.
 - [x] Separar faturamento, recebimentos, custos, despesas, lucro bruto e lucro líquido no financeiro e fluxo de caixa.
-- [ ] Implementar central de alertas para estoque, giro, margens, contas, metas e reposição.
+- [x] Implementar central de alertas para estoque, giro, margens, contas, metas e reposição.
 - [x] Ampliar busca global para produtos, clientes, fornecedores, vendas, compras e códigos.
 - [ ] Criar relatório gerencial mensal e exportações preparadas para PDF e Excel.
 - [x] Criar compartilhamento de venda via WhatsApp com resumo comercial.
@@ -74,7 +74,7 @@
 - [x] Criar telas de cadastro e edição para fornecedores, clientes, canais de venda e formas de pagamento.
 - [x] Adicionar filtros de período reais no dashboard e nos relatórios.
 - [x] Implementar classificação ABC e relatórios dedicados de giro e estoque parado.
-- [ ] Ampliar a central de alertas para contas vencidas, giro, margens e reposição.
+- [x] Ampliar a central de alertas para contas vencidas, giro, margens e reposição.
 - [x] Expandir a edição de produtos para todos os atributos comerciais modelados.
 - [x] Adicionar simulador de desconto e promoção com recálculo imediato na precificação.
 - [x] Criar rankings específicos de giro e produtos parados.

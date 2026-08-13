@@ -1,6 +1,7 @@
 import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { alerts, businessSettings, expenses, inventoryLots, inventoryMovements, products, saleItems, sales } from "../../drizzle/schema";
+import { calculatePricing } from "../calculations";
 import { getDb } from "../db";
 import { protectedProcedure, router } from "../_core/trpc";
 
@@ -82,9 +83,11 @@ export const dashboardRouter = router({
     });
     const overdueExpenses = allExpenses.filter(expense => expense.dueDate && expense.dueDate < now && expense.status !== "pago" && expense.status !== "cancelado");
     const replenishmentRows = health.filter(item => item.stock <= settings.minimumStock && item.classification === "Alta saída");
+    const lowMarginRows = allProducts.map(product => ({ product, pricing: calculatePricing({ ...product, salesTaxBps: settings.salesTaxBps ?? 0, minimumMarginBps: settings.minimumMarginBps ?? 0, desiredMarginBps: settings.desiredMarginBps ?? 0, salePriceCents: product.listPriceCents }) })).filter(row => row.pricing.status === "BAIXA");
     const decisionAlerts = [
       ...stockRows.filter(row => row.stock <= settings.minimumStock).slice(0, 4).map(row => ({ id: `estoque-${row.product.id}`, title: `Estoque baixo: ${row.product.name}`, message: `${row.stock} unidade(s) disponíveis; mínimo configurado: ${settings.minimumStock}.` })),
       ...replenishmentRows.slice(0, 3).map(item => ({ id: `repor-${item.id}`, title: `Reposição prioritária: ${item.name}`, message: `Classe ABC ${item.abcClass}; alta saída e somente ${item.stock} unidade(s) disponíveis.` })),
+      ...lowMarginRows.slice(0, 3).map(row => ({ id: `margem-${row.product.id}`, title: `Margem baixa: ${row.product.name}`, message: `Margem atual de ${(row.pricing.marginBps / 100).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}% abaixo do parâmetro mínimo configurado.` })),
       ...health.filter(item => item.classification === "Encalhado").slice(0, 3).map(item => ({ id: `encalhado-${item.id}`, title: `Produto parado: ${item.name}`, message: `${item.daysWithoutSale} dias sem venda e ${item.stock} unidade(s) em estoque.` })),
       ...overdueExpenses.slice(0, 3).map(expense => ({ id: `vencido-${expense.id}`, title: `Conta vencida: ${expense.description}`, message: `Vencimento em ${expense.dueDate!.toLocaleDateString("pt-BR")}; valor de ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(expense.amountCents / 100)}.` })),
       ...(payablesCents > 0 ? [{ id: "contas-pagar", title: "Contas pendentes", message: `Há ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(payablesCents / 100)} a pagar no período.` }] : []),
