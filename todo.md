@@ -58,7 +58,7 @@
 - [x] Auditar os módulos atuais e preservar regras de custo histórico, vendas, compras, estoque e financeiro.
 - [x] Ampliar o dashboard executivo com indicadores de decisão, metas, comparativos e variações percentuais.
 - [ ] Criar saúde do estoque, relatório de estoque parado, giro, valor parado e recomendações de reposição.
-- [ ] Evoluir a precificação com preço promocional, simulador de desconto e bloqueio confirmado para margem abaixo do mínimo.
+- [x] Evoluir a precificação com preço promocional, simulador de desconto e bloqueio confirmado para margem abaixo do mínimo.
 - [x] Implementar metas de faturamento, lucro e peças com progresso, projeção e ritmo diário necessário.
 - [ ] Simplificar a venda rápida para celular com variação, desconto, margem e atualização financeira imediata.
 - [x] Ampliar clientes com histórico, classificação automática e dados de relacionamento.
@@ -76,7 +76,7 @@
 - [ ] Implementar classificação ABC e relatórios dedicados de giro e estoque parado.
 - [ ] Ampliar a central de alertas para contas vencidas, giro, margens e reposição.
 - [x] Expandir a edição de produtos para todos os atributos comerciais modelados.
-- [ ] Adicionar simulador de desconto e promoção com recálculo imediato na precificação.
+- [x] Adicionar simulador de desconto e promoção com recálculo imediato na precificação.
 - [x] Criar rankings específicos de giro e produtos parados.
 - [ ] Montar um relatório gerencial mensal completo com indicadores financeiros, comerciais e de estoque.
 - [ ] Adicionar seleção de tamanho ou variação à venda rápida e persistir a opção na experiência comercial.
