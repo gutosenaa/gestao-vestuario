@@ -99,3 +99,7 @@ O catálogo foi revisado visualmente em desktop (1280px) e mobile (375px). O bot
 Em 13/08/2026, uma nova navegação na home publicada iniciou com sessão válida e abriu o catálogo sem erro OAuth. O modal “Novo produto” exibiu liga/campeonato e time dependentes; o campo de time ficou desabilitado antes da seleção da liga, com a mensagem “Escolha a liga primeiro”. Também foram confirmados tipo de camisa, tamanho, quantidade inicial, custo unitário e input de foto. A inspeção foi somente de leitura; nenhum produto foi salvo.
 
 A validação manual autenticada continuou sem persistência: a lista exibiu Brasileirão, Copa do Brasil, Libertadores, Champions League, Premier League, La Liga e Outro. Após selecionar Brasileirão, o campo de time foi habilitado e passou a mostrar “Selecione o time da liga”, confirmando a dependência entre os dois selects.
+
+## Venda rápida autenticada sem estoque
+
+A abertura autenticada de `?view=venda` confirmou o estado vazio real: “Estoque indisponível” orienta registrar uma compra, o resumo mostra zero itens, desconto, canal, forma de pagamento, impacto financeiro com taxas/imposto zerados e total de R$ 0,00. Compartilhar e Concluir venda permanecem desabilitados sem itens, evitando uma operação inválida. Nenhum dado foi criado.
