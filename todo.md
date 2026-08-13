@@ -43,7 +43,7 @@
 - [x] Permitir editar produtos existentes diretamente pelo catálogo.
 - [x] Permitir registrar quantidade inicial ou nova entrada de estoque a partir do fluxo de produto.
 - [x] Substituir campos repetitivos de cadastro por listas suspensas práticas para time, liga, coleção, categoria e tamanho.
-- [ ] Criar formulário completo de edição de produto no catálogo, com atributos comerciais e preço.
+- [x] Criar formulário completo de edição de produto no catálogo, com atributos comerciais e preço.
 - [x] Substituir os diálogos simples de edição e estoque por formulários validados na interface.
 - [x] Limpar produtos cadastrados e os movimentos comerciais relacionados para reiniciar o preenchimento.
 - [x] Verificar a substituição da marca por FEIRENSE no menu mobile e salvar a versão atualizada.
@@ -75,7 +75,7 @@
 - [ ] Adicionar filtros de período reais no dashboard e nos relatórios.
 - [ ] Implementar classificação ABC e relatórios dedicados de giro e estoque parado.
 - [ ] Ampliar a central de alertas para contas vencidas, giro, margens e reposição.
-- [ ] Expandir a edição de produtos para todos os atributos comerciais modelados.
+- [x] Expandir a edição de produtos para todos os atributos comerciais modelados.
 - [ ] Adicionar simulador de desconto e promoção com recálculo imediato na precificação.
 - [ ] Criar rankings específicos de giro e produtos parados.
 - [ ] Montar um relatório gerencial mensal completo com indicadores financeiros, comerciais e de estoque.
@@ -86,3 +86,6 @@
 - [ ] Revisar acessibilidade das telas dashboard, produtos, venda, financeiro e relatórios, cobrindo teclado, foco, rótulos e contraste.
 - [ ] Corrigir achados de acessibilidade nos formulários e ações operacionais principais.
 - [ ] Registrar evidências de acessibilidade por tela e critério revisado.
+- [x] Adicionar fornecedor, URL de origem e cotação vinculada aos campos de edição de produto.
+- [x] Integrar a edição de produto ao catálogo de fornecedores com seleção real na interface.
+- [x] Revisar a cobertura de todos os campos do schema de produtos na edição comercial.
