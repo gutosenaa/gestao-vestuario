@@ -113,13 +113,20 @@ export const commerceRouter = router({
       await db.insert(auditLogs).values({ userId: ctx.user.id, entityType: "produto", entityId: id, action: "criado", afterData: { code, name: input.name } });
       return { id, code };
     }),
-    update: protectedProcedure.input(z.object({ id: z.number(), name: z.string().min(2).optional(), team: z.string().optional(), league: z.string().optional(), collection: z.string().optional(), category: z.string().optional(), size: z.string().optional(), predominantColor: z.string().optional(), status: z.enum(["ativo", "inativo"]).optional(), listPriceCents: z.number().int().nonnegative().optional(), usdValueCents: z.number().int().nonnegative().optional(), quoteMicros: z.number().int().nonnegative().optional(), internationalShippingCents: z.number().int().nonnegative().optional(), domesticShippingCents: z.number().int().nonnegative().optional(), importFeesCents: z.number().int().nonnegative().optional(), packagingCostCents: z.number().int().nonnegative().optional(), otherCostsCents: z.number().int().nonnegative().optional(), notes: z.string().optional() })).mutation(async ({ ctx, input }) => {
+    update: protectedProcedure.input(z.object({ id: z.number(), name: z.string().min(2).optional(), team: z.string().optional(), league: z.string().optional(), collection: z.string().optional(), category: z.string().optional(), shirtType: z.enum(["Casa", "Fora", "Especial", "Retrô"]).optional(), size: z.string().optional(), predominantColor: z.string().optional(), status: z.enum(["ativo", "inativo"]).optional(), listPriceCents: z.number().int().nonnegative().optional(), usdValueCents: z.number().int().nonnegative().optional(), quoteMicros: z.number().int().nonnegative().optional(), internationalShippingCents: z.number().int().nonnegative().optional(), domesticShippingCents: z.number().int().nonnegative().optional(), importFeesCents: z.number().int().nonnegative().optional(), packagingCostCents: z.number().int().nonnegative().optional(), otherCostsCents: z.number().int().nonnegative().optional(), notes: z.string().optional(), imageDataUrl: z.string().max(5_500_000).optional() })).mutation(async ({ ctx, input }) => {
       restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
       const db = await dbOrThrow();
-      const { id, ...changes } = input;
+      const { id, imageDataUrl, ...changes } = input;
       const previous = await db.select().from(products).where(eq(products.id, id)).limit(1);
       if (!previous[0]) throw new TRPCError({ code: "NOT_FOUND", message: "Produto não encontrado." });
       await db.update(products).set(changes).where(eq(products.id, id));
+      if (imageDataUrl) {
+        const match = imageDataUrl.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+        if (!match) throw new TRPCError({ code: "BAD_REQUEST", message: "A imagem enviada é inválida." });
+        const extension = match[1].split("/")[1].replace("jpeg", "jpg");
+        const stored = await storagePut(`products/${id}/${nanoid(12)}.${extension}`, Buffer.from(match[2], "base64"), match[1]);
+        await db.update(products).set({ imageKey: stored.key, imageUrl: stored.url }).where(eq(products.id, id));
+      }
       await db.insert(auditLogs).values({ userId: ctx.user.id, entityType: "produto", entityId: id, action: changes.status === "inativo" ? "inativado" : "atualizado", beforeData: previous[0], afterData: changes });
       return { success: true };
     }),
