@@ -10,6 +10,8 @@ export const leagueTeams: Record<string, string[]> = {
 
 export const leagueOptions = Object.keys(leagueTeams);
 
-export function teamsForLeague(league: string) {
-  return leagueTeams[league] ?? ["Outro"];
+export function teamsForLeague(league: string, savedTeam?: string) {
+  const teams = leagueTeams[league] ?? ["Outro"];
+  if (savedTeam && !teams.includes(savedTeam)) return [savedTeam, ...teams];
+  return teams;
 }
