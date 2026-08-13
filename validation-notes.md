@@ -71,3 +71,7 @@ Os botões de adicionar peça, compartilhar resumo, concluir venda e registrar c
 ## Bloqueio OAuth
 
 A tentativa de autenticação manual retornou `invalid oauth state`. Nenhuma senha foi processada pelo agente e nenhum dado transacional de teste foi inserido. O aplicativo permanece publicado no estado estável; as validações técnicas, visuais do preview e de tipos/testes/build continuam registradas, enquanto os fluxos autenticados com produto real aguardam uma nova sessão OAuth válida.
+
+## Diagnóstico técnico do OAuth
+
+Os registros locais mostram o Vite e o coletor de depuração iniciando normalmente, sem exceção de aplicação ou falha de consulta associada ao login. O erro `invalid oauth state` apareceu no fluxo externo da conta Google antes de a sessão retornar ao aplicativo; por isso, não há correção segura a aplicar no código do PWA sem alterar o fluxo OAuth gerenciado.
