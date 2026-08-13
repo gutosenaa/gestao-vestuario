@@ -23,6 +23,7 @@ const asInputValue = (value = 0) => (value / 100).toFixed(2);
 
 type Product = { id: number; code: string; name: string; team: string | null; league: string | null; collection: string | null; category: string | null; shirtType?: string | null; size: string | null; predominantColor?: string | null; supplierId?: number | null; supplierUrl?: string | null; notes?: string | null; status: "ativo" | "inativo"; listPriceCents: number; usdValueCents: number; quoteMicros: number; internationalShippingCents: number; domesticShippingCents: number; importFeesCents: number; packagingCostCents: number; otherCostsCents: number; stock: number; imageUrl?: string | null };
 type SaleItem = { productId: number; quantity: number; unitPriceCents: number };
+const appViews: AppView[] = ["dashboard", "venda", "produtos", "precificacao", "estoque", "compras", "despesas", "financeiro", "relatorios", "clientes", "fornecedores", "configuracoes"];
 
 function SectionHeading({ eyebrow, title, description, action }: { eyebrow: string; title: string; description: string; action?: React.ReactNode }) {
   return <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><p className="eyebrow">{eyebrow}</p><h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">{title}</h1><p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">{description}</p></div>{action}</div>;
@@ -40,7 +41,7 @@ function Empty({ title, message, icon: Icon, action }: { title: string; message:
 function StatusBadge({ status }: { status: string }) { const tone = status === "SEM PREÇO" || status === "BAIXA" ? "border-orange-300/25 bg-orange-300/10 text-orange-200" : status === "ATENÇÃO" ? "border-amber-300/25 bg-amber-300/10 text-amber-100" : status === "BOA" ? "border-cyan-300/25 bg-cyan-300/10 text-cyan-100" : "border-emerald-300/25 bg-emerald-300/10 text-emerald-100"; return <Badge className={`border text-[10px] ${tone}`}>{status}</Badge>; }
 
 export default function Home() {
-  const [activeView, setActiveView] = useState<AppView>("dashboard");
+  const [activeView, setActiveView] = useState<AppView>(() => { const requested = new URLSearchParams(window.location.search).get("view") as AppView | null; return requested && appViews.includes(requested) ? requested : "dashboard"; });
   const [globalSearch, setGlobalSearch] = useState("");
   const [productDialog, setProductDialog] = useState(false);
   const [dashboardMonths, setDashboardMonths] = useState("6");

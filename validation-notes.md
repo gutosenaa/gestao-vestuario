@@ -29,3 +29,15 @@ Foi verificado o uso de nomes acessíveis e de estados nos controles globais: ab
 O formulário de criação de produtos recebeu nomes programáticos para todos os campos de texto, números, listas e foto. A orientação e eventuais falhas de upload da imagem ficam vinculadas ao campo e são anunciadas como alerta. A checagem de tipos, os **8 testes** e a compilação de produção passaram após esse ajuste.
 
 Os formulários de criação e edição de clientes e fornecedores também receberam nomes programáticos para dados pessoais, empresa, contato, endereço, URL e observações. A entrada manual de estoque possui nomes para quantidade e custo. Esses ajustes foram validados com a mesma checagem de tipos, testes e compilação de produção.
+
+## Venda rápida — mobile
+
+A abertura direta por `?view=venda` confirmou a tela autenticada em largura mobile. O estado sem estoque comunica a próxima ação, o resumo compacto fica acima do formulário, os controles de desconto, canal e pagamento permanecem legíveis e o bloco financeiro mostra taxas, imposto e valor a receber. As ações de compartilhar e concluir venda permanecem visíveis no fim do fluxo sem sobreposição.
+
+Na largura desktop, o fluxo distribui a adição de peças e o resumo financeiro em duas colunas, mantendo o resumo em posição estável e deixando desconto, canal, forma de pagamento, valor a receber e ações de conclusão no mesmo campo visual.
+
+## Módulos operacionais — desktop
+
+Produtos, estoque, financeiro e relatórios foram revisados em abertura direta. As telas preservam o cabeçalho, as ações de entrada e cards de decisão; os estados sem dados indicam uma ação seguinte objetiva. O Financeiro mantém a separação dos resultados, enquanto Relatórios reúne KPIs, consolidados, rankings, reposição e exportações na mesma página.
+
+Em mobile, Produtos, Financeiro, Relatórios e Estoque se reorganizam em coluna sem cortes ou sobreposições. Os CTAs de cadastro e compra ocupam largura confortável, os cards financeiros e de estoque preservam contraste e os relatórios mantêm os blocos de consolidação, ranking, decisão e exportação legíveis em rolagem contínua.

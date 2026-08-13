@@ -96,3 +96,5 @@
 - [ ] Revisar e registrar evidências dos refinamentos de layout e UX nas telas principais em desktop e mobile.
 - [ ] Validar acessibilidade nas telas dashboard, produtos, venda, financeiro e relatórios, cobrindo teclado, foco, rótulos, contraste e leitura de estados.
 - [ ] Registrar evidências objetivas por tela e revisar labels, erros, foco e navegação por teclado nos formulários operacionais.
+- [ ] Validar visualmente e funcionalmente a venda rápida autenticada no mobile, incluindo estados vazio, erro e sucesso.
+- [ ] Validar as telas principais com sessão autenticada em desktop e mobile e registrar os fluxos confirmados por tela.
