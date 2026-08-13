@@ -1,0 +1,265 @@
+import { TRPCError } from "@trpc/server";
+import { and, asc, desc, eq, gt, inArray, sql } from "drizzle-orm";
+import { nanoid } from "nanoid";
+import { z } from "zod";
+import {
+  alerts, auditLogs, businessSettings, customers, dollarQuotes, expenses, financialEntries,
+  inventoryLots, inventoryMovements, paymentMethods, products, purchaseItems, purchases,
+  saleChannels, saleItems, sales, suppliers,
+} from "../../drizzle/schema";
+import { allocateFifoLots, calculatePricing, calculateSaleTotals } from "../calculations";
+import { getDb } from "../db";
+import { notifyOwner } from "../_core/notification";
+import { storagePut } from "../storage";
+import { protectedProcedure, router } from "../_core/trpc";
+
+const financeRoles = ["Admin", "Financeiro"] as const;
+const operationalRoles = ["Admin", "Vendedor", "Estoque"] as const;
+
+function restrictRoles(role: string, allowed: readonly string[]) {
+  if (!allowed.includes(role)) throw new TRPCError({ code: "FORBIDDEN", message: "Seu perfil não tem permissão para esta operação." });
+}
+
+async function dbOrThrow() {
+  const db = await getDb();
+  if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Banco de dados indisponível." });
+  return db;
+}
+
+async function ensureSettings() {
+  const db = await dbOrThrow();
+  const current = await db.select().from(businessSettings).limit(1);
+  if (current[0]) return current[0];
+  await db.insert(businessSettings).values({});
+  const created = await db.select().from(businessSettings).limit(1);
+  return created[0]!;
+}
+
+function makeProductCode(lastCode?: string | null) {
+  const previous = Number(lastCode?.replace("COD", "") ?? 0);
+  return `COD${String(previous + 1).padStart(3, "0")}`;
+}
+
+export const commerceRouter = router({
+  catalog: router({
+    bootstrap: protectedProcedure.query(async () => {
+      const db = await dbOrThrow();
+      await ensureSettings();
+      const [allSuppliers, allCustomers, channels, methods, settings] = await Promise.all([
+        db.select().from(suppliers).where(eq(suppliers.active, true)).orderBy(asc(suppliers.name)),
+        db.select().from(customers).orderBy(asc(customers.name)),
+        db.select().from(saleChannels).where(eq(saleChannels.active, true)).orderBy(asc(saleChannels.name)),
+        db.select().from(paymentMethods).where(eq(paymentMethods.active, true)).orderBy(asc(paymentMethods.name)),
+        ensureSettings(),
+      ]);
+      return { suppliers: allSuppliers, customers: allCustomers, channels, methods, settings };
+    }),
+    saveSupplier: protectedProcedure.input(z.object({ id: z.number().optional(), name: z.string().min(2), company: z.string().optional(), whatsapp: z.string().optional(), country: z.string().optional(), city: z.string().optional(), sourceUrl: z.string().url().optional().or(z.literal("")), notes: z.string().optional() })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
+      const db = await dbOrThrow();
+      const values = { name: input.name, company: input.company || null, whatsapp: input.whatsapp || null, country: input.country || null, city: input.city || null, sourceUrl: input.sourceUrl || null, notes: input.notes || null };
+      if (input.id) { await db.update(suppliers).set(values).where(eq(suppliers.id, input.id)); return { id: input.id }; }
+      const result = await db.insert(suppliers).values(values);
+      return { id: Number(result[0].insertId) };
+    }),
+    saveCustomer: protectedProcedure.input(z.object({ id: z.number().optional(), name: z.string().min(2), whatsapp: z.string().optional(), instagram: z.string().optional(), email: z.string().email().optional().or(z.literal("")), city: z.string().optional(), notes: z.string().optional() })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, ["Admin", "Vendedor"]);
+      const db = await dbOrThrow();
+      const values = { name: input.name, whatsapp: input.whatsapp || null, instagram: input.instagram || null, email: input.email || null, city: input.city || null, notes: input.notes || null };
+      if (input.id) { await db.update(customers).set(values).where(eq(customers.id, input.id)); return { id: input.id }; }
+      const result = await db.insert(customers).values(values);
+      return { id: Number(result[0].insertId) };
+    }),
+  }),
+
+  products: router({
+    list: protectedProcedure.input(z.object({ query: z.string().optional(), status: z.enum(["ativo", "inativo", "todos"]).default("ativo") }).optional()).query(async ({ input }) => {
+      const db = await dbOrThrow();
+      const rows = await db.select().from(products).orderBy(desc(products.createdAt));
+      const movementRows = await db.select({ productId: inventoryMovements.productId, quantity: inventoryMovements.quantity }).from(inventoryMovements);
+      const stockByProduct = new Map<number, number>();
+      movementRows.forEach(row => stockByProduct.set(row.productId, (stockByProduct.get(row.productId) ?? 0) + row.quantity));
+      const query = input?.query?.toLocaleLowerCase("pt-BR").trim();
+      return rows.filter(product => {
+        const statusOk = input?.status === "todos" || !input?.status || product.status === input.status;
+        const queryOk = !query || [product.code, product.name, product.team, product.category, product.size, product.league, product.collection].filter(Boolean).join(" ").toLocaleLowerCase("pt-BR").includes(query);
+        return statusOk && queryOk;
+      }).map(product => ({ ...product, stock: stockByProduct.get(product.id) ?? 0 }));
+    }),
+    create: protectedProcedure.input(z.object({ name: z.string().min(2), team: z.string().optional(), league: z.string().optional(), collection: z.string().optional(), category: z.string().optional(), size: z.string().optional(), predominantColor: z.string().optional(), supplierId: z.number().optional(), supplierUrl: z.string().url().optional().or(z.literal("")), notes: z.string().optional(), listPriceCents: z.number().int().nonnegative(), usdValueCents: z.number().int().nonnegative(), quoteMicros: z.number().int().nonnegative().optional(), internationalShippingCents: z.number().int().nonnegative().default(0), domesticShippingCents: z.number().int().nonnegative().default(0), importFeesCents: z.number().int().nonnegative().default(0), packagingCostCents: z.number().int().nonnegative().default(0), otherCostsCents: z.number().int().nonnegative().default(0), imageDataUrl: z.string().max(5_500_000).optional() })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
+      const db = await dbOrThrow();
+      const settings = await ensureSettings();
+      const last = await db.select({ code: products.code }).from(products).orderBy(desc(products.id)).limit(1);
+      const code = makeProductCode(last[0]?.code);
+      const { imageDataUrl, ...productInput } = input;
+      const values = { ...productInput, code, supplierId: input.supplierId ?? null, supplierUrl: input.supplierUrl || null, team: input.team || null, league: input.league || null, collection: input.collection || null, category: input.category || null, size: input.size || null, predominantColor: input.predominantColor || null, notes: input.notes || null, quoteMicros: input.quoteMicros || settings.dollarQuoteMicros, createdByUserId: ctx.user.id };
+      const result = await db.insert(products).values(values);
+      const id = Number(result[0].insertId);
+      if (imageDataUrl) {
+        const match = imageDataUrl.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+        if (!match) throw new TRPCError({ code: "BAD_REQUEST", message: "A imagem enviada é inválida." });
+        const extension = match[1].split("/")[1].replace("jpeg", "jpg");
+        const stored = await storagePut(`products/${id}/${nanoid(12)}.${extension}`, Buffer.from(match[2], "base64"), match[1]);
+        await db.update(products).set({ imageKey: stored.key, imageUrl: stored.url }).where(eq(products.id, id));
+      }
+      await db.insert(auditLogs).values({ userId: ctx.user.id, entityType: "produto", entityId: id, action: "criado", afterData: { code, name: input.name } });
+      return { id, code };
+    }),
+    update: protectedProcedure.input(z.object({ id: z.number(), status: z.enum(["ativo", "inativo"]).optional(), listPriceCents: z.number().int().nonnegative().optional(), usdValueCents: z.number().int().nonnegative().optional(), quoteMicros: z.number().int().nonnegative().optional(), internationalShippingCents: z.number().int().nonnegative().optional(), domesticShippingCents: z.number().int().nonnegative().optional(), importFeesCents: z.number().int().nonnegative().optional(), packagingCostCents: z.number().int().nonnegative().optional(), otherCostsCents: z.number().int().nonnegative().optional(), notes: z.string().optional() })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
+      const db = await dbOrThrow();
+      const { id, ...changes } = input;
+      const previous = await db.select().from(products).where(eq(products.id, id)).limit(1);
+      if (!previous[0]) throw new TRPCError({ code: "NOT_FOUND", message: "Produto não encontrado." });
+      await db.update(products).set(changes).where(eq(products.id, id));
+      await db.insert(auditLogs).values({ userId: ctx.user.id, entityType: "produto", entityId: id, action: changes.status === "inativo" ? "inativado" : "atualizado", beforeData: previous[0], afterData: changes });
+      return { success: true };
+    }),
+    pricing: protectedProcedure.input(z.object({ productId: z.number() })).query(async ({ input }) => {
+      const db = await dbOrThrow();
+      const [product] = await db.select().from(products).where(eq(products.id, input.productId)).limit(1);
+      if (!product) throw new TRPCError({ code: "NOT_FOUND", message: "Produto não encontrado." });
+      const settings = await ensureSettings();
+      return calculatePricing({ ...product, salesTaxBps: settings.salesTaxBps, minimumMarginBps: settings.minimumMarginBps, desiredMarginBps: settings.desiredMarginBps, salePriceCents: product.listPriceCents });
+    }),
+    previewPricing: protectedProcedure.input(z.object({ usdValueCents: z.number().int().nonnegative(), quoteMicros: z.number().int().nonnegative(), internationalShippingCents: z.number().int().nonnegative(), domesticShippingCents: z.number().int().nonnegative(), importFeesCents: z.number().int().nonnegative(), packagingCostCents: z.number().int().nonnegative(), otherCostsCents: z.number().int().nonnegative(), salePriceCents: z.number().int().nonnegative() })).query(async ({ input }) => {
+      const settings = await ensureSettings();
+      return calculatePricing({ ...input, salesTaxBps: settings.salesTaxBps, minimumMarginBps: settings.minimumMarginBps, desiredMarginBps: settings.desiredMarginBps });
+    }),
+  }),
+
+  purchases: router({
+    create: protectedProcedure.input(z.object({ supplierId: z.number().optional(), purchaseDate: z.coerce.date(), orderNumber: z.string().optional(), shippingCents: z.number().int().nonnegative().default(0), feesCents: z.number().int().nonnegative().default(0), paymentMethodId: z.number().optional(), paymentStatus: z.enum(["pendente", "pago"]).default("pendente"), dueDate: z.coerce.date().optional(), notes: z.string().optional(), items: z.array(z.object({ productId: z.number(), quantity: z.number().int().positive(), unitCostCents: z.number().int().positive() })).min(1) })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
+      const db = await dbOrThrow();
+      const baseTotal = input.items.reduce((sum, item) => sum + item.quantity * item.unitCostCents, 0);
+      const totalCents = baseTotal + input.shippingCents + input.feesCents;
+      const result = await db.transaction(async tx => {
+        const purchaseResult = await tx.insert(purchases).values({ supplierId: input.supplierId ?? null, purchaseDate: input.purchaseDate, orderNumber: input.orderNumber || null, shippingCents: input.shippingCents, feesCents: input.feesCents, totalCents, paymentMethodId: input.paymentMethodId ?? null, paymentStatus: input.paymentStatus, dueDate: input.dueDate ?? null, paidAt: input.paymentStatus === "pago" ? input.purchaseDate : null, notes: input.notes || null, createdByUserId: ctx.user.id });
+        const purchaseId = Number(purchaseResult[0].insertId);
+        for (const item of input.items) {
+          const itemResult = await tx.insert(purchaseItems).values({ purchaseId, productId: item.productId, quantity: item.quantity, unitCostCents: item.unitCostCents, totalCostCents: item.quantity * item.unitCostCents });
+          const purchaseItemId = Number(itemResult[0].insertId);
+          await tx.insert(inventoryLots).values({ productId: item.productId, purchaseItemId, receivedAt: input.purchaseDate, initialQuantity: item.quantity, availableQuantity: item.quantity, unitCostCents: item.unitCostCents });
+          await tx.insert(inventoryMovements).values({ productId: item.productId, type: "compra", quantity: item.quantity, unitCostCents: item.unitCostCents, purchaseId, occurredAt: input.purchaseDate, createdByUserId: ctx.user.id });
+        }
+        await tx.insert(financialEntries).values({ kind: "pagar", sourceType: "compra", sourceId: purchaseId, description: `Compra${input.orderNumber ? ` ${input.orderNumber}` : ""}`, amountCents: totalCents, status: input.paymentStatus === "pago" ? "pago" : "pendente", dueDate: input.dueDate ?? null, settledAt: input.paymentStatus === "pago" ? input.purchaseDate : null });
+        await tx.insert(auditLogs).values({ userId: ctx.user.id, entityType: "compra", entityId: purchaseId, action: "registrada", afterData: { totalCents, items: input.items.length } });
+        return purchaseId;
+      });
+      return { id: result };
+    }),
+  }),
+
+  sales: router({
+    create: protectedProcedure.input(z.object({ soldAt: z.coerce.date(), customerId: z.number().optional(), saleChannelId: z.number().optional(), paymentMethodId: z.number().optional(), discountCents: z.number().int().nonnegative().default(0), paymentStatus: z.enum(["pendente", "recebido"]).default("recebido"), dueDate: z.coerce.date().optional(), notes: z.string().optional(), items: z.array(z.object({ productId: z.number(), quantity: z.number().int().positive(), unitPriceCents: z.number().int().positive() })).min(1) })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, operationalRoles);
+      const db = await dbOrThrow();
+      const settings = await ensureSettings();
+      const [channel] = input.saleChannelId ? await db.select().from(saleChannels).where(eq(saleChannels.id, input.saleChannelId)).limit(1) : [];
+      const [method] = input.paymentMethodId ? await db.select().from(paymentMethods).where(eq(paymentMethods.id, input.paymentMethodId)).limit(1) : [];
+      const ids = input.items.map(item => item.productId);
+      const selectedProducts = await db.select().from(products).where(inArray(products.id, ids));
+      if (selectedProducts.length !== ids.length || selectedProducts.some(product => product.status !== "ativo")) throw new TRPCError({ code: "BAD_REQUEST", message: "Há produto inexistente ou inativo na venda." });
+      const grossCents = input.items.reduce((sum, item) => sum + item.quantity * item.unitPriceCents, 0);
+      let hasLowMarginAlert = false;
+      let hasZeroStockAlert = false;
+      const result = await db.transaction(async tx => {
+        const allocations: Array<{ productId: number; quantity: number; unitPriceCents: number; unitCostCents: number; totalCostCents: number; lots: Array<{ id: number; take: number }> }> = [];
+        let costCents = 0;
+        for (const item of input.items) {
+          const lots = await tx.select().from(inventoryLots).where(and(eq(inventoryLots.productId, item.productId), gt(inventoryLots.availableQuantity, 0))).orderBy(asc(inventoryLots.receivedAt), asc(inventoryLots.id));
+          const fifo = allocateFifoLots(lots, item.quantity);
+          if (!fifo.fulfilled) throw new TRPCError({ code: "BAD_REQUEST", message: "Estoque insuficiente para concluir a venda." });
+          const itemCost = fifo.totalCostCents;
+          const lotTakes = fifo.takes;
+          costCents += itemCost;
+          allocations.push({ productId: item.productId, quantity: item.quantity, unitPriceCents: item.unitPriceCents, unitCostCents: Math.round(itemCost / item.quantity), totalCostCents: itemCost, lots: lotTakes });
+        }
+        const totals = calculateSaleTotals({ grossCents, discountCents: input.discountCents, channelFeeBps: channel?.feeBps ?? 0, paymentFeeBps: method?.feeBps ?? 0, salesTaxBps: settings.salesTaxBps, costCents });
+        const saleResult = await tx.insert(sales).values({ saleNumber: `VEN-${nanoid(8).toUpperCase()}`, soldAt: input.soldAt, customerId: input.customerId ?? null, saleChannelId: input.saleChannelId ?? null, paymentMethodId: input.paymentMethodId ?? null, grossCents, discountCents: input.discountCents, channelFeeCents: totals.channelFeeCents, paymentFeeCents: totals.paymentFeeCents, taxCents: totals.taxCents, costCents, netCents: totals.netCents, profitCents: totals.profitCents, paymentStatus: input.paymentStatus, dueDate: input.dueDate ?? null, receivedAt: input.paymentStatus === "recebido" ? input.soldAt : null, notes: input.notes || null, createdByUserId: ctx.user.id });
+        const saleId = Number(saleResult[0].insertId);
+        for (const item of allocations) {
+          await tx.insert(saleItems).values({ saleId, productId: item.productId, quantity: item.quantity, unitPriceCents: item.unitPriceCents, unitCostCents: item.unitCostCents, totalCostCents: item.totalCostCents });
+          for (const lot of item.lots) {
+            await tx.update(inventoryLots).set({ availableQuantity: sql`${inventoryLots.availableQuantity} - ${lot.take}` }).where(eq(inventoryLots.id, lot.id));
+          }
+          await tx.insert(inventoryMovements).values({ productId: item.productId, type: "venda", quantity: -item.quantity, unitCostCents: item.unitCostCents, saleId, occurredAt: input.soldAt, createdByUserId: ctx.user.id });
+        }
+        await tx.insert(financialEntries).values({ kind: "receber", sourceType: "venda", sourceId: saleId, description: `Venda ${saleId}`, amountCents: totals.netCents, status: input.paymentStatus === "recebido" ? "recebido" : "pendente", dueDate: input.dueDate ?? null, settledAt: input.paymentStatus === "recebido" ? input.soldAt : null });
+        await tx.insert(auditLogs).values({ userId: ctx.user.id, entityType: "venda", entityId: saleId, action: "registrada", afterData: { grossCents, profitCents: totals.profitCents } });
+        if (totals.marginBps < settings.minimumMarginBps) {
+          hasLowMarginAlert = true;
+          await tx.insert(alerts).values({ type: "margem_baixa", severity: "atencao", title: "Margem abaixo do mínimo", message: `A venda ${saleId} foi concluída com margem abaixo do mínimo configurado.`, referenceType: "venda", referenceId: saleId });
+        }
+        for (const item of allocations) {
+          const balance = await tx.select({ total: sql<number>`COALESCE(SUM(${inventoryMovements.quantity}), 0)` }).from(inventoryMovements).where(eq(inventoryMovements.productId, item.productId));
+          if ((balance[0]?.total ?? 0) <= 0) {
+            hasZeroStockAlert = true;
+            await tx.insert(alerts).values({ type: "estoque_zerado", severity: "critico", title: "Estoque zerado", message: "Um produto acabou após a última venda.", referenceType: "produto", referenceId: item.productId });
+          }
+        }
+        return { saleId, totals };
+      });
+      if (hasLowMarginAlert) await notifyOwner({ title: "Margem abaixo do mínimo", content: `A venda ${result.saleId} foi concluída com margem inferior ao parâmetro configurado.` });
+      if (hasZeroStockAlert) await notifyOwner({ title: "Estoque zerado", content: "Uma venda acabou de zerar o estoque de pelo menos um produto." });
+      return result;
+    }),
+    list: protectedProcedure.query(async () => {
+      const db = await dbOrThrow();
+      return db.select().from(sales).orderBy(desc(sales.soldAt)).limit(40);
+    }),
+  }),
+
+  expenses: router({
+    list: protectedProcedure.query(async ({ ctx }) => {
+      restrictRoles(ctx.user.role, ["Admin", "Financeiro"]);
+      const db = await dbOrThrow();
+      return db.select().from(expenses).orderBy(desc(expenses.expenseDate)).limit(100);
+    }),
+    create: protectedProcedure.input(z.object({ expenseDate: z.coerce.date(), category: z.string().min(2), description: z.string().min(2), amountCents: z.number().int().positive(), supplierId: z.number().optional(), paymentMethodId: z.number().optional(), status: z.enum(["pendente", "pago"]).default("pendente"), dueDate: z.coerce.date().optional(), notes: z.string().optional() })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, financeRoles);
+      const db = await dbOrThrow();
+      const result = await db.transaction(async tx => {
+        const insert = await tx.insert(expenses).values({ ...input, supplierId: input.supplierId ?? null, paymentMethodId: input.paymentMethodId ?? null, dueDate: input.dueDate ?? null, paidAt: input.status === "pago" ? input.expenseDate : null, notes: input.notes || null, createdByUserId: ctx.user.id });
+        const expenseId = Number(insert[0].insertId);
+        await tx.insert(financialEntries).values({ kind: "pagar", sourceType: "despesa", sourceId: expenseId, description: input.description, amountCents: input.amountCents, status: input.status, dueDate: input.dueDate ?? null, settledAt: input.status === "pago" ? input.expenseDate : null });
+        await tx.insert(auditLogs).values({ userId: ctx.user.id, entityType: "despesa", entityId: expenseId, action: "registrada", afterData: { amountCents: input.amountCents, category: input.category } });
+        return expenseId;
+      });
+      return { id: result };
+    }),
+  }),
+
+  finance: router({
+    cashflow: protectedProcedure.query(async ({ ctx }) => {
+      restrictRoles(ctx.user.role, financeRoles);
+      const db = await dbOrThrow();
+      const entries = await db.select().from(financialEntries).orderBy(desc(financialEntries.createdAt)).limit(200);
+      const summary = entries.reduce((total, entry) => {
+        const settled = entry.status === "recebido" || entry.status === "pago";
+        if (entry.kind === "receber") {
+          if (settled) total.inflowsCents += entry.amountCents;
+          else total.receivablesCents += entry.amountCents;
+        } else if (settled) total.outflowsCents += entry.amountCents;
+        else total.payablesCents += entry.amountCents;
+        return total;
+      }, { inflowsCents: 0, outflowsCents: 0, receivablesCents: 0, payablesCents: 0 });
+      const balanceCents = summary.inflowsCents - summary.outflowsCents;
+      return { entries, summary: { ...summary, balanceCents, projectedBalanceCents: balanceCents + summary.receivablesCents - summary.payablesCents } };
+    }),
+  }),
+
+  settings: router({
+    get: protectedProcedure.query(() => ensureSettings()),
+    update: protectedProcedure.input(z.object({ dollarQuoteMicros: z.number().int().positive(), minimumMarginBps: z.number().int().min(0).max(9000), desiredMarginBps: z.number().int().min(0).max(9000), salesTaxBps: z.number().int().min(0).max(9000), packagingCostCents: z.number().int().min(0), reserveBps: z.number().int().min(0).max(9000), revenueGoalCents: z.number().int().min(0), profitGoalCents: z.number().int().min(0), minimumStock: z.number().int().min(0), idleDaysThreshold: z.number().int().min(1) })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, ["Admin"]);
+      const db = await dbOrThrow();
+      const current = await ensureSettings();
+      await db.update(businessSettings).set({ ...input, updatedByUserId: ctx.user.id }).where(eq(businessSettings.id, current.id));
+      if (current.dollarQuoteMicros !== input.dollarQuoteMicros) await db.insert(dollarQuotes).values({ quoteMicros: input.dollarQuoteMicros, source: "manual", createdByUserId: ctx.user.id });
+      return { success: true };
+    }),
+  }),
+});

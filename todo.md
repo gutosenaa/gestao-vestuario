@@ -1,0 +1,42 @@
+# Project TODO
+
+- [x] Analisar as abas, fórmulas e dados estruturais da planilha de referência para preservar regras de negócio relevantes.
+- [x] Modelar o banco de dados transacional para produtos, variantes, fornecedores, clientes, configurações, canais, pagamentos e cotação do dólar.
+- [x] Modelar compras, itens de compra, vendas, itens de venda, movimentações de estoque, despesas, contas financeiras, metas, alertas e trilha de auditoria.
+- [x] Aplicar migração do esquema relacional e verificar a integridade das relações.
+- [x] Implementar perfis de acesso Admin, Vendedor, Financeiro e Estoque.
+- [x] Criar cálculos testáveis de precificação, incluindo custo total, preço mínimo, preço sugerido, lucro bruto, margem e markup.
+- [x] Implementar geração sequencial de código de produto no padrão COD001.
+- [ ] Implementar cadastro, busca, filtros, edição, foto e inativação segura de produtos.
+- [ ] Implementar cadastro de fornecedores, clientes, canais de venda, formas de pagamento e parâmetros configuráveis.
+- [x] Implementar registro de compra com histórico de custo, lançamento financeiro e entrada de estoque.
+- [x] Implementar registro de venda rápido com cálculo de taxa, imposto, lucro, conta a receber e baixa de estoque por custo histórico.
+- [x] Implementar despesas, contas a pagar, contas a receber e fluxo de caixa.
+- [ ] Implementar painel executivo com KPIs, metas, gráficos, rankings e filtros por período.
+- [ ] Implementar controle de estoque por movimentações, indicadores de reposição, itens parados e classificação ABC.
+- [ ] Implementar central de alertas para estoque, margens, metas e contas em atraso.
+- [ ] Implementar relatórios filtráveis e exportáveis para CSV, com arquitetura preparada para Excel e PDF.
+- [ ] Implementar busca global por produtos, clientes, fornecedores e documentos comerciais.
+- [x] Criar navegação desktop com barra lateral e experiência mobile com atalhos, cards e venda rápida.
+- [x] Implementar visual cinematográfico escuro com teal profundo, laranja queimado, ciano e tipografia de alto contraste.
+- [x] Configurar manifesto e comportamento instalável de PWA.
+- [x] Preparar armazenamento seguro de fotos em storage escalável.
+- [ ] Preparar auditoria de alterações importantes em preço, estoque, vendas, compras e despesas.
+- [x] Escrever e executar testes unitários para as regras críticas de cálculo e operações transacionais.
+- [x] Validar renderização desktop e mobile, acessibilidade básica, estados de erro e estados vazios.
+- [x] Adicionar modelagem explícita de variações de produto e validar as relações principais do banco.
+- [x] Exibir e aplicar os perfis exatamente como Admin, Vendedor, Financeiro e Estoque em toda a experiência.
+- [x] Implementar fluxo de caixa completo com entradas, saídas, saldo e projeção no módulo Financeiro.
+- [x] Adicionar ícones válidos ao manifesto e validar a instalabilidade mínima do PWA.
+- [x] Criar testes automatizados para as transações de compra, venda, baixa por lote e lançamento financeiro.
+- [x] Ocultar módulos e ações na interface de acordo com o perfil de acesso.
+- [x] Validar o ícone final e a instalabilidade do PWA em uma verificação de produção.
+- [x] Cobrir as transações de compra, venda e lançamento financeiro com testes automatizados de integração.
+- [x] Restringir buscas, páginas e ações internas da interface de acordo com cada perfil.
+- [x] Confirmar a instalabilidade real do PWA no navegador com manifesto, service worker e ícone final.
+- [x] Aplicar guardas de interface por perfil dentro das telas de compras, despesas, financeiro e configurações.
+- [x] Evitar consultas protegidas antes da autenticação para manter a tela de acesso estável.
+- [x] Validar no navegador as telas autenticadas principais em desktop e mobile.
+- [ ] Exibir estados de erro para consultas principais do painel, catálogo, estoque e financeiro.
+- [ ] Executar uma verificação básica de acessibilidade da interface principal.
+- [x] Corrigir a ordem de hooks do DashboardLayout para eliminar a falha de renderização após autenticação.

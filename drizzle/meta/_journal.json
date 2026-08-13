@@ -1,5 +1,27 @@
 {
   "version": "7",
   "dialect": "mysql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1786625037366,
+      "tag": "0000_next_rictor",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1786625325528,
+      "tag": "0001_polite_wolf_cub",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1786625593705,
+      "tag": "0002_simple_molten_man",
+      "breakpoints": true
+    }
+  ]
 }
