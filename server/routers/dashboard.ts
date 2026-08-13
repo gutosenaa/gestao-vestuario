@@ -70,10 +70,16 @@ export const dashboardRouter = router({
       const expenseTotal = expensesInMonth.reduce((sum, expense) => sum + expense.amountCents, 0);
       return { label: date.toLocaleDateString("pt-BR", { month: "short" }).replace(".", ""), faturamento: revenue / 100, custos: costs / 100, despesas: expenseTotal / 100, lucro: (salesInMonth.reduce((sum, sale) => sum + sale.profitCents, 0) - expenseTotal) / 100 };
     });
+    const decisionAlerts = [
+      ...stockRows.filter(row => row.stock <= settings.minimumStock).slice(0, 4).map(row => ({ id: `estoque-${row.product.id}`, title: `Estoque baixo: ${row.product.name}`, message: `${row.stock} unidade(s) disponíveis; mínimo configurado: ${settings.minimumStock}.` })),
+      ...health.filter(item => item.classification === "Encalhado").slice(0, 3).map(item => ({ id: `encalhado-${item.id}`, title: `Produto parado: ${item.name}`, message: `${item.daysWithoutSale} dias sem venda e ${item.stock} unidade(s) em estoque.` })),
+      ...(payablesCents > 0 ? [{ id: "contas-pagar", title: "Contas pendentes", message: `Há ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(payablesCents / 100)} a pagar no período.` }] : []),
+      ...(settings.revenueGoalCents > 0 && now.getDate() > 10 && revenueCents < settings.revenueGoalCents * (now.getDate() / daysInMonth) * 0.8 ? [{ id: "meta-atrasada", title: "Meta em ritmo abaixo do esperado", message: `O faturamento atual está abaixo de 80% do ritmo necessário para a meta mensal.` }] : []),
+    ];
     return {
       kpis: { revenueCents, grossProfitCents, netProfitCents, marginBps: revenueCents ? Math.round((netProfitCents * 10000) / revenueCents) : 0, stockUnits: stockRows.reduce((sum, row) => sum + Math.max(0, row.stock), 0), stockValueCents, potentialStockValueCents, ticketCents: monthlySales.length ? Math.round(revenueCents / monthlySales.length) : 0, piecesSold: unitsSold, receivablesCents, payablesCents, revenueGoalCents: settings.revenueGoalCents, profitGoalCents: settings.profitGoalCents, unitsGoal: settings.unitsGoal, revenueChangeBps: change(revenueCents, previousRevenueCents), profitChangeBps: change(netProfitCents, previousProfitCents), projectedRevenueCents: Math.round((revenueCents / daysElapsed) * daysInMonth), revenueNeededPerDayCents: Math.max(0, Math.ceil((settings.revenueGoalCents - revenueCents) / Math.max(1, daysInMonth - daysElapsed))), goalProgressBps: settings.revenueGoalCents ? Math.min(10000, Math.round((revenueCents * 10000) / settings.revenueGoalCents)) : 0 },
       chart,
-      alerts: activeAlerts,
+      alerts: [...activeAlerts, ...decisionAlerts].slice(0, 8),
       lowStock: stockRows.filter(row => row.stock <= settings.minimumStock).map(row => ({ id: row.product.id, code: row.product.code, name: row.product.name, stock: row.stock })).slice(0, 6),
       topSold: ranking.sort((a, b) => b.quantity - a.quantity).slice(0, 10),
       topProfitable: ranking.sort((a, b) => b.profit - a.profit).slice(0, 10),

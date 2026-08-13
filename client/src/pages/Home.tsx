@@ -72,7 +72,7 @@ export default function Home() {
   const createSale = trpc.commerce.sales.create.useMutation({ onSuccess: result => { toast.success(`Venda concluída: lucro de ${money(result.totals.profitCents)}.`); utils.invalidate(); setActiveView("dashboard"); }, onError: (error, variables) => { if (error.message.startsWith("MARGEM ABAIXO") && window.confirm(`${error.message}\n\nDeseja concluir esta venda mesmo assim?`)) { createSale.mutate({ ...variables, confirmLowMargin: true }); return; } toast.error(error.message); } });
   const createExpense = trpc.commerce.expenses.create.useMutation({ onSuccess: () => { toast.success("Despesa registrada no financeiro."); utils.invalidate(); }, onError: error => toast.error(error.message) });
   const saveSettings = trpc.commerce.settings.update.useMutation({ onSuccess: () => { toast.success("Configurações atualizadas e cotação registrada no histórico."); utils.invalidate(); }, onError: error => toast.error(error.message) });
-  const alertCount = dashboard.data?.alerts.filter(alert => !alert.readAt).length ?? 0;
+  const alertCount = dashboard.data?.alerts.length ?? 0;
 
   const exportCsv = () => { const rows = products.data ?? []; const content = ["Código;Produto;Time;Tamanho;Estoque;Preço", ...rows.map(product => [product.code, product.name, product.team ?? "", product.size ?? "", product.stock, (product.listPriceCents / 100).toFixed(2)].join(";"))].join("\n"); const url = URL.createObjectURL(new Blob([content], { type: "text/csv;charset=utf-8;" })); const link = document.createElement("a"); link.href = url; link.download = "relatorio-produtos.csv"; link.click(); URL.revokeObjectURL(url); toast.success("Arquivo CSV preparado para download."); };
 
