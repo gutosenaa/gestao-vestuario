@@ -47,3 +47,5 @@ Em mobile, Produtos, Financeiro, Relatórios e Estoque se reorganizam em coluna 
 A tentativa de abrir o aplicativo pelo navegador redirecionou para a autenticação Google e permaneceu no campo de senha. Por segurança, a senha não foi preenchida pelo agente. Portanto, as capturas recentes de módulos por URL comprovam a composição e os estados públicos de fallback, mas não comprovam operações autenticadas com dados reais. Os itens de validação funcional autenticada permanecem pendentes até a conclusão desse passo no navegador.
 
 A venda rápida recebeu nomes programáticos para produto/tamanho/tipo, quantidade, preço unitário, desconto, canal e forma de pagamento. A validação técnica posterior passou com checagem de tipos, **8 testes** e compilação de produção; a confirmação funcional autenticada permanece separada por depender da sessão Google.
+
+Compras e despesas receberam nomes programáticos para produto, fornecedor, pedido, quantidade, custo, descrição, categoria e valor. A checagem de tipos, os **8 testes** e o build de produção passaram após a alteração. A validação de interação autenticada permanece condicionada ao login manual no navegador.
