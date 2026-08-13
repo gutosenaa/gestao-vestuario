@@ -72,13 +72,13 @@
 - [ ] Testar cadastro, precificação, compra, estoque, venda, desconto, margem, lucro, despesas, financeiro, dashboard, relatórios e responsividade.
 - [ ] Concluir integralmente os módulos restantes da segunda rodada, preservando todas as funcionalidades já publicadas.
 - [x] Criar telas de cadastro e edição para fornecedores, clientes, canais de venda e formas de pagamento.
-- [ ] Adicionar filtros de período reais no dashboard e nos relatórios.
+- [x] Adicionar filtros de período reais no dashboard e nos relatórios.
 - [ ] Implementar classificação ABC e relatórios dedicados de giro e estoque parado.
 - [ ] Ampliar a central de alertas para contas vencidas, giro, margens e reposição.
 - [x] Expandir a edição de produtos para todos os atributos comerciais modelados.
 - [x] Adicionar simulador de desconto e promoção com recálculo imediato na precificação.
 - [x] Criar rankings específicos de giro e produtos parados.
-- [ ] Montar um relatório gerencial mensal completo com indicadores financeiros, comerciais e de estoque.
+- [x] Montar um relatório gerencial mensal completo com indicadores financeiros, comerciais e de estoque.
 - [ ] Adicionar seleção de tamanho ou variação à venda rápida e persistir a opção na experiência comercial.
 - [x] Incluir forma de pagamento e tamanho ou variação no resumo compartilhável da venda.
 - [ ] Validar a venda rápida mobile completa, incluindo desconto, margem, compartilhamento e lançamento financeiro.
@@ -89,3 +89,5 @@
 - [x] Adicionar fornecedor, URL de origem e cotação vinculada aos campos de edição de produto.
 - [x] Integrar a edição de produto ao catálogo de fornecedores com seleção real na interface.
 - [x] Revisar a cobertura de todos os campos do schema de produtos na edição comercial.
+- [x] Expandir o relatório mensal com seções detalhadas de financeiro, comercial e estoque.
+- [x] Adicionar ao relatório blocos de giro, estoque parado, rankings comerciais e consolidado financeiro mensal.
