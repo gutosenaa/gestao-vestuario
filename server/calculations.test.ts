@@ -66,6 +66,21 @@ describe("calculateSaleTotals", () => {
     expect(result.marginBps).toBe(3118);
   });
 
+  it("mantém o total bruto quando o operador não informa desconto", () => {
+    const result = calculateSaleTotals({
+      grossCents: 18_000,
+      discountCents: 0,
+      channelFeeBps: 1600,
+      paymentFeeBps: 0,
+      salesTaxBps: 0,
+      costCents: 6_600,
+    });
+
+    expect(result.discountedCents).toBe(18_000);
+    expect(result.channelFeeCents).toBe(2_880);
+    expect(result.netCents).toBe(15_120);
+  });
+
   it("combina taxas de canal e pagamento antes de apurar recebimento líquido e margem", () => {
     const result = calculateSaleTotals({
       grossCents: 10_000,

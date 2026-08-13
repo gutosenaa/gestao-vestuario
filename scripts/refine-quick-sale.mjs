@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+const path = '/home/ubuntu/gestao-vestuario/client/src/pages/Home.tsx';
+let s = fs.readFileSync(path, 'utf8');
+const anchor = '  return <><SectionHeading eyebrow="VENDA RÁPIDA • MOBILE FIRST"';
+const insert = `  const submitSale = () => {\n    if (!items.length) return toast.error("Adicione ao menos uma peça antes de concluir.");\n    if (!channelId) return toast.error("Selecione o canal de venda.");\n    if (!methodId) return toast.error("Selecione a forma de pagamento.");\n    if (cents(discount) > grossTotal) return toast.error("O desconto não pode superar o total da venda.");\n    onSubmit({ soldAt: new Date(), saleChannelId: Number(channelId), paymentMethodId: Number(methodId), items, discountCents, paymentStatus: "recebido" });\n  };\n`;
+if (!s.includes(anchor)) throw new Error('Âncora QuickSale não encontrada');
+s = s.replace(anchor, insert + anchor);
+s = s.replace('className="border-emerald-300/20 bg-emerald-300/5 text-emerald-100 hover:bg-emerald-300/10"><Share2', 'className="w-full border-emerald-300/20 bg-emerald-300/5 text-emerald-100 hover:bg-emerald-300/10 sm:w-auto"><Share2');
+s = s.replace('disabled={!items.length || pending} onClick={() => onSubmit({ soldAt: new Date(), saleChannelId: channelId ? Number(channelId) : undefined, paymentMethodId: methodId ? Number(methodId) : undefined, items, discountCents, paymentStatus: "recebido" })} className="bg-cyan-300', 'disabled={!items.length || pending} onClick={submitSale} className="w-full bg-cyan-300 sm:w-auto');
+s = s.replace('className="mt-5 flex items-end justify-between border-t border-white/8 pt-4"', 'className="mt-5 flex flex-col gap-4 border-t border-white/8 pt-4 sm:flex-row sm:items-end sm:justify-between"');
+fs.writeFileSync(path, s);
+console.log('QuickSale refinada com validação transacional e ações responsivas.');
