@@ -133,3 +133,6 @@ Na nova tentativa publicada, o toast confirmou `COD001 cadastrado com sucesso` e
 ## Correção de imagens
 
 O diagnóstico confirmou que a procedure `products.list` já retornava as colunas completas de `products`, incluindo `imageUrl`, e o upload fazia `storagePut` seguido de atualização de `imageKey`/`imageUrl`. O problema estava na interface: os cartões do catálogo, o detalhe do produto e o resumo da venda sempre exibiam ícones/quantidade e nunca renderizavam `imageUrl`. Foi adicionado `ProductImage`, com `alt` programático, `loading="lazy"`, `object-cover` e fallback silencioso quando a URL falhar. A miniatura agora aparece no cartão e detalhe do catálogo, na margem do produto selecionado e no resumo da venda. `pnpm check` e a suíte completa passaram com 13 testes.
+## Ajuste de estoque em produto existente
+
+Na sessão Admin, o produto COD001 exibiu a ação `+ Estoque`, renomeada para `Ajustar estoque` para tornar a função mais clara. O formulário aceitou quantidade 1 e custo unitário de R$ 100,00; a operação retornou `Estoque atualizado.` e o catálogo passou a mostrar 1 unidade disponível. A correção adicional invalida explicitamente `products.list`, `dashboard.overview` e `dashboard.inventory`, e fecha o detalhe antigo ao abrir o ajuste para evitar exibir saldo desatualizado. Nenhum produto foi apagado.

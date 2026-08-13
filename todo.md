@@ -123,3 +123,5 @@
 - [x] Implementar timeout visível no cadastro e retorno controlado quando o backend não responder.
 - [ ] Publicar e reexecutar a validação temporária mobile somente após confirmar a correção.
 - [ ] Corrigir a exibição da imagem enviada no cadastro, catálogo, edição e venda, validando URL persistida e renderização.
+- [x] Restaurar a ação de adicionar ou editar estoque de produtos já cadastrados.
+- [ ] Validar estoque e imagem mantendo os produtos atuais; não apagar registros até o usuário confirmar o fim das verificações.
