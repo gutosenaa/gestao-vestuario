@@ -41,3 +41,7 @@ Na largura desktop, o fluxo distribui a adição de peças e o resumo financeiro
 Produtos, estoque, financeiro e relatórios foram revisados em abertura direta. As telas preservam o cabeçalho, as ações de entrada e cards de decisão; os estados sem dados indicam uma ação seguinte objetiva. O Financeiro mantém a separação dos resultados, enquanto Relatórios reúne KPIs, consolidados, rankings, reposição e exportações na mesma página.
 
 Em mobile, Produtos, Financeiro, Relatórios e Estoque se reorganizam em coluna sem cortes ou sobreposições. Os CTAs de cadastro e compra ocupam largura confortável, os cards financeiros e de estoque preservam contraste e os relatórios mantêm os blocos de consolidação, ranking, decisão e exportação legíveis em rolagem contínua.
+
+## Limitação de validação autenticada
+
+A tentativa de abrir o aplicativo pelo navegador redirecionou para a autenticação Google e permaneceu no campo de senha. Por segurança, a senha não foi preenchida pelo agente. Portanto, as capturas recentes de módulos por URL comprovam a composição e os estados públicos de fallback, mas não comprovam operações autenticadas com dados reais. Os itens de validação funcional autenticada permanecem pendentes até a conclusão desse passo no navegador.

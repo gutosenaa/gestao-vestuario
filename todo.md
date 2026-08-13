@@ -84,7 +84,7 @@
 - [ ] Validar a venda rápida mobile completa, incluindo desconto, margem, compartilhamento e lançamento financeiro.
 - [ ] Executar e registrar uma checagem de acessibilidade de teclado, foco, rótulos, contraste e leitura de estados nas telas principais.
 - [ ] Revisar acessibilidade das telas dashboard, produtos, venda, financeiro e relatórios, cobrindo teclado, foco, rótulos e contraste.
-- [ ] Corrigir achados de acessibilidade nos formulários e ações operacionais principais.
+- [x] Corrigir achados de acessibilidade nos formulários e ações operacionais principais.
 - [ ] Registrar evidências de acessibilidade por tela e critério revisado.
 - [x] Adicionar fornecedor, URL de origem e cotação vinculada aos campos de edição de produto.
 - [x] Integrar a edição de produto ao catálogo de fornecedores com seleção real na interface.
