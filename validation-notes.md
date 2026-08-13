@@ -85,3 +85,7 @@ Os registros locais mostram o Vite e o coletor de depuração iniciando normalme
 | Navegação e PWA | Layout cinematográfico FEIRENSE, PWA, estados de erro/vazio e navegação responsiva revisados no preview | Fluxos com dados reais aguardam sessão válida |
 | Acessibilidade | Rótulos ARIA, foco visível, estados semânticos e ações principais documentados | Validação manual completa por teclado/leitor de tela aguarda sessão válida |
 | Operações comerciais | Contratos e integração transacional cobertos pelos testes existentes | Compra/venda real no navegador não foi executada por causa do `invalid oauth state` |
+
+## Catálogo dependente de liga e time
+
+Foi criado um catálogo centralizado de principais clubes por Brasileirão, Copa do Brasil, Libertadores, Champions League, Premier League e La Liga. No cadastro e na edição, a escolha da liga antecede o time; trocar a liga limpa o time anterior e a lista é atualizada. A checagem de tipos, os **8 testes** e o build passaram; a verificação manual com dados reais continua condicionada à sessão OAuth.
