@@ -61,3 +61,5 @@ A tela de precificação recebeu nomes programáticos para o produto analisado e
 ## Evidência estática complementar de acessibilidade
 
 A inspeção do código confirmou `aria-label`, `aria-current`, `aria-expanded`, `role="listbox"`, `role="option"`, regiões `role="alert"` e estilos `focus-visible` na navegação global, busca, menu móvel, alertas, cadastro de produto, upload de foto, precificação e simulador promocional. Essa evidência é técnica e não substitui a validação manual completa por teclado e leitor de tela nas telas autenticadas.
+
+As ações do dashboard receberam nomes programáticos para período, relatórios, venda rápida e registro de compra no estado vazio. A checagem de tipos, os **8 testes** e o build de produção passaram novamente; o aviso de bundle grande permanece apenas como recomendação de otimização.
