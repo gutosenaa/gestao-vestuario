@@ -32,7 +32,7 @@ Os formulários de criação e edição de clientes e fornecedores também receb
 
 ## Venda rápida — mobile
 
-A abertura direta por `?view=venda` confirmou a tela autenticada em largura mobile. O estado sem estoque comunica a próxima ação, o resumo compacto fica acima do formulário, os controles de desconto, canal e pagamento permanecem legíveis e o bloco financeiro mostra taxas, imposto e valor a receber. As ações de compartilhar e concluir venda permanecem visíveis no fim do fluxo sem sobreposição.
+A abertura direta por `?view=venda` confirmou a composição da tela de venda rápida no preview em largura mobile. O estado sem estoque comunica a próxima ação, o resumo compacto fica acima do formulário, os controles de desconto, canal e pagamento permanecem legíveis e o bloco financeiro mostra taxas, imposto e valor a receber. As ações de compartilhar e concluir venda permanecem visíveis no fim do fluxo sem sobreposição.
 
 Na largura desktop, o fluxo distribui a adição de peças e o resumo financeiro em duas colunas, mantendo o resumo em posição estável e deixando desconto, canal, forma de pagamento, valor a receber e ações de conclusão no mesmo campo visual.
 
@@ -49,3 +49,7 @@ A tentativa de abrir o aplicativo pelo navegador redirecionou para a autenticaç
 A venda rápida recebeu nomes programáticos para produto/tamanho/tipo, quantidade, preço unitário, desconto, canal e forma de pagamento. A validação técnica posterior passou com checagem de tipos, **8 testes** e compilação de produção; a confirmação funcional autenticada permanece separada por depender da sessão Google.
 
 Compras e despesas receberam nomes programáticos para produto, fornecedor, pedido, quantidade, custo, descrição, categoria e valor. A checagem de tipos, os **8 testes** e o build de produção passaram após a alteração. A validação de interação autenticada permanece condicionada ao login manual no navegador.
+
+## Evidências visuais do preview
+
+O preview permitiu capturar dashboard, produtos, estoque, financeiro, relatórios e venda rápida em desktop, além da venda rápida em mobile. Foram observados: identidade FEIRENSE no menu desktop, cards e CTAs sem sobreposição, estados vazios orientados, separação financeira, filtros e exportações visíveis, e a venda rápida com resumo compacto, desconto, canal, pagamento, impacto financeiro, compartilhamento e conclusão. O estado autenticado da venda rápida sem estoque foi validado em ambas as larguras; o sucesso transacional com produto real permanece dependente de haver estoque cadastrado para não inserir dados de teste.
