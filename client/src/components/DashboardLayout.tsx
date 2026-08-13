@@ -38,7 +38,7 @@ export default function DashboardLayout({
 }) {
   const { user, loading, logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(() => new URLSearchParams(window.location.search).get("menu") === "open");
   const [searchOpen, setSearchOpen] = useState(false);
   const active = useMemo(() => navigation.find(item => item.id === activeView), [activeView]);
   const visibleNavigation = useMemo(() => {

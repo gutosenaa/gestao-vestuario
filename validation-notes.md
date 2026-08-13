@@ -53,3 +53,5 @@ Compras e despesas receberam nomes programáticos para produto, fornecedor, pedi
 ## Evidências visuais do preview
 
 O preview permitiu capturar dashboard, produtos, estoque, financeiro, relatórios e venda rápida em desktop, além da venda rápida em mobile. Foram observados: identidade FEIRENSE no menu desktop, cards e CTAs sem sobreposição, estados vazios orientados, separação financeira, filtros e exportações visíveis, e a venda rápida com resumo compacto, desconto, canal, pagamento, impacto financeiro, compartilhamento e conclusão. O estado autenticado da venda rápida sem estoque foi validado em ambas as larguras; o sucesso transacional com produto real permanece dependente de haver estoque cadastrado para não inserir dados de teste.
+
+A abertura direta `?menu=open` confirmou visualmente o menu móvel em 375px: a marca FEIRENSE aparece no topo, o botão de fechamento é identificável, os módulos permanecem navegáveis em coluna e o bloco de perfil com saída fica acessível no rodapé.
