@@ -7,7 +7,7 @@
 - [x] Implementar perfis de acesso Admin, Vendedor, Financeiro e Estoque.
 - [x] Criar cálculos testáveis de precificação, incluindo custo total, preço mínimo, preço sugerido, lucro bruto, margem e markup.
 - [x] Implementar geração sequencial de código de produto no padrão COD001.
-- [ ] Implementar cadastro, busca, filtros, edição, foto e inativação segura de produtos.
+- [x] Implementar cadastro, busca, filtros, edição, foto e inativação segura de produtos.
 - [ ] Implementar cadastro de fornecedores, clientes, canais de venda, formas de pagamento e parâmetros configuráveis.
 - [x] Implementar registro de compra com histórico de custo, lançamento financeiro e entrada de estoque.
 - [x] Implementar registro de venda rápido com cálculo de taxa, imposto, lucro, conta a receber e baixa de estoque por custo histórico.
@@ -16,7 +16,7 @@
 - [ ] Implementar controle de estoque por movimentações, indicadores de reposição, itens parados e classificação ABC.
 - [ ] Implementar central de alertas para estoque, margens, metas e contas em atraso.
 - [ ] Implementar relatórios filtráveis e exportáveis para CSV, com arquitetura preparada para Excel e PDF.
-- [ ] Implementar busca global por produtos, clientes, fornecedores e documentos comerciais.
+- [x] Implementar busca global por produtos, clientes, fornecedores e documentos comerciais.
 - [x] Criar navegação desktop com barra lateral e experiência mobile com atalhos, cards e venda rápida.
 - [x] Implementar visual cinematográfico escuro com teal profundo, laranja queimado, ciano e tipografia de alto contraste.
 - [x] Configurar manifesto e comportamento instalável de PWA.
@@ -56,18 +56,29 @@
 - [x] Exibir erro visível quando a atualização de produto, foto ou tipo de camisa falhar.
 - [ ] Validar o fluxo completo de edição de foto e tipo de camisa em produto existente.
 - [x] Auditar os módulos atuais e preservar regras de custo histórico, vendas, compras, estoque e financeiro.
-- [ ] Ampliar o dashboard executivo com indicadores de decisão, metas, comparativos e variações percentuais.
+- [x] Ampliar o dashboard executivo com indicadores de decisão, metas, comparativos e variações percentuais.
 - [ ] Criar saúde do estoque, relatório de estoque parado, giro, valor parado e recomendações de reposição.
 - [ ] Evoluir a precificação com preço promocional, simulador de desconto e bloqueio confirmado para margem abaixo do mínimo.
-- [ ] Implementar metas de faturamento, lucro e peças com progresso, projeção e ritmo diário necessário.
+- [x] Implementar metas de faturamento, lucro e peças com progresso, projeção e ritmo diário necessário.
 - [ ] Simplificar a venda rápida para celular com variação, desconto, margem e atualização financeira imediata.
-- [ ] Ampliar clientes com histórico, classificação automática e dados de relacionamento.
+- [x] Ampliar clientes com histórico, classificação automática e dados de relacionamento.
 - [ ] Criar rankings de vendas, faturamento, lucro, margem, giro e produtos parados.
-- [ ] Separar faturamento, recebimentos, custos, despesas, lucro bruto e lucro líquido no financeiro e fluxo de caixa.
+- [x] Separar faturamento, recebimentos, custos, despesas, lucro bruto e lucro líquido no financeiro e fluxo de caixa.
 - [ ] Implementar central de alertas para estoque, giro, margens, contas, metas e reposição.
-- [ ] Ampliar busca global para produtos, clientes, fornecedores, vendas, compras e códigos.
+- [x] Ampliar busca global para produtos, clientes, fornecedores, vendas, compras e códigos.
 - [ ] Criar relatório gerencial mensal e exportações preparadas para PDF e Excel.
-- [ ] Criar compartilhamento de venda via WhatsApp com resumo comercial.
+- [x] Criar compartilhamento de venda via WhatsApp com resumo comercial.
 - [ ] Refinar layouts desktop e mobile com cards, filtros, gráficos e fluxos de poucos cliques.
 - [ ] Testar cadastro, precificação, compra, estoque, venda, desconto, margem, lucro, despesas, financeiro, dashboard, relatórios e responsividade.
 - [ ] Concluir integralmente os módulos restantes da segunda rodada, preservando todas as funcionalidades já publicadas.
+- [ ] Criar telas de cadastro e edição para fornecedores, clientes, canais de venda e formas de pagamento.
+- [ ] Adicionar filtros de período reais no dashboard e nos relatórios.
+- [ ] Implementar classificação ABC e relatórios dedicados de giro e estoque parado.
+- [ ] Ampliar a central de alertas para contas vencidas, giro, margens e reposição.
+- [ ] Expandir a edição de produtos para todos os atributos comerciais modelados.
+- [ ] Adicionar simulador de desconto e promoção com recálculo imediato na precificação.
+- [ ] Criar rankings específicos de giro e produtos parados.
+- [ ] Montar um relatório gerencial mensal completo com indicadores financeiros, comerciais e de estoque.
+- [ ] Adicionar seleção de tamanho ou variação à venda rápida e persistir a opção na experiência comercial.
+- [x] Incluir forma de pagamento e tamanho ou variação no resumo compartilhável da venda.
+- [ ] Validar a venda rápida mobile completa, incluindo desconto, margem, compartilhamento e lançamento financeiro.

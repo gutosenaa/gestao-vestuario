@@ -20,8 +20,10 @@ export const dashboardRouter = router({
     const monthlySales = allSales.filter(sale => sale.soldAt >= currentMonth && sale.paymentStatus !== "cancelado");
     const monthlyExpenses = allExpenses.filter(expense => expense.expenseDate >= currentMonth && expense.status !== "cancelado");
     const revenueCents = monthlySales.reduce((sum, sale) => sum + sale.grossCents - sale.discountCents, 0);
+    const salesCostCents = monthlySales.reduce((sum, sale) => sum + sale.costCents, 0);
+    const expenseCents = monthlyExpenses.reduce((sum, expense) => sum + expense.amountCents, 0);
     const grossProfitCents = monthlySales.reduce((sum, sale) => sum + sale.netCents - sale.costCents, 0);
-    const netProfitCents = monthlySales.reduce((sum, sale) => sum + sale.profitCents, 0) - monthlyExpenses.reduce((sum, expense) => sum + expense.amountCents, 0) - Math.round((revenueCents * settings.reserveBps) / 10000);
+    const netProfitCents = monthlySales.reduce((sum, sale) => sum + sale.profitCents, 0) - expenseCents - Math.round((revenueCents * settings.reserveBps) / 10000);
     const stockByProduct = new Map<number, number>();
     movements.forEach(movement => stockByProduct.set(movement.productId, (stockByProduct.get(movement.productId) ?? 0) + movement.quantity));
     const stockRows = allProducts.map(product => ({ product, stock: stockByProduct.get(product.id) ?? 0 }));
@@ -77,7 +79,7 @@ export const dashboardRouter = router({
       ...(settings.revenueGoalCents > 0 && now.getDate() > 10 && revenueCents < settings.revenueGoalCents * (now.getDate() / daysInMonth) * 0.8 ? [{ id: "meta-atrasada", title: "Meta em ritmo abaixo do esperado", message: `O faturamento atual está abaixo de 80% do ritmo necessário para a meta mensal.` }] : []),
     ];
     return {
-      kpis: { revenueCents, grossProfitCents, netProfitCents, marginBps: revenueCents ? Math.round((netProfitCents * 10000) / revenueCents) : 0, stockUnits: stockRows.reduce((sum, row) => sum + Math.max(0, row.stock), 0), stockValueCents, potentialStockValueCents, ticketCents: monthlySales.length ? Math.round(revenueCents / monthlySales.length) : 0, piecesSold: unitsSold, receivablesCents, payablesCents, revenueGoalCents: settings.revenueGoalCents, profitGoalCents: settings.profitGoalCents, unitsGoal: settings.unitsGoal, revenueChangeBps: change(revenueCents, previousRevenueCents), profitChangeBps: change(netProfitCents, previousProfitCents), projectedRevenueCents: Math.round((revenueCents / daysElapsed) * daysInMonth), revenueNeededPerDayCents: Math.max(0, Math.ceil((settings.revenueGoalCents - revenueCents) / Math.max(1, daysInMonth - daysElapsed))), goalProgressBps: settings.revenueGoalCents ? Math.min(10000, Math.round((revenueCents * 10000) / settings.revenueGoalCents)) : 0 },
+      kpis: { revenueCents, salesCostCents, expenseCents, grossProfitCents, netProfitCents, marginBps: revenueCents ? Math.round((netProfitCents * 10000) / revenueCents) : 0, stockUnits: stockRows.reduce((sum, row) => sum + Math.max(0, row.stock), 0), stockValueCents, potentialStockValueCents, ticketCents: monthlySales.length ? Math.round(revenueCents / monthlySales.length) : 0, piecesSold: unitsSold, receivablesCents, payablesCents, revenueGoalCents: settings.revenueGoalCents, profitGoalCents: settings.profitGoalCents, unitsGoal: settings.unitsGoal, revenueChangeBps: change(revenueCents, previousRevenueCents), profitChangeBps: change(netProfitCents, previousProfitCents), projectedRevenueCents: Math.round((revenueCents / daysElapsed) * daysInMonth), revenueNeededPerDayCents: Math.max(0, Math.ceil((settings.revenueGoalCents - revenueCents) / Math.max(1, daysInMonth - daysElapsed))), goalProgressBps: settings.revenueGoalCents ? Math.min(10000, Math.round((revenueCents * 10000) / settings.revenueGoalCents)) : 0 },
       chart,
       alerts: [...activeAlerts, ...decisionAlerts].slice(0, 8),
       lowStock: stockRows.filter(row => row.stock <= settings.minimumStock).map(row => ({ id: row.product.id, code: row.product.code, name: row.product.name, stock: row.stock })).slice(0, 6),
