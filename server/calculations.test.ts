@@ -21,6 +21,7 @@ describe("calculatePricing", () => {
     expect(result.totalCostCents).toBe(6600);
     expect(result.suggestedPriceCents).toBe(14667);
     expect(result.minimumPriceCents).toBe(9429);
+    expect(result.promotionalPriceCents).toBe(9901);
     expect(result.grossProfitCents).toBe(11400);
     expect(result.marginBps).toBe(6333);
     expect(result.markupBps).toBe(27273);

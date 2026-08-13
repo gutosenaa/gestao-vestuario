@@ -1,0 +1,1 @@
+ALTER TABLE `businessSettings` ADD `unitsGoal` int DEFAULT 0 NOT NULL;

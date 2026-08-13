@@ -55,3 +55,18 @@
 - [x] Permitir editar a foto e o tipo de camisa de produtos já cadastrados.
 - [x] Exibir erro visível quando a atualização de produto, foto ou tipo de camisa falhar.
 - [ ] Validar o fluxo completo de edição de foto e tipo de camisa em produto existente.
+- [x] Auditar os módulos atuais e preservar regras de custo histórico, vendas, compras, estoque e financeiro.
+- [ ] Ampliar o dashboard executivo com indicadores de decisão, metas, comparativos e variações percentuais.
+- [ ] Criar saúde do estoque, relatório de estoque parado, giro, valor parado e recomendações de reposição.
+- [ ] Evoluir a precificação com preço promocional, simulador de desconto e bloqueio confirmado para margem abaixo do mínimo.
+- [ ] Implementar metas de faturamento, lucro e peças com progresso, projeção e ritmo diário necessário.
+- [ ] Simplificar a venda rápida para celular com variação, desconto, margem e atualização financeira imediata.
+- [ ] Ampliar clientes com histórico, classificação automática e dados de relacionamento.
+- [ ] Criar rankings de vendas, faturamento, lucro, margem, giro e produtos parados.
+- [ ] Separar faturamento, recebimentos, custos, despesas, lucro bruto e lucro líquido no financeiro e fluxo de caixa.
+- [ ] Implementar central de alertas para estoque, giro, margens, contas, metas e reposição.
+- [ ] Ampliar busca global para produtos, clientes, fornecedores, vendas, compras e códigos.
+- [ ] Criar relatório gerencial mensal e exportações preparadas para PDF e Excel.
+- [ ] Criar compartilhamento de venda via WhatsApp com resumo comercial.
+- [ ] Refinar layouts desktop e mobile com cards, filtros, gráficos e fluxos de poucos cliques.
+- [ ] Testar cadastro, precificação, compra, estoque, venda, desconto, margem, lucro, despesas, financeiro, dashboard, relatórios e responsividade.

@@ -37,6 +37,7 @@ export const businessSettings = mysqlTable("businessSettings", {
   reserveBps: int("reserveBps").notNull().default(500),
   revenueGoalCents: int("revenueGoalCents").notNull().default(1500000),
   profitGoalCents: int("profitGoalCents").notNull().default(450000),
+  unitsGoal: int("unitsGoal").notNull().default(0),
   minimumStock: int("minimumStock").notNull().default(2),
   idleDaysThreshold: int("idleDaysThreshold").notNull().default(60),
   updatedByUserId: int("updatedByUserId").references(() => users.id),

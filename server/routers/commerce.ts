@@ -179,7 +179,7 @@ export const commerceRouter = router({
   }),
 
   sales: router({
-    create: protectedProcedure.input(z.object({ soldAt: z.coerce.date(), customerId: z.number().optional(), saleChannelId: z.number().optional(), paymentMethodId: z.number().optional(), discountCents: z.number().int().nonnegative().default(0), paymentStatus: z.enum(["pendente", "recebido"]).default("recebido"), dueDate: z.coerce.date().optional(), notes: z.string().optional(), items: z.array(z.object({ productId: z.number(), quantity: z.number().int().positive(), unitPriceCents: z.number().int().positive() })).min(1) })).mutation(async ({ ctx, input }) => {
+    create: protectedProcedure.input(z.object({ soldAt: z.coerce.date(), customerId: z.number().optional(), saleChannelId: z.number().optional(), paymentMethodId: z.number().optional(), discountCents: z.number().int().nonnegative().default(0), confirmLowMargin: z.boolean().default(false), paymentStatus: z.enum(["pendente", "recebido"]).default("recebido"), dueDate: z.coerce.date().optional(), notes: z.string().optional(), items: z.array(z.object({ productId: z.number(), quantity: z.number().int().positive(), unitPriceCents: z.number().int().positive() })).min(1) })).mutation(async ({ ctx, input }) => {
       restrictRoles(ctx.user.role, operationalRoles);
       const db = await dbOrThrow();
       const settings = await ensureSettings();
@@ -204,6 +204,7 @@ export const commerceRouter = router({
           allocations.push({ productId: item.productId, quantity: item.quantity, unitPriceCents: item.unitPriceCents, unitCostCents: Math.round(itemCost / item.quantity), totalCostCents: itemCost, lots: lotTakes });
         }
         const totals = calculateSaleTotals({ grossCents, discountCents: input.discountCents, channelFeeBps: channel?.feeBps ?? 0, paymentFeeBps: method?.feeBps ?? 0, salesTaxBps: settings.salesTaxBps, costCents });
+        if (totals.marginBps < settings.minimumMarginBps && !input.confirmLowMargin) throw new TRPCError({ code: "PRECONDITION_FAILED", message: `MARGEM ABAIXO DO MÍNIMO: a margem desta venda é ${(totals.marginBps / 100).toFixed(1)}%, abaixo do mínimo de ${(settings.minimumMarginBps / 100).toFixed(1)}%. Confirme para concluir.` });
         const saleResult = await tx.insert(sales).values({ saleNumber: `VEN-${nanoid(8).toUpperCase()}`, soldAt: input.soldAt, customerId: input.customerId ?? null, saleChannelId: input.saleChannelId ?? null, paymentMethodId: input.paymentMethodId ?? null, grossCents, discountCents: input.discountCents, channelFeeCents: totals.channelFeeCents, paymentFeeCents: totals.paymentFeeCents, taxCents: totals.taxCents, costCents, netCents: totals.netCents, profitCents: totals.profitCents, paymentStatus: input.paymentStatus, dueDate: input.dueDate ?? null, receivedAt: input.paymentStatus === "recebido" ? input.soldAt : null, notes: input.notes || null, createdByUserId: ctx.user.id });
         const saleId = Number(saleResult[0].insertId);
         for (const item of allocations) {
@@ -279,7 +280,7 @@ export const commerceRouter = router({
 
   settings: router({
     get: protectedProcedure.query(() => ensureSettings()),
-    update: protectedProcedure.input(z.object({ dollarQuoteMicros: z.number().int().positive(), minimumMarginBps: z.number().int().min(0).max(9000), desiredMarginBps: z.number().int().min(0).max(9000), salesTaxBps: z.number().int().min(0).max(9000), packagingCostCents: z.number().int().min(0), reserveBps: z.number().int().min(0).max(9000), revenueGoalCents: z.number().int().min(0), profitGoalCents: z.number().int().min(0), minimumStock: z.number().int().min(0), idleDaysThreshold: z.number().int().min(1) })).mutation(async ({ ctx, input }) => {
+    update: protectedProcedure.input(z.object({ dollarQuoteMicros: z.number().int().positive(), minimumMarginBps: z.number().int().min(0).max(9000), desiredMarginBps: z.number().int().min(0).max(9000), salesTaxBps: z.number().int().min(0).max(9000), packagingCostCents: z.number().int().min(0), reserveBps: z.number().int().min(0).max(9000), revenueGoalCents: z.number().int().min(0), profitGoalCents: z.number().int().min(0), unitsGoal: z.number().int().min(0), minimumStock: z.number().int().min(0), idleDaysThreshold: z.number().int().min(1) })).mutation(async ({ ctx, input }) => {
       restrictRoles(ctx.user.role, ["Admin"]);
       const db = await dbOrThrow();
       const current = await ensureSettings();

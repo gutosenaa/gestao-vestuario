@@ -19,6 +19,7 @@ export function calculatePricing(input: PricingInput) {
   const minimumDenominator = 10_000 - input.minimumMarginBps - input.salesTaxBps;
   const suggestedPriceCents = suggestedDenominator > 0 ? Math.ceil((totalCostCents * 10_000) / suggestedDenominator) : 0;
   const minimumPriceCents = minimumDenominator > 0 ? Math.ceil((totalCostCents * 10_000) / minimumDenominator) : 0;
+  const promotionalPriceCents = minimumPriceCents ? Math.ceil(minimumPriceCents * 1.05) : 0;
   const salesTaxCents = Math.round((input.salePriceCents * input.salesTaxBps) / 10_000);
   const grossProfitCents = input.salePriceCents - totalCostCents - salesTaxCents;
   const marginBps = input.salePriceCents > 0 ? Math.round((grossProfitCents * 10_000) / input.salePriceCents) : 0;
@@ -33,7 +34,7 @@ export function calculatePricing(input: PricingInput) {
           ? "BOA"
           : "EXCELENTE";
 
-  return { convertedCents, totalCostCents, suggestedPriceCents, minimumPriceCents, salesTaxCents, grossProfitCents, marginBps, markupBps, status };
+  return { convertedCents, totalCostCents, suggestedPriceCents, minimumPriceCents, promotionalPriceCents, salesTaxCents, grossProfitCents, marginBps, markupBps, status };
 }
 
 export function calculateSaleTotals(input: {
