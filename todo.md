@@ -130,4 +130,13 @@
 - [x] Corrigir nomes programáticos dos campos do formulário de edição de produto identificados na auditoria manual
 - [x] Salvar uma edição de produto com imagem já persistida e reabrir o formulário para registrar evidência objetiva da continuidade da mesma imagem
 - [x] Alterar um campo inofensivo, salvar, confirmar o estado atualizado no catálogo e reabrir a edição com a mesma imagem persistida
-- [ ] Aplicar os aria-labels diretamente no trecho ProductEditForm, pois a primeira correção atingiu ocorrências do formulário de criação
+- [x] Aplicar os aria-labels diretamente no trecho ProductEditForm, pois a primeira correção atingiu ocorrências do formulário de criação
+
+## Nova rodada autorizada — venda mobile, acessibilidade e limpeza
+
+- [ ] Implementar fluxo mobile transacional completo de venda, com produto/estoque, desconto, taxas, margem, compartilhamento e conclusão.
+- [ ] Adicionar ou ampliar testes automatizados do fluxo transacional mobile e das regras de baixa/financeiro.
+- [ ] Auditar acessibilidade dos módulos Dashboard, Precificação, Estoque, Compras, Despesas, Financeiro, Relatórios, Clientes, Fornecedores e Configurações.
+- [ ] Corrigir nomes acessíveis, foco, estados ARIA, mensagens de erro e navegação por teclado encontrados na auditoria dos módulos restantes.
+- [ ] Registrar evidências objetivas da auditoria de acessibilidade por módulo.
+- [ ] Limpar os dados de teste autorizados após a validação da venda e verificar catálogo, estoque, vendas, financeiro, alertas, auditoria e vínculos relacionados.

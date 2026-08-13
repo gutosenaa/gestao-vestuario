@@ -151,3 +151,7 @@ O formulário de edição do COD001 foi salvo sem substituir a foto persistida. 
 ## 2026-08-13 — Mutation de edição confirmada
 
 Para eliminar ambiguidade, a categoria do COD001 foi alterada de “Torcedor” para “Torcedor verificado”, sem trocar a imagem. O salvamento exibiu o toast “Produto atualizado.” e fechou o formulário. Ao reabrir a edição, o campo Categoria mostrou “Torcedor verificado” e o preview exibiu novamente a mesma foto persistida (`/manus-storage/products/1710001/6nEEDcEJDN9T_8599ce0f.jpg`) com o estado “Foto atual persistida no produto.”. Isso comprova a mutation, a invalidação/atualização do catálogo e a permanência da imagem após salvar e reabrir.
+
+## 2026-08-13 — Acessibilidade do ProductEditForm publicada
+
+Na publicação `c425c271`, o ProductEditForm foi aberto com cache bust e auditado no DOM. Foram encontrados 23 controles interativos no diálogo, todos com nome acessível por `aria-label`, `aria-labelledby`, label associado ou texto do controle; a contagem de controles sem nome foi zero. O preview persistido permaneceu visível com a URL `/manus-storage/products/1710001/6nEEDcEJDN9T_8599ce0f.jpg` e o texto “Foto atual persistida no produto.”. A captura também confirmou foco visível no campo ativo.
