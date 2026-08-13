@@ -171,3 +171,8 @@
 - [x] Tornar público o repositório GitHub do FEIRENSE e confirmar acesso web.
 - [x] Corrigir a tela e a mutation de despesas para permitir alterar a situação de pendente para paga.
 - [x] Adicionar testes para a atualização do status de despesa e sincronizar todas as mudanças no GitHub.
+
+- [x] Permitir reabrir uma despesa paga como pendente, sincronizando a conta financeira e a auditoria.
+- [x] Adicionar filtro por status pago, pendente e todos na tela de despesas.
+- [x] Exibir histórico visual de alterações de status das despesas.
+- [x] Adicionar testes de reabertura, filtro e histórico financeiro.

@@ -35,6 +35,14 @@ describe('status de despesas', () => {
     expect(expense?.paidAt).toBeTruthy();
     expect(entry).toMatchObject({ status: 'pago' });
     expect(entry?.settledAt).toBeTruthy();
+    const reopened = await caller.commerce.expenses.updateStatus({ id: expenseId, status: 'pendente' });
+    const [reopenedExpense] = await db.select().from(expenses).where(eq(expenses.id, expenseId));
+    const [reopenedEntry] = await db.select().from(financialEntries).where(and(eq(financialEntries.sourceType, 'despesa'), eq(financialEntries.sourceId, expenseId)));
+    const history = await caller.commerce.expenses.history();
+    expect(reopened.status).toBe('pendente');
+    expect(reopenedExpense).toMatchObject({ status: 'pendente', paidAt: null });
+    expect(reopenedEntry).toMatchObject({ status: 'pendente', settledAt: null });
+    expect(history.filter(item => item.entityId === expenseId).map(item => item.action)).toEqual(expect.arrayContaining(['paga', 'reaberta']));
   });
 
   afterAll(async () => {

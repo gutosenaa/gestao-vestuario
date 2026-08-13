@@ -192,3 +192,7 @@ A matriz mobile em 375×812 confirmou, nos módulos Dashboard, Produtos, Precifi
 ## Refinamentos de feedback — publicação local antes do checkpoint
 
 Em 375×812, a tela Nova venda manteve o resumo atual, o badge “SEM DESCONTO”, o estado “Estoque indisponível” e a navegação inferior sem sobreposição. A tela Produtos manteve o CTA de cadastro e o estado vazio dentro da largura. O painel de erro da venda foi implementado como região `role="alert"` com `aria-live="assertive"`, mensagem principal, orientação e aviso de que nenhum estoque foi baixado.
+
+## Despesas — reabertura, filtro e histórico
+
+A implementação adiciona os filtros Todas, Pendentes e Pagas, alterna o status entre pago e pendente pelo mesmo botão contextual e mostra até três eventos recentes por despesa. A tela mobile foi capturada em 375×812 sem sobreposição; com a base atualmente sem lançamentos, os filtros e ações de linha não aparecem na captura, mas o estado vazio permanece legível. O teste de integração confirmou pagamento, reabertura, sincronização de `expenses`/`financialEntries` e histórico `paga`/`reaberta`.

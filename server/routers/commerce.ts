@@ -329,6 +329,11 @@ export const commerceRouter = router({
       const db = await dbOrThrow();
       return db.select().from(expenses).orderBy(desc(expenses.expenseDate)).limit(100);
     }),
+    history: protectedProcedure.query(async ({ ctx }) => {
+      restrictRoles(ctx.user.role, ["Admin", "Financeiro"]);
+      const db = await dbOrThrow();
+      return db.select().from(auditLogs).where(eq(auditLogs.entityType, "despesa")).orderBy(desc(auditLogs.createdAt)).limit(100);
+    }),
     create: protectedProcedure.input(z.object({ expenseDate: z.coerce.date(), category: z.string().min(2), description: z.string().min(2), amountCents: z.number().int().positive(), supplierId: z.number().optional(), paymentMethodId: z.number().optional(), status: z.enum(["pendente", "pago"]).default("pendente"), dueDate: z.coerce.date().optional(), notes: z.string().optional() })).mutation(async ({ ctx, input }) => {
       restrictRoles(ctx.user.role, financeRoles);
       const db = await dbOrThrow();
