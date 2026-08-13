@@ -65,3 +65,5 @@ A inspeção do código confirmou `aria-label`, `aria-current`, `aria-expanded`,
 As ações do dashboard receberam nomes programáticos para período, relatórios, venda rápida e registro de compra no estado vazio. A checagem de tipos, os **8 testes** e o build de produção passaram novamente; o aviso de bundle grande permanece apenas como recomendação de otimização.
 
 Os controles do relatório gerencial receberam nomes programáticos para período, impressão em PDF e exportação CSV para Excel. A checagem de tipos, os **8 testes** e a compilação de produção passaram após o ajuste; a ação de impressão continua sendo executada pelo navegador.
+
+Os botões de adicionar peça, compartilhar resumo, concluir venda e registrar compra receberam nomes programáticos orientados à ação. A checagem de tipos, os **8 testes** e o build de produção passaram após o ajuste.
