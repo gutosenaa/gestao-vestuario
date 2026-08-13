@@ -54,6 +54,21 @@ export const commerceRouter = router({
       ]);
       return { suppliers: allSuppliers, customers: allCustomers, channels, methods, settings };
     }),
+    search: protectedProcedure.input(z.object({ query: z.string().min(1).max(120) })).query(async ({ input }) => {
+      const db = await dbOrThrow();
+      const query = input.query.toLocaleLowerCase("pt-BR").trim();
+      const [allProducts, allCustomers, allSuppliers, allSales, allPurchases] = await Promise.all([
+        db.select().from(products).orderBy(desc(products.createdAt)), db.select().from(customers).orderBy(desc(customers.createdAt)), db.select().from(suppliers).orderBy(desc(suppliers.createdAt)), db.select().from(sales).orderBy(desc(sales.soldAt)), db.select().from(purchases).orderBy(desc(purchases.purchaseDate)),
+      ]);
+      const includes = (...values: Array<string | null | undefined>) => values.filter(Boolean).join(" ").toLocaleLowerCase("pt-BR").includes(query);
+      return {
+        products: allProducts.filter(row => includes(row.code, row.name, row.team, row.league, row.collection)).slice(0, 6).map(row => ({ id: row.id, label: row.name, subtitle: row.code, type: "Produto" })),
+        customers: allCustomers.filter(row => includes(row.name, row.whatsapp, row.instagram, row.city)).slice(0, 6).map(row => ({ id: row.id, label: row.name, subtitle: row.whatsapp || row.city || "Cliente", type: "Cliente" })),
+        suppliers: allSuppliers.filter(row => includes(row.name, row.company, row.whatsapp, row.country)).slice(0, 6).map(row => ({ id: row.id, label: row.name, subtitle: row.company || row.country || "Fornecedor", type: "Fornecedor" })),
+        sales: allSales.filter(row => includes(row.saleNumber, row.notes)).slice(0, 6).map(row => ({ id: row.id, label: row.saleNumber, subtitle: `Venda de ${(row.netCents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}`, type: "Venda" })),
+        purchases: allPurchases.filter(row => includes(row.orderNumber, row.notes)).slice(0, 6).map(row => ({ id: row.id, label: row.orderNumber || `Compra #${row.id}`, subtitle: `Compra de ${(row.totalCents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}`, type: "Compra" })),
+      };
+    }),
     saveSupplier: protectedProcedure.input(z.object({ id: z.number().optional(), name: z.string().min(2), company: z.string().optional(), whatsapp: z.string().optional(), country: z.string().optional(), city: z.string().optional(), sourceUrl: z.string().url().optional().or(z.literal("")), notes: z.string().optional() })).mutation(async ({ ctx, input }) => {
       restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
       const db = await dbOrThrow();

@@ -70,3 +70,4 @@
 - [ ] Criar compartilhamento de venda via WhatsApp com resumo comercial.
 - [ ] Refinar layouts desktop e mobile com cards, filtros, gráficos e fluxos de poucos cliques.
 - [ ] Testar cadastro, precificação, compra, estoque, venda, desconto, margem, lucro, despesas, financeiro, dashboard, relatórios e responsividade.
+- [ ] Concluir integralmente os módulos restantes da segunda rodada, preservando todas as funcionalidades já publicadas.
