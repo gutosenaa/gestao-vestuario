@@ -188,3 +188,7 @@ A matriz mobile em 375×812 confirmou, nos módulos Dashboard, Produtos, Precifi
 | Financeiro | KPIs, fluxo e estados vazios verificados; integração cobre contas da compra/venda. | Não há lançamentos persistidos na captura final.
 | Relatórios | Filtros, exportações e cards responsivos verificados. | Não há série transacional persistida após a limpeza para validar agregações visuais com valores.
 | Configurações e diretórios | Navegação autenticada, controles nomeados e auditoria estática/manual executadas. | Não foi exercitado cada formulário com alteração persistente nesta rodada.
+
+## Refinamentos de feedback — publicação local antes do checkpoint
+
+Em 375×812, a tela Nova venda manteve o resumo atual, o badge “SEM DESCONTO”, o estado “Estoque indisponível” e a navegação inferior sem sobreposição. A tela Produtos manteve o CTA de cadastro e o estado vazio dentro da largura. O painel de erro da venda foi implementado como região `role="alert"` com `aria-live="assertive"`, mensagem principal, orientação e aviso de que nenhum estoque foi baixado.

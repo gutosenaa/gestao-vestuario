@@ -161,3 +161,7 @@
 
 - [x] Adicionar teste da mutation products.create simulando falha/timeout de storage e validar imageUploadFailed=true.
 - [x] Fechar e resetar explicitamente o ProductDialog também em erros gerais de cadastro, com teste ou evidência publicada do comportamento.
+
+- [x] Adicionar indicador visual de progresso durante a seleção, leitura e upload da imagem no cadastro de produto.
+- [x] Melhorar o feedback visual e acessível de erros na venda mobile, com mensagens claras e orientação para correção.
+- [x] Adicionar testes dos estados de progresso de imagem e dos erros apresentados na venda mobile.
