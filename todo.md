@@ -102,6 +102,6 @@
 - [ ] Retomar a validação autenticada após corrigir a sessão OAuth que retornou invalid oauth state.
 - [ ] Reexecutar a venda mobile com produto em estoque, cobrindo vazio, erro, sucesso, desconto, compartilhamento e lançamento financeiro após login válido.
 - [ ] Revalidar acessibilidade e fluxos completos por tela com sessão autenticada após a recuperação do OAuth.
-- [ ] Criar catálogo dependente de liga/campeonato para listar os principais times de cada competição.
-- [ ] Integrar a seleção dependente de liga e time ao cadastro e à edição de produtos.
+- [x] Criar catálogo dependente de liga/campeonato para listar os principais times de cada competição.
+- [x] Integrar a seleção dependente de liga e time ao cadastro e à edição de produtos.
 - [ ] Validar liga sem time, troca de liga, acessibilidade e preservação do time já salvo.
