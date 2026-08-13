@@ -45,3 +45,6 @@
 - [x] Substituir campos repetitivos de cadastro por listas suspensas práticas para time, liga, coleção, categoria e tamanho.
 - [ ] Criar formulário completo de edição de produto no catálogo, com atributos comerciais e preço.
 - [x] Substituir os diálogos simples de edição e estoque por formulários validados na interface.
+- [x] Limpar produtos cadastrados e os movimentos comerciais relacionados para reiniciar o preenchimento.
+- [x] Verificar a substituição da marca por FEIRENSE no menu mobile e salvar a versão atualizada.
+- [ ] Salvar e confirmar visualmente o menu mobile aberto com a marca FEIRENSE.
