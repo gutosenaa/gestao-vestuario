@@ -75,3 +75,13 @@ A tentativa de autenticação manual retornou `invalid oauth state`. Nenhuma sen
 ## Diagnóstico técnico do OAuth
 
 Os registros locais mostram o Vite e o coletor de depuração iniciando normalmente, sem exceção de aplicação ou falha de consulta associada ao login. O erro `invalid oauth state` apareceu no fluxo externo da conta Google antes de a sessão retornar ao aplicativo; por isso, não há correção segura a aplicar no código do PWA sem alterar o fluxo OAuth gerenciado.
+
+## Matriz técnica sem dados transacionais
+
+| Área | Cobertura confirmada | Limitação atual |
+|---|---|---|
+| Regras de cálculo | 8 testes Vitest aprovados, incluindo FIFO, precificação, desconto e taxas combinadas | Nenhuma limitação técnica identificada |
+| Build e tipos | `pnpm check` e `pnpm build` aprovados | Permanece o aviso não bloqueante de chunk grande |
+| Navegação e PWA | Layout cinematográfico FEIRENSE, PWA, estados de erro/vazio e navegação responsiva revisados no preview | Fluxos com dados reais aguardam sessão válida |
+| Acessibilidade | Rótulos ARIA, foco visível, estados semânticos e ações principais documentados | Validação manual completa por teclado/leitor de tela aguarda sessão válida |
+| Operações comerciais | Contratos e integração transacional cobertos pelos testes existentes | Compra/venda real no navegador não foi executada por causa do `invalid oauth state` |
