@@ -166,4 +166,8 @@
 - [x] Melhorar o feedback visual e acessível de erros na venda mobile, com mensagens claras e orientação para correção.
 - [x] Adicionar testes dos estados de progresso de imagem e dos erros apresentados na venda mobile.
 
-- [ ] Publicar o projeto FEIRENSE em um repositório GitHub privado e confirmar o commit remoto.
+- [x] Publicar o projeto FEIRENSE em um repositório GitHub privado e confirmar o commit remoto.
+
+- [x] Tornar público o repositório GitHub do FEIRENSE e confirmar acesso web.
+- [x] Corrigir a tela e a mutation de despesas para permitir alterar a situação de pendente para paga.
+- [x] Adicionar testes para a atualização do status de despesa e sincronizar todas as mudanças no GitHub.

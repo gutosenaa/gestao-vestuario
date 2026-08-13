@@ -339,10 +339,21 @@ export const commerceRouter = router({
         await tx.insert(auditLogs).values({ userId: ctx.user.id, entityType: "despesa", entityId: expenseId, action: "registrada", afterData: { amountCents: input.amountCents, category: input.category } });
         return expenseId;
       });
-      return { id: result };
+            return { id: result };
+    }),
+    updateStatus: protectedProcedure.input(z.object({ id: z.number().int().positive(), status: z.enum(["pendente", "pago"]) })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, financeRoles);
+      const db = await dbOrThrow();
+      const [expense] = await db.select().from(expenses).where(eq(expenses.id, input.id)).limit(1);
+      if (!expense) throw new TRPCError({ code: "NOT_FOUND", message: "Despesa não encontrada." });
+      await db.transaction(async tx => {
+        await tx.update(expenses).set({ status: input.status, paidAt: input.status === "pago" ? new Date() : null }).where(eq(expenses.id, input.id));
+        await tx.update(financialEntries).set({ status: input.status, settledAt: input.status === "pago" ? new Date() : null }).where(and(eq(financialEntries.sourceType, "despesa"), eq(financialEntries.sourceId, input.id)));
+        await tx.insert(auditLogs).values({ userId: ctx.user.id, entityType: "despesa", entityId: input.id, action: input.status === "pago" ? "paga" : "reaberta", afterData: { status: input.status } });
+      });
+      return { id: input.id, status: input.status };
     }),
   }),
-
   finance: router({
     cashflow: protectedProcedure.query(async ({ ctx }) => {
       restrictRoles(ctx.user.role, financeRoles);
