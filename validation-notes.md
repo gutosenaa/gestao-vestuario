@@ -137,3 +137,17 @@ O diagnóstico confirmou que a procedure `products.list` já retornava as coluna
 
 Na sessão Admin, o produto COD001 exibiu a ação `+ Estoque`, renomeada para `Ajustar estoque` para tornar a função mais clara. O formulário aceitou quantidade 1 e custo unitário de R$ 100,00; a operação retornou `Estoque atualizado.` e o catálogo passou a mostrar 1 unidade disponível. A correção adicional invalida explicitamente `products.list`, `dashboard.overview` e `dashboard.inventory`, e fecha o detalhe antigo ao abrir o ajuste para evitar exibir saldo desatualizado. Nenhum produto foi apagado.
 O formulário de edição recebeu preview da foto atual persistida e indicação de nova foto antes do salvamento. A captura em produção realizada antes do novo checkpoint ainda mostrou a versão anterior, sem o preview; será repetida após a publicação desta alteração.
+
+## 2026-08-13 — Preview de imagem na edição publicado
+
+A sessão publicada inicialmente carregou o bundle antigo `index-DpEC_sn-.js`, sem o bloco de preview. O HTML atual passou a servir `index-B2aW7ArE.js`, que contém as strings `Foto atual persistida` e `Nova foto selecionada`. Após abrir a aplicação com `?cachebust=da33c5bb`, o formulário de edição de COD001 exibiu visualmente a imagem salva, o texto “Foto atual persistida no produto.” e os campos abaixo, confirmando a correção publicada. A imagem persistida foi mantida; nenhum produto ou movimento de teste foi apagado.
+
+Evidência: formulário de edição aberto em sessão com cache bust, com preview visível no topo do modal.
+
+## 2026-08-13 — Persistência completa após salvar e reabrir
+
+O formulário de edição do COD001 foi salvo sem substituir a foto persistida. Após o salvamento, o detalhe do produto continuou exibindo `/manus-storage/products/1710001/6nEEDcEJDN9T_8599ce0f.jpg`; em seguida, a edição foi reaberta e mostrou a mesma imagem no preview com o texto “Foto atual persistida no produto.”. O ciclo salvar → reabrir confirmou a continuidade da URL e da renderização. O produto e o estoque de validação foram preservados.
+
+## 2026-08-13 — Mutation de edição confirmada
+
+Para eliminar ambiguidade, a categoria do COD001 foi alterada de “Torcedor” para “Torcedor verificado”, sem trocar a imagem. O salvamento exibiu o toast “Produto atualizado.” e fechou o formulário. Ao reabrir a edição, o campo Categoria mostrou “Torcedor verificado” e o preview exibiu novamente a mesma foto persistida (`/manus-storage/products/1710001/6nEEDcEJDN9T_8599ce0f.jpg`) com o estado “Foto atual persistida no produto.”. Isso comprova a mutation, a invalidação/atualização do catálogo e a permanência da imagem após salvar e reabrir.

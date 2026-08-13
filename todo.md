@@ -124,6 +124,9 @@
 - [ ] Publicar e reexecutar a validação temporária mobile somente após confirmar a correção.
 - [x] Corrigir a exibição da imagem enviada no cadastro, catálogo, edição e venda, validando URL persistida e renderização.
 - [x] Restaurar a ação de adicionar ou editar estoque de produtos já cadastrados.
-- [ ] Validar estoque e imagem mantendo os produtos atuais; não apagar registros até o usuário confirmar o fim das verificações.
-- [ ] Exibir a imagem persistida também no formulário de edição do produto, com preview/estado atual e validação visual em produto real.
-- [ ] Registrar evidência de que a URL da imagem permanece após salvar e reabrir a edição do produto.
+- [x] Validar estoque e imagem mantendo os produtos atuais; não apagar registros até o usuário confirmar o fim das verificações.
+- [x] Exibir a imagem persistida também no formulário de edição do produto, com preview/estado atual e validação visual em produto real.
+- [x] Registrar evidência de que a URL da imagem permanece após salvar e reabrir a edição do produto.
+- [x] Corrigir nomes programáticos dos campos do formulário de edição de produto identificados na auditoria manual
+- [x] Salvar uma edição de produto com imagem já persistida e reabrir o formulário para registrar evidência objetiva da continuidade da mesma imagem
+- [x] Alterar um campo inofensivo, salvar, confirmar o estado atualizado no catálogo e reabrir a edição com a mesma imagem persistida
