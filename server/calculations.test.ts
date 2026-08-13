@@ -65,6 +65,27 @@ describe("calculateSaleTotals", () => {
     expect(result.profitCents).toBe(5300);
     expect(result.marginBps).toBe(3118);
   });
+
+  it("combina taxas de canal e pagamento antes de apurar recebimento líquido e margem", () => {
+    const result = calculateSaleTotals({
+      grossCents: 10_000,
+      discountCents: 1_000,
+      channelFeeBps: 1000,
+      paymentFeeBps: 200,
+      salesTaxBps: 500,
+      costCents: 5_000,
+    });
+
+    expect(result).toMatchObject({
+      discountedCents: 9_000,
+      channelFeeCents: 900,
+      paymentFeeCents: 180,
+      taxCents: 450,
+      netCents: 7_920,
+      profitCents: 2_470,
+      marginBps: 2744,
+    });
+  });
 });
 
 describe("allocateFifoLots", () => {

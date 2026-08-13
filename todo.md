@@ -12,10 +12,10 @@
 - [x] Implementar registro de compra com histórico de custo, lançamento financeiro e entrada de estoque.
 - [x] Implementar registro de venda rápido com cálculo de taxa, imposto, lucro, conta a receber e baixa de estoque por custo histórico.
 - [x] Implementar despesas, contas a pagar, contas a receber e fluxo de caixa.
-- [ ] Implementar painel executivo com KPIs, metas, gráficos, rankings e filtros por período.
-- [ ] Implementar controle de estoque por movimentações, indicadores de reposição, itens parados e classificação ABC.
+- [x] Implementar painel executivo com KPIs, metas, gráficos, rankings e filtros por período.
+- [x] Implementar controle de estoque por movimentações, indicadores de reposição, itens parados e classificação ABC.
 - [x] Implementar central de alertas para estoque, margens, metas e contas em atraso.
-- [ ] Implementar relatórios filtráveis e exportáveis para CSV, com arquitetura preparada para Excel e PDF.
+- [x] Implementar relatórios filtráveis e exportáveis para CSV, com arquitetura preparada para Excel e PDF.
 - [x] Implementar busca global por produtos, clientes, fornecedores e documentos comerciais.
 - [x] Criar navegação desktop com barra lateral e experiência mobile com atalhos, cards e venda rápida.
 - [x] Implementar visual cinematográfico escuro com teal profundo, laranja queimado, ciano e tipografia de alto contraste.
@@ -66,7 +66,7 @@
 - [x] Separar faturamento, recebimentos, custos, despesas, lucro bruto e lucro líquido no financeiro e fluxo de caixa.
 - [x] Implementar central de alertas para estoque, giro, margens, contas, metas e reposição.
 - [x] Ampliar busca global para produtos, clientes, fornecedores, vendas, compras e códigos.
-- [ ] Criar relatório gerencial mensal e exportações preparadas para PDF e Excel.
+- [x] Criar relatório gerencial mensal e exportações preparadas para PDF e Excel.
 - [x] Criar compartilhamento de venda via WhatsApp com resumo comercial.
 - [ ] Refinar layouts desktop e mobile com cards, filtros, gráficos e fluxos de poucos cliques.
 - [ ] Testar cadastro, precificação, compra, estoque, venda, desconto, margem, lucro, despesas, financeiro, dashboard, relatórios e responsividade.
@@ -93,3 +93,4 @@
 - [x] Adicionar ao relatório blocos de giro, estoque parado, rankings comerciais e consolidado financeiro mensal.
 - [x] Adicionar na venda rápida um resumo financeiro em tempo real, com taxas, valor líquido e impacto do desconto.
 - [ ] Aprimorar explicitamente o fluxo móvel compacto da venda rápida e validar seus estados principais.
+- [ ] Revisar e registrar evidências dos refinamentos de layout e UX nas telas principais em desktop e mobile.

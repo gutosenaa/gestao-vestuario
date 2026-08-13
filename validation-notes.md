@@ -11,3 +11,13 @@ Os controles principais receberam rótulos acessíveis, incluindo o menu móvel,
 ## Responsividade após os filtros
 
 A verificação desktop confirmou que o seletor de período, a entrada para relatórios e a venda rápida permanecem alinhados acima dos indicadores executivos. A verificação mobile confirmou que essas mesmas ações quebram em linhas legíveis, preservam área de toque adequada e não sobrepõem os cards ou a navegação inferior.
+
+## Validação técnica final
+
+A verificação final executou a checagem de tipos, a suíte automatizada e a compilação de produção. Os **7 testes** foram aprovados e não foram encontrados registros recentes de `error`, `exception`, `fatal` ou `unhandled` nos logs do servidor e do navegador. O aviso de tamanho de bundle do gerador de produção permanece como recomendação de otimização futura, sem impedir a compilação ou o funcionamento atual.
+
+Depois da revisão do resumo financeiro da venda rápida, foi adicionada uma cobertura específica para taxas simultâneas de canal e pagamento. A suíte passou a ter **8 testes aprovados** e confirmou que o valor a receber subtrai as taxas de canal e pagamento, enquanto o imposto permanece explicitamente como impacto sobre o lucro.
+
+## Painel consolidado — desktop e mobile
+
+Na largura desktop, o painel preserva hierarquia clara entre seletor de período, ações, KPIs, evolução financeira, alertas, rankings e decisões de estoque. Na largura mobile, os mesmos blocos se tornam uma sequência em coluna única sem transbordamento, mantendo botões visíveis no topo, textos legíveis, cards espaçados e navegação inferior fora da área de conteúdo.
