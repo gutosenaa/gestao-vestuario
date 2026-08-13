@@ -70,8 +70,8 @@
 - [x] Criar relatório gerencial mensal e exportações preparadas para PDF e Excel.
 - [x] Criar compartilhamento de venda via WhatsApp com resumo comercial.
 - [x] Refinar layouts desktop e mobile com cards, filtros, gráficos e fluxos de poucos cliques.
-- [ ] Testar cadastro, precificação, compra, estoque, venda, desconto, margem, lucro, despesas, financeiro, dashboard, relatórios e responsividade.
-- [ ] Concluir integralmente os módulos restantes da segunda rodada, preservando todas as funcionalidades já publicadas.
+- [x] Testar cadastro, precificação, compra, estoque, venda, desconto, margem, lucro, despesas, financeiro, dashboard, relatórios e responsividade.
+- [x] Concluir integralmente os módulos restantes da segunda rodada, preservando todas as funcionalidades já publicadas.
 - [x] Criar telas de cadastro e edição para fornecedores, clientes, canais de venda e formas de pagamento.
 - [x] Adicionar filtros de período reais no dashboard e nos relatórios.
 - [x] Implementar classificação ABC e relatórios dedicados de giro e estoque parado.
@@ -118,7 +118,7 @@
 - [x] Recriar produto e estoque temporários para validar a correção publicada em viewport mobile.
 - [x] Executar venda publicada em viewport mobile com desconto, taxas, margem e lançamento financeiro.
 - [x] Apagar novamente todos os vínculos temporários e confirmar o estado vazio do catálogo após a segunda validação.
-- [ ] Diagnosticar e corrigir o cadastro de produto que permanece em “Criando...” sem persistir em produção.
+- [x] Diagnosticar e corrigir o cadastro de produto que permanece em “Criando...” sem persistir em produção.
 - [x] Instrumentar o cadastro de produto e localizar a etapa que mantém a mutation pendente em produção.
 - [x] Implementar timeout visível no cadastro e retorno controlado quando o backend não responder.
 - [x] Publicar e reexecutar a validação temporária mobile somente após confirmar a correção.
@@ -149,4 +149,15 @@
 - [x] Adicionar testes da QuickSale para desconto zero, canal/pagamento obrigatórios, limite de desconto e estados das ações.
 - [x] Ampliar testes de integração da venda para validar baixa FIFO, saleItems, financialEntries e alertas no cenário equivalente ao fluxo mobile.
 
-- [ ] Corrigir o upload de imagem no cadastro para não prender a mutation em “Criando...”: validar bytes, aplicar timeout fail-fast e resetar o estado do formulário em abort/erro.
+- [x] Corrigir o upload de imagem no cadastro para não prender a mutation em “Criando...”: validar bytes, aplicar timeout fail-fast e resetar o estado do formulário em abort/erro.
+
+- [x] Adicionar testes automatizados de products.create para imagem válida, imagem acima de 4 MB, falha/timeout de storage e retorno imageUploadFailed.
+- [x] Garantir reset completo do formulário de produto em abort, timeout e erro de cadastro, com evidência publicada.
+- [x] Executar matriz funcional e responsiva final por módulo, distinguindo evidência comprovada de limitações restantes.
+
+- [x] Testar diretamente a mutation commerce.products.create, incluindo retorno imageUploadFailed e falha de storage, além dos helpers.
+- [x] Implementar reset completo do estado do ProductCreationDialog em timeout, abort e erros gerais, com confirmação publicada.
+- [x] Reescrever a matriz final por módulo separando evidências comprovadas e limitações não validadas.
+
+- [x] Adicionar teste da mutation products.create simulando falha/timeout de storage e validar imageUploadFailed=true.
+- [x] Fechar e resetar explicitamente o ProductDialog também em erros gerais de cadastro, com teste ou evidência publicada do comportamento.

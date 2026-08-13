@@ -42,7 +42,7 @@ function makeProductCode(lastCode?: string | null) {
 
 const MAX_PRODUCT_IMAGE_BYTES = 4_000_000;
 
-function decodeProductImage(imageDataUrl?: string) {
+export function decodeProductImage(imageDataUrl?: string) {
   if (!imageDataUrl) return null;
   const match = imageDataUrl.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
   if (!match) throw new TRPCError({ code: "BAD_REQUEST", message: "A imagem enviada é inválida." });
@@ -51,7 +51,7 @@ function decodeProductImage(imageDataUrl?: string) {
   return { mimeType: match[1], extension: match[1].split("/")[1].replace("jpeg", "jpg"), bytes };
 }
 
-async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+export async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
   let timer: ReturnType<typeof setTimeout> | undefined;
   try {
     return await Promise.race([promise, new Promise<T>((_, reject) => { timer = setTimeout(() => reject(new Error("storage-timeout")), timeoutMs); })]);

@@ -167,3 +167,24 @@ Limitação: esta etapa comprovou nomes acessíveis, foco programático, estados
 A medição complementar de contraste percorreu os dez módulos autenticados. O índice mínimo observado em cada módulo foi 14,49: Visão geral, Precificação, Estoque, Compras, Despesas, Financeiro, Relatórios, Clientes, Fornecedores e Configurações; nenhum elemento visível ficou abaixo de 4,5:1 nesta amostra. A verificação confirma a composição atual publicada, embora não substitua testes com leitor de tela real.
 
 A auditoria de teclado publicada percorreu os dez módulos. Não houve perda de foco para o `body` em nenhum módulo; os tab stops observados foram: Visão geral 21, Precificação 17, Estoque 18, Compras 17, Despesas 21, Financeiro 17, Relatórios 20, Clientes 19, Fornecedores 19 e Configurações 45 (35 primeiros percorridos nesta etapa). Os estados `aria-current` marcaram a seção ativa e `aria-expanded` identificou menu, filtros e seletores quando presentes. Não foram encontradas regiões de alerta ou live region ativas nos estados sem dados auditados.
+
+## Matriz funcional e responsiva final — publicação dd72fecf
+
+A matriz desktop em 1280×720 confirmou composição sem sobreposição nos módulos Visão geral, Nova venda, Produtos, Precificação, Estoque, Compras, Despesas e Financeiro. O dashboard exibiu KPIs e ações; Venda exibiu resumo, desconto manual, canal e pagamento; Produtos e Precificação mostraram estados vazios orientados; Estoque e Compras mostraram CTA de entrada; Despesas exibiu formulário e lista vazia; Financeiro exibiu KPIs e fluxo. A responsividade mobile da venda já havia sido verificada em 375×812 com controles compactos e ações empilhadas.
+
+A matriz mobile em 375×812 confirmou, nos módulos Dashboard, Produtos, Precificação, Estoque, Compras, Despesas, Financeiro e Relatórios, cabeçalho legível, navegação inferior sem sobreposição, cards dentro da largura, CTAs acessíveis e estados vazios/formulários compreensíveis. Em Despesas, o formulário permaneceu contido e utilizável; em Relatórios, filtros e exportações permaneceram visíveis; em Produtos, Estoque e Compras, os estados vazios orientaram o próximo passo. Não foram observadas quebras visuais nas capturas desta matriz.
+
+## Matriz final — evidência comprovada versus limitações
+
+| Módulo | Evidência comprovada | Limitação restante |
+|---|---|---|
+| Dashboard | Capturas desktop/mobile, KPIs, período, cards e navegação sem sobreposição. | Não houve dados comerciais após a limpeza para validar valores não nulos.
+| Produtos | Estado vazio, criação/edição, imagem persistida, estoque, labels e preview confirmados anteriormente. | O cadastro com upload lento foi protegido por código e testes; reexecução publicada com imagem grande não foi feita para não recriar dados.
+| Venda | Fluxo mobile, desconto manual, taxas, margem, compartilhamento, baixa FIFO e financeiro cobertos por testes e validações autenticadas. | A captura publicada da conclusão ponta a ponta foi fragmentada entre abas; a integração automatizada confirma a persistência transacional.
+| Precificação | Estado vazio, cálculo por custo histórico e simulador cobertos por código/testes e captura responsiva. | Não foi repetida simulação com catálogo preenchido após a limpeza.
+| Estoque | Indicadores, entrada, ajuste, FIFO e estado vazio verificados; integração cobre movimento e lote. | Não há lote real remanescente para observar saldo não nulo na captura final.
+| Compras | Estado vazio, formulário e CTA responsivos; backend/testes cobrem lote, custo e conta a pagar. | Não foi mantida compra de teste após a limpeza.
+| Despesas | Formulário, campos nomeados e layout mobile/desktop verificados. | Não foi criado lançamento real após a limpeza.
+| Financeiro | KPIs, fluxo e estados vazios verificados; integração cobre contas da compra/venda. | Não há lançamentos persistidos na captura final.
+| Relatórios | Filtros, exportações e cards responsivos verificados. | Não há série transacional persistida após a limpeza para validar agregações visuais com valores.
+| Configurações e diretórios | Navegação autenticada, controles nomeados e auditoria estática/manual executadas. | Não foi exercitado cada formulário com alteração persistente nesta rodada.

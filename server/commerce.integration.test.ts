@@ -10,6 +10,7 @@ let userId = 0;
 let productId = 0;
 let purchaseId = 0;
 let saleId = 0;
+let createdProductId = 0;
 let caller: ReturnType<typeof appRouter.createCaller>;
 
 function context(user: NonNullable<TrpcContext["user"]>): TrpcContext {
@@ -74,6 +75,23 @@ describe("operações comerciais transacionais", () => {
     expect(storedSale).toMatchObject({ costCents: 8000, netCents: 18000, profitCents: 10000 });
     expect(storedItem).toMatchObject({ productId, quantity: 1, unitPriceCents: 18000, unitCostCents: 8000, totalCostCents: 8000 });
     expect(saleMovement).toMatchObject({ productId, saleId, quantity: -1, unitCostCents: 8000 });
+
+    const created = await caller.commerce.products.create({
+      name: "Produto create sem imagem",
+      listPriceCents: 12000,
+      usdValueCents: 0,
+      initialQuantity: 0,
+    });
+    createdProductId = created.id;
+    expect(created).toMatchObject({ code: expect.stringMatching(/^COD/), imageUploadFailed: false });
+    const oversizedImage = Buffer.alloc(4_000_001, 1).toString("base64");
+    await expect(caller.commerce.products.create({
+      name: "Produto imagem grande",
+      listPriceCents: 12000,
+      usdValueCents: 0,
+      initialQuantity: 0,
+      imageDataUrl: `data:image/png;base64,${oversizedImage}`,
+    })).rejects.toThrow("4 MB");
   });
 
   afterAll(async () => {
@@ -87,6 +105,10 @@ describe("operações comerciais transacionais", () => {
     await db.delete(sales).where(eq(sales.id, saleId));
     await db.delete(purchaseItems).where(eq(purchaseItems.purchaseId, purchaseId));
     await db.delete(purchases).where(eq(purchases.id, purchaseId));
+    if (createdProductId) {
+      await db.delete(auditLogs).where(and(eq(auditLogs.userId, userId), eq(auditLogs.entityId, createdProductId)));
+      await db.delete(products).where(eq(products.id, createdProductId));
+    }
     await db.delete(products).where(eq(products.id, productId));
     await db.delete(users).where(eq(users.id, userId));
   });
