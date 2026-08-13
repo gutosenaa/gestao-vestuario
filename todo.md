@@ -21,7 +21,7 @@
 - [x] Implementar visual cinematográfico escuro com teal profundo, laranja queimado, ciano e tipografia de alto contraste.
 - [x] Configurar manifesto e comportamento instalável de PWA.
 - [x] Preparar armazenamento seguro de fotos em storage escalável.
-- [ ] Preparar auditoria de alterações importantes em preço, estoque, vendas, compras e despesas.
+- [x] Preparar auditoria de alterações importantes em preço, estoque, vendas, compras e despesas.
 - [x] Escrever e executar testes unitários para as regras críticas de cálculo e operações transacionais.
 - [x] Validar renderização desktop e mobile, acessibilidade básica, estados de erro e estados vazios.
 - [x] Adicionar modelagem explícita de variações de produto e validar as relações principais do banco.
@@ -60,7 +60,7 @@
 - [x] Criar saúde do estoque, relatório de estoque parado, giro, valor parado e recomendações de reposição.
 - [x] Evoluir a precificação com preço promocional, simulador de desconto e bloqueio confirmado para margem abaixo do mínimo.
 - [x] Implementar metas de faturamento, lucro e peças com progresso, projeção e ritmo diário necessário.
-- [ ] Simplificar a venda rápida para celular com variação, desconto, margem e atualização financeira imediata.
+- [ ] Simplificar a venda rápida para celular com produto único, tamanho e tipo visíveis, desconto, margem e atualização financeira imediata.
 - [x] Ampliar clientes com histórico, classificação automática e dados de relacionamento.
 - [x] Criar rankings de vendas, faturamento, lucro, margem, giro e produtos parados.
 - [x] Separar faturamento, recebimentos, custos, despesas, lucro bruto e lucro líquido no financeiro e fluxo de caixa.
@@ -79,7 +79,7 @@
 - [x] Adicionar simulador de desconto e promoção com recálculo imediato na precificação.
 - [x] Criar rankings específicos de giro e produtos parados.
 - [x] Montar um relatório gerencial mensal completo com indicadores financeiros, comerciais e de estoque.
-- [ ] Adicionar seleção de tamanho ou variação à venda rápida e persistir a opção na experiência comercial.
+- [x] Exibir tamanho e tipo da camisa na seleção e persistir o produto único correspondente na experiência comercial.
 - [x] Incluir forma de pagamento e tamanho ou variação no resumo compartilhável da venda.
 - [ ] Validar a venda rápida mobile completa, incluindo desconto, margem, compartilhamento e lançamento financeiro.
 - [ ] Executar e registrar uma checagem de acessibilidade de teclado, foco, rótulos, contraste e leitura de estados nas telas principais.
@@ -91,3 +91,5 @@
 - [x] Revisar a cobertura de todos os campos do schema de produtos na edição comercial.
 - [x] Expandir o relatório mensal com seções detalhadas de financeiro, comercial e estoque.
 - [x] Adicionar ao relatório blocos de giro, estoque parado, rankings comerciais e consolidado financeiro mensal.
+- [x] Adicionar na venda rápida um resumo financeiro em tempo real, com taxas, valor líquido e impacto do desconto.
+- [ ] Aprimorar explicitamente o fluxo móvel compacto da venda rápida e validar seus estados principais.
