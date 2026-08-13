@@ -60,6 +60,7 @@ export default function Home() {
   const globalResults = trpc.commerce.catalog.search.useQuery({ query: globalSearch }, { enabled: Boolean(user) && globalSearch.trim().length >= 2 });
   const inventory = trpc.dashboard.inventory.useQuery(undefined, { enabled: Boolean(user) && activeView === "estoque" });
   const catalog = trpc.commerce.catalog.bootstrap.useQuery(undefined, { enabled: Boolean(user) });
+  const customerInsights = trpc.commerce.catalog.customerInsights.useQuery(undefined, { enabled: Boolean(user) && activeView === "clientes" });
   const expenses = trpc.commerce.expenses.list.useQuery(undefined, { enabled: Boolean(user) && (activeView === "despesas" || activeView === "financeiro") });
   const sales = trpc.commerce.sales.list.useQuery(undefined, { enabled: Boolean(user) && (activeView === "financeiro" || activeView === "relatorios") });
   const cashflow = trpc.commerce.finance.cashflow.useQuery(undefined, { enabled: Boolean(user) && activeView === "financeiro" });
@@ -87,7 +88,7 @@ export default function Home() {
     {activeView === "despesas" && <ExpensesPage rows={expenses.data ?? []} onSubmit={input => createExpense.mutate(input)} pending={createExpense.isPending} />}
     {activeView === "financeiro" && <FinancialPage dashboard={dashboard.data} sales={sales.data ?? []} expenses={expenses.data ?? []} cashflow={cashflow.data} />}
     {activeView === "relatorios" && <ReportsPage products={products.data ?? []} dashboard={dashboard.data} onExport={exportCsv} />}
-    {activeView === "clientes" && <DirectoryPage type="clientes" rows={catalog.data?.customers ?? []} />}
+    {activeView === "clientes" && <DirectoryPage type="clientes" rows={customerInsights.data ?? catalog.data?.customers ?? []} />}
     {activeView === "fornecedores" && <DirectoryPage type="fornecedores" rows={catalog.data?.suppliers ?? []} />}
     {activeView === "configuracoes" && <SettingsPage settings={settings.data} onSubmit={input => saveSettings.mutate(input)} pending={saveSettings.isPending} />}
     </>}

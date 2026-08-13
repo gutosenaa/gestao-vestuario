@@ -69,6 +69,18 @@ export const commerceRouter = router({
         purchases: allPurchases.filter(row => includes(row.orderNumber, row.notes)).slice(0, 6).map(row => ({ id: row.id, label: row.orderNumber || `Compra #${row.id}`, subtitle: `Compra de ${(row.totalCents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}`, type: "Compra" })),
       };
     }),
+    customerInsights: protectedProcedure.query(async () => {
+      const db = await dbOrThrow();
+      const [allCustomers, allSales, allItems] = await Promise.all([db.select().from(customers).orderBy(asc(customers.name)), db.select().from(sales).orderBy(desc(sales.soldAt)), db.select().from(saleItems)]);
+      const byCustomer = new Map<number, { purchases: number; totalCents: number; lastPurchase?: Date; productIds: number[] }>();
+      allSales.filter(sale => sale.customerId && sale.paymentStatus !== "cancelado").forEach(sale => {
+        const row = byCustomer.get(sale.customerId!) ?? { purchases: 0, totalCents: 0, productIds: [] };
+        row.purchases += 1; row.totalCents += sale.netCents; if (!row.lastPurchase || sale.soldAt > row.lastPurchase) row.lastPurchase = sale.soldAt;
+        row.productIds.push(...allItems.filter(item => item.saleId === sale.id).map(item => item.productId)); byCustomer.set(sale.customerId!, row);
+      });
+      const now = Date.now();
+      return allCustomers.map(customer => { const row = byCustomer.get(customer.id) ?? { purchases: 0, totalCents: 0, productIds: [] }; const daysWithoutPurchase = row.lastPurchase ? Math.floor((now - row.lastPurchase.getTime()) / 86400000) : null; const classification = !row.purchases ? "novo" : (daysWithoutPurchase !== null && daysWithoutPurchase > 120) ? "inativo" : row.purchases >= 5 || row.totalCents >= 100000 ? "VIP" : row.purchases >= 2 ? "recorrente" : "novo"; return { ...customer, classification, purchaseCount: row.purchases, totalCents: row.totalCents, ticketCents: row.purchases ? Math.round(row.totalCents / row.purchases) : 0, lastPurchase: row.lastPurchase ?? null, productCount: new Set(row.productIds).size, daysWithoutPurchase }; });
+    }),
     saveSupplier: protectedProcedure.input(z.object({ id: z.number().optional(), name: z.string().min(2), company: z.string().optional(), whatsapp: z.string().optional(), country: z.string().optional(), city: z.string().optional(), sourceUrl: z.string().url().optional().or(z.literal("")), notes: z.string().optional() })).mutation(async ({ ctx, input }) => {
       restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
       const db = await dbOrThrow();
