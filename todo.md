@@ -99,7 +99,7 @@
 - [ ] Registrar evidências objetivas por tela e revisar labels, erros, foco e navegação por teclado nos formulários operacionais.
 - [ ] Validar visualmente e funcionalmente a venda rápida autenticada no mobile, incluindo estados vazio, erro e sucesso.
 - [ ] Validar as telas principais com sessão autenticada em desktop e mobile e registrar os fluxos confirmados por tela.
-- [ ] Retomar a validação autenticada após corrigir a sessão OAuth que retornou invalid oauth state.
+- [x] Retomar a validação autenticada após corrigir a sessão OAuth que retornou invalid oauth state.
 - [ ] Reexecutar a venda mobile com produto em estoque, cobrindo vazio, erro, sucesso, desconto, compartilhamento e lançamento financeiro após login válido.
 - [ ] Revalidar acessibilidade e fluxos completos por tela com sessão autenticada após a recuperação do OAuth.
 - [x] Criar catálogo dependente de liga/campeonato para listar os principais times de cada competição.

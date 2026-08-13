@@ -93,3 +93,9 @@ Foi criado um catálogo centralizado de principais clubes por Brasileirão, Copa
 A cobertura do catálogo foi incorporada à suíte oficial: `server/clubCatalog.test.ts` valida todas as ligas cadastradas, a presença de clubes e o fallback `Outro` para competição personalizada. Agora são **10 testes aprovados em 4 arquivos**, além da checagem de tipos.
 
 O catálogo foi revisado visualmente em desktop (1280px) e mobile (375px). O botão de adicionar produto, o estado vazio e a navegação inferior permanecem visíveis e utilizáveis; o modal de campos dependentes segue condicionado à abertura do cadastro e à sessão autenticada.
+
+## Validação autenticada do cadastro de produto
+
+Em 13/08/2026, uma nova navegação na home publicada iniciou com sessão válida e abriu o catálogo sem erro OAuth. O modal “Novo produto” exibiu liga/campeonato e time dependentes; o campo de time ficou desabilitado antes da seleção da liga, com a mensagem “Escolha a liga primeiro”. Também foram confirmados tipo de camisa, tamanho, quantidade inicial, custo unitário e input de foto. A inspeção foi somente de leitura; nenhum produto foi salvo.
+
+A validação manual autenticada continuou sem persistência: a lista exibiu Brasileirão, Copa do Brasil, Libertadores, Champions League, Premier League, La Liga e Outro. Após selecionar Brasileirão, o campo de time foi habilitado e passou a mostrar “Selecione o time da liga”, confirmando a dependência entre os dois selects.
