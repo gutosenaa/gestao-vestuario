@@ -27,3 +27,5 @@ Na largura desktop, o painel preserva hierarquia clara entre seletor de período
 Foi verificado o uso de nomes acessíveis e de estados nos controles globais: abertura e fechamento de menu móvel, busca global, resultados de busca, alertas, navegação principal e ações de saída. Os controles examinados têm rótulos ARIA, estados atuais de página quando aplicável e estilos de foco visível; a busca expõe resultados como lista de opções com nomes descritivos.
 
 O formulário de criação de produtos recebeu nomes programáticos para todos os campos de texto, números, listas e foto. A orientação e eventuais falhas de upload da imagem ficam vinculadas ao campo e são anunciadas como alerta. A checagem de tipos, os **8 testes** e a compilação de produção passaram após esse ajuste.
+
+Os formulários de criação e edição de clientes e fornecedores também receberam nomes programáticos para dados pessoais, empresa, contato, endereço, URL e observações. A entrada manual de estoque possui nomes para quantidade e custo. Esses ajustes foram validados com a mesma checagem de tipos, testes e compilação de produção.
