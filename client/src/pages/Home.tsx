@@ -57,6 +57,7 @@ export default function Home() {
   const utils = trpc.useUtils();
   const dashboard = trpc.dashboard.overview.useQuery({ months: 6 }, { enabled: Boolean(user) });
   const products = trpc.commerce.products.list.useQuery({ query: globalSearch, status: activeView === "produtos" ? "todos" : "ativo" }, { enabled: Boolean(user) });
+  const globalResults = trpc.commerce.catalog.search.useQuery({ query: globalSearch }, { enabled: Boolean(user) && globalSearch.trim().length >= 2 });
   const inventory = trpc.dashboard.inventory.useQuery(undefined, { enabled: Boolean(user) && activeView === "estoque" });
   const catalog = trpc.commerce.catalog.bootstrap.useQuery(undefined, { enabled: Boolean(user) });
   const expenses = trpc.commerce.expenses.list.useQuery(undefined, { enabled: Boolean(user) && (activeView === "despesas" || activeView === "financeiro") });
@@ -74,7 +75,8 @@ export default function Home() {
 
   const exportCsv = () => { const rows = products.data ?? []; const content = ["Código;Produto;Time;Tamanho;Estoque;Preço", ...rows.map(product => [product.code, product.name, product.team ?? "", product.size ?? "", product.stock, (product.listPriceCents / 100).toFixed(2)].join(";"))].join("\n"); const url = URL.createObjectURL(new Blob([content], { type: "text/csv;charset=utf-8;" })); const link = document.createElement("a"); link.href = url; link.download = "relatorio-produtos.csv"; link.click(); URL.revokeObjectURL(url); toast.success("Arquivo CSV preparado para download."); };
 
-  return <DashboardLayout activeView={activeView} onViewChange={setActiveView} alertCount={alertCount} onGlobalSearch={value => { if (value.trim() && !canAccessProducts) { toast.error("Seu perfil não possui acesso ao catálogo de produtos."); return; } setGlobalSearch(value); if (value.trim()) setActiveView("produtos"); }}>
+  const searchResults = globalResults.data ? [...globalResults.data.products, ...globalResults.data.customers, ...globalResults.data.suppliers, ...globalResults.data.sales, ...globalResults.data.purchases] : [];
+  return <DashboardLayout activeView={activeView} onViewChange={setActiveView} alertCount={alertCount} globalSearchResults={searchResults} onGlobalResultSelect={result => { const views: Record<string, AppView> = { Produto: "produtos", Cliente: "clientes", Fornecedor: "fornecedores", Venda: "financeiro", Compra: "compras" }; setActiveView(views[result.type] ?? "dashboard"); }} onGlobalSearch={value => { setGlobalSearch(value); if (value.trim() && canAccessProducts) setActiveView("produtos"); }}>
     {!viewAllowed ? <Empty title="Acesso restrito" message="Seu perfil não tem permissão para abrir esta área." icon={AlertTriangle} /> : <>
     {activeView === "dashboard" && <DashboardPage data={dashboard.data} loading={dashboard.isLoading} onNavigate={setActiveView} />}
     {activeView === "venda" && <QuickSale products={products.data ?? []} channels={catalog.data?.channels ?? []} methods={catalog.data?.methods ?? []} onSubmit={input => createSale.mutate(input)} pending={createSale.isPending} />}

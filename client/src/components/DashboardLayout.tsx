@@ -26,13 +26,15 @@ const navigation: Array<{ id: AppView; label: string; icon: typeof LayoutDashboa
 ];
 
 export default function DashboardLayout({
-  children, activeView, onViewChange, alertCount = 0, onGlobalSearch,
+  children, activeView, onViewChange, alertCount = 0, onGlobalSearch, globalSearchResults = [], onGlobalResultSelect,
 }: {
   children: React.ReactNode;
   activeView: AppView;
   onViewChange: (view: AppView) => void;
   alertCount?: number;
   onGlobalSearch?: (query: string) => void;
+  globalSearchResults?: Array<{ id: number; label: string; subtitle: string; type: string }>;
+  onGlobalResultSelect?: (result: { id: number; label: string; subtitle: string; type: string }) => void;
 }) {
   const { user, loading, logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
@@ -72,7 +74,7 @@ export default function DashboardLayout({
     <header className="sticky top-0 z-30 flex h-[68px] items-center gap-3 border-b border-white/8 bg-slate-950/45 px-4 backdrop-blur-xl lg:ml-[248px] lg:px-7">
       <button onClick={() => setMobileOpen(true)} className="grid size-9 place-items-center rounded-xl border border-white/10 bg-white/5 text-slate-100 lg:hidden"><Menu size={19} /></button>
       <div className="min-w-0 flex-1"><p className="hidden text-[10px] font-bold tracking-[.2em] text-cyan-300 sm:block">CENTRO DE COMANDO</p><h2 className="truncate font-display text-base font-semibold text-white">{active?.label || "Gestão comercial"}</h2></div>
-      <div className="relative hidden max-w-xs flex-1 md:block"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" /><input onFocus={() => setSearchOpen(true)} onBlur={() => setSearchOpen(false)} onChange={event => onGlobalSearch?.(event.target.value)} placeholder="Buscar produto, cliente, código..." className="h-10 w-full rounded-xl border border-white/8 bg-white/[.045] pl-9 pr-3 text-xs text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/40 focus:bg-white/[.075]" />{searchOpen && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] text-slate-500">BUSCA GLOBAL</span>}</div>
+      <div className="relative hidden max-w-xs flex-1 md:block"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" /><input onFocus={() => setSearchOpen(true)} onBlur={() => setSearchOpen(false)} onChange={event => onGlobalSearch?.(event.target.value)} placeholder="Buscar produto, cliente, código..." className="h-10 w-full rounded-xl border border-white/8 bg-white/[.045] pl-9 pr-3 text-xs text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/40 focus:bg-white/[.075]" />{searchOpen && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] text-slate-500">BUSCA GLOBAL</span>}{searchOpen && globalSearchResults.length > 0 && <div className="absolute left-0 right-0 top-12 z-50 max-h-[340px] overflow-y-auto rounded-xl border border-white/10 bg-slate-950/95 p-1.5 shadow-2xl backdrop-blur-xl">{globalSearchResults.map(result => <button key={`${result.type}-${result.id}`} onMouseDown={event => event.preventDefault()} onClick={() => { onGlobalResultSelect?.(result); setSearchOpen(false); }} className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left hover:bg-white/6"><div className="min-w-0"><p className="truncate text-xs font-medium text-white">{result.label}</p><p className="mt-0.5 truncate text-[10px] text-slate-500">{result.subtitle}</p></div><span className="shrink-0 text-[9px] font-bold tracking-wider text-cyan-300">{result.type.toUpperCase()}</span></button>)}</div>}</div>
       <button onClick={() => navigate("dashboard")} className="relative grid size-10 place-items-center rounded-xl border border-white/8 bg-white/[.045] text-slate-300 hover:text-cyan-200"><Bell size={17} />{alertCount > 0 && <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full bg-orange-400 text-[9px] font-bold text-slate-950">{Math.min(alertCount, 9)}</span>}</button>
       {canSell && <button onClick={() => navigate("venda")} className="hidden h-10 items-center gap-2 rounded-xl bg-cyan-300 px-4 text-xs font-bold text-slate-950 shadow-[0_0_28px_rgba(103,232,249,.15)] hover:bg-cyan-200 sm:flex"><ShoppingBag size={15} />Nova venda</button>}
     </header>
