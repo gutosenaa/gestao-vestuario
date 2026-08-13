@@ -21,3 +21,9 @@ Depois da revisão do resumo financeiro da venda rápida, foi adicionada uma cob
 ## Painel consolidado — desktop e mobile
 
 Na largura desktop, o painel preserva hierarquia clara entre seletor de período, ações, KPIs, evolução financeira, alertas, rankings e decisões de estoque. Na largura mobile, os mesmos blocos se tornam uma sequência em coluna única sem transbordamento, mantendo botões visíveis no topo, textos legíveis, cards espaçados e navegação inferior fora da área de conteúdo.
+
+## Auditoria semântica de navegação
+
+Foi verificado o uso de nomes acessíveis e de estados nos controles globais: abertura e fechamento de menu móvel, busca global, resultados de busca, alertas, navegação principal e ações de saída. Os controles examinados têm rótulos ARIA, estados atuais de página quando aplicável e estilos de foco visível; a busca expõe resultados como lista de opções com nomes descritivos.
+
+O formulário de criação de produtos recebeu nomes programáticos para todos os campos de texto, números, listas e foto. A orientação e eventuais falhas de upload da imagem ficam vinculadas ao campo e são anunciadas como alerta. A checagem de tipos, os **8 testes** e a compilação de produção passaram após esse ajuste.

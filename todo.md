@@ -94,3 +94,5 @@
 - [x] Adicionar na venda rápida um resumo financeiro em tempo real, com taxas, valor líquido e impacto do desconto.
 - [ ] Aprimorar explicitamente o fluxo móvel compacto da venda rápida e validar seus estados principais.
 - [ ] Revisar e registrar evidências dos refinamentos de layout e UX nas telas principais em desktop e mobile.
+- [ ] Validar acessibilidade nas telas dashboard, produtos, venda, financeiro e relatórios, cobrindo teclado, foco, rótulos, contraste e leitura de estados.
+- [ ] Registrar evidências objetivas por tela e revisar labels, erros, foco e navegação por teclado nos formulários operacionais.
