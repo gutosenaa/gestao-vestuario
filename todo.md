@@ -38,7 +38,7 @@
 - [x] Evitar consultas protegidas antes da autenticação para manter a tela de acesso estável.
 - [x] Validar no navegador as telas autenticadas principais em desktop e mobile.
 - [x] Exibir estados de erro para consultas principais do painel, catálogo, estoque e financeiro.
-- [ ] Executar uma verificação básica de acessibilidade da interface principal.
+- [x] Executar uma verificação básica de acessibilidade da interface principal.
 - [x] Corrigir a ordem de hooks do DashboardLayout para eliminar a falha de renderização após autenticação.
 - [x] Permitir editar produtos existentes diretamente pelo catálogo.
 - [x] Permitir registrar quantidade inicial ou nova entrada de estoque a partir do fluxo de produto.
@@ -55,7 +55,7 @@
 - [x] Inspecionar objetivamente a captura do menu móvel aberto e confirmar marca FEIRENSE, módulos, fechamento e perfil.
 - [x] Permitir editar a foto e o tipo de camisa de produtos já cadastrados.
 - [x] Exibir erro visível quando a atualização de produto, foto ou tipo de camisa falhar.
-- [ ] Validar o fluxo completo de edição de foto e tipo de camisa em produto existente.
+- [x] Validar o fluxo completo de edição de foto e tipo de camisa em produto existente.
 - [x] Auditar os módulos atuais e preservar regras de custo histórico, vendas, compras, estoque e financeiro.
 - [x] Ampliar o dashboard executivo com indicadores de decisão, metas, comparativos e variações percentuais.
 - [x] Criar saúde do estoque, relatório de estoque parado, giro, valor parado e recomendações de reposição.
@@ -69,7 +69,7 @@
 - [x] Ampliar busca global para produtos, clientes, fornecedores, vendas, compras e códigos.
 - [x] Criar relatório gerencial mensal e exportações preparadas para PDF e Excel.
 - [x] Criar compartilhamento de venda via WhatsApp com resumo comercial.
-- [ ] Refinar layouts desktop e mobile com cards, filtros, gráficos e fluxos de poucos cliques.
+- [x] Refinar layouts desktop e mobile com cards, filtros, gráficos e fluxos de poucos cliques.
 - [ ] Testar cadastro, precificação, compra, estoque, venda, desconto, margem, lucro, despesas, financeiro, dashboard, relatórios e responsividade.
 - [ ] Concluir integralmente os módulos restantes da segunda rodada, preservando todas as funcionalidades já publicadas.
 - [x] Criar telas de cadastro e edição para fornecedores, clientes, canais de venda e formas de pagamento.
@@ -82,46 +82,46 @@
 - [x] Montar um relatório gerencial mensal completo com indicadores financeiros, comerciais e de estoque.
 - [x] Exibir tamanho e tipo da camisa na seleção e persistir o produto único correspondente na experiência comercial.
 - [x] Incluir forma de pagamento e tamanho ou variação no resumo compartilhável da venda.
-- [ ] Validar a venda rápida mobile completa, incluindo desconto, margem, compartilhamento e lançamento financeiro.
-- [ ] Executar e registrar uma checagem de acessibilidade de teclado, foco, rótulos, contraste e leitura de estados nas telas principais.
-- [ ] Revisar acessibilidade das telas dashboard, produtos, venda, financeiro e relatórios, cobrindo teclado, foco, rótulos e contraste.
+- [x] Validar a venda rápida mobile completa, incluindo desconto, margem, compartilhamento e lançamento financeiro.
+- [x] Executar e registrar uma checagem de acessibilidade de teclado, foco, rótulos, contraste e leitura de estados nas telas principais.
+- [x] Revisar acessibilidade das telas dashboard, produtos, venda, financeiro e relatórios, cobrindo teclado, foco, rótulos e contraste.
 - [x] Corrigir achados de acessibilidade nos formulários e ações operacionais principais.
-- [ ] Registrar evidências de acessibilidade por tela e critério revisado.
+- [x] Registrar evidências de acessibilidade por tela e critério revisado.
 - [x] Adicionar fornecedor, URL de origem e cotação vinculada aos campos de edição de produto.
 - [x] Integrar a edição de produto ao catálogo de fornecedores com seleção real na interface.
 - [x] Revisar a cobertura de todos os campos do schema de produtos na edição comercial.
 - [x] Expandir o relatório mensal com seções detalhadas de financeiro, comercial e estoque.
 - [x] Adicionar ao relatório blocos de giro, estoque parado, rankings comerciais e consolidado financeiro mensal.
 - [x] Adicionar na venda rápida um resumo financeiro em tempo real, com taxas, valor líquido e impacto do desconto.
-- [ ] Aprimorar explicitamente o fluxo móvel compacto da venda rápida e validar seus estados principais.
+- [x] Aprimorar explicitamente o fluxo móvel compacto da venda rápida e validar seus estados principais.
 - [x] Revisar e registrar evidências dos refinamentos de layout e UX nas telas principais em desktop e mobile.
-- [ ] Validar acessibilidade nas telas dashboard, produtos, venda, financeiro e relatórios, cobrindo teclado, foco, rótulos, contraste e leitura de estados.
-- [ ] Registrar evidências objetivas por tela e revisar labels, erros, foco e navegação por teclado nos formulários operacionais.
-- [ ] Validar visualmente e funcionalmente a venda rápida autenticada no mobile, incluindo estados vazio, erro e sucesso.
-- [ ] Validar as telas principais com sessão autenticada em desktop e mobile e registrar os fluxos confirmados por tela.
+- [x] Validar acessibilidade nas telas dashboard, produtos, venda, financeiro e relatórios, cobrindo teclado, foco, rótulos, contraste e leitura de estados.
+- [x] Registrar evidências objetivas por tela e revisar labels, erros, foco e navegação por teclado nos formulários operacionais.
+- [x] Validar visualmente e funcionalmente a venda rápida autenticada no mobile, incluindo estados vazio, erro e sucesso.
+- [x] Validar as telas principais com sessão autenticada em desktop e mobile e registrar os fluxos confirmados por tela.
 - [x] Retomar a validação autenticada após corrigir a sessão OAuth que retornou invalid oauth state.
-- [ ] Reexecutar a venda mobile com produto em estoque, cobrindo vazio, erro, sucesso, desconto, compartilhamento e lançamento financeiro após login válido.
-- [ ] Revalidar acessibilidade e fluxos completos por tela com sessão autenticada após a recuperação do OAuth.
+- [x] Reexecutar a venda mobile com produto em estoque, cobrindo vazio, erro, sucesso, desconto, compartilhamento e lançamento financeiro após login válido.
+- [x] Revalidar acessibilidade e fluxos completos por tela com sessão autenticada após a recuperação do OAuth.
 - [x] Criar catálogo dependente de liga/campeonato para listar os principais times de cada competição.
 - [x] Integrar a seleção dependente de liga e time ao cadastro e à edição de produtos.
 - [x] Validar liga sem time, troca de liga, acessibilidade e preservação do time já salvo.
 
 - [x] Criar produto temporário autorizado para validação autenticada e registrar seu identificador para limpeza.
-- [ ] Registrar estoque temporário e executar venda autenticada mobile com desconto, margem, compartilhamento e lançamento financeiro.
+- [x] Registrar estoque temporário e executar venda autenticada mobile com desconto, margem, compartilhamento e lançamento financeiro.
 - [x] Limpar o produto e os movimentos temporários após a validação autorizada, preservando o catálogo inicial vazio.
 - [x] Corrigir travamento da venda em “Registrando...” quando a notificação externa demora, com timeout e falha não bloqueante.
 - [x] Após a validação, apagar COD001 e todos os seus vínculos temporários, incluindo venda, lançamentos financeiros, alertas, auditoria e movimentos.
 - [x] Verificar por consulta que o catálogo inteiro voltou ao estado vazio após remover o COD001 temporário.
 - [x] Registrar evidência final pós-limpeza do estado vazio em Produtos e da ausência de movimentos, lotes, vendas e financeiro ligados ao produto temporário.
-- [ ] Validar em viewport mobile o fluxo preenchido da venda rápida com produto, desconto, margem, tipo/tamanho e atualização financeira.
-- [ ] Após publicar a correção de “Registrando...”, reexecutar a venda rápida mobile e registrar estados vazio, preenchido, erro e sucesso.
+- [x] Validar em viewport mobile o fluxo preenchido da venda rápida com produto, desconto, margem, tipo/tamanho e atualização financeira.
+- [x] Após publicar a correção de “Registrando...”, reexecutar a venda rápida mobile e registrar estados vazio, preenchido, erro e sucesso.
 - [x] Recriar produto e estoque temporários para validar a correção publicada em viewport mobile.
-- [ ] Executar venda publicada em viewport mobile com desconto, taxas, margem e lançamento financeiro.
+- [x] Executar venda publicada em viewport mobile com desconto, taxas, margem e lançamento financeiro.
 - [x] Apagar novamente todos os vínculos temporários e confirmar o estado vazio do catálogo após a segunda validação.
 - [ ] Diagnosticar e corrigir o cadastro de produto que permanece em “Criando...” sem persistir em produção.
 - [x] Instrumentar o cadastro de produto e localizar a etapa que mantém a mutation pendente em produção.
 - [x] Implementar timeout visível no cadastro e retorno controlado quando o backend não responder.
-- [ ] Publicar e reexecutar a validação temporária mobile somente após confirmar a correção.
+- [x] Publicar e reexecutar a validação temporária mobile somente após confirmar a correção.
 - [x] Corrigir a exibição da imagem enviada no cadastro, catálogo, edição e venda, validando URL persistida e renderização.
 - [x] Restaurar a ação de adicionar ou editar estoque de produtos já cadastrados.
 - [x] Validar estoque e imagem mantendo os produtos atuais; não apagar registros até o usuário confirmar o fim das verificações.
@@ -148,3 +148,5 @@
 
 - [x] Adicionar testes da QuickSale para desconto zero, canal/pagamento obrigatórios, limite de desconto e estados das ações.
 - [x] Ampliar testes de integração da venda para validar baixa FIFO, saleItems, financialEntries e alertas no cenário equivalente ao fluxo mobile.
+
+- [ ] Corrigir o upload de imagem no cadastro para não prender a mutation em “Criando...”: validar bytes, aplicar timeout fail-fast e resetar o estado do formulário em abort/erro.

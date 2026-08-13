@@ -40,6 +40,26 @@ function makeProductCode(lastCode?: string | null) {
   return `COD${String(previous + 1).padStart(3, "0")}`;
 }
 
+const MAX_PRODUCT_IMAGE_BYTES = 4_000_000;
+
+function decodeProductImage(imageDataUrl?: string) {
+  if (!imageDataUrl) return null;
+  const match = imageDataUrl.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+  if (!match) throw new TRPCError({ code: "BAD_REQUEST", message: "A imagem enviada é inválida." });
+  const bytes = Buffer.from(match[2], "base64");
+  if (bytes.length > MAX_PRODUCT_IMAGE_BYTES) throw new TRPCError({ code: "BAD_REQUEST", message: "A imagem deve ter no máximo 4 MB." });
+  return { mimeType: match[1], extension: match[1].split("/")[1].replace("jpeg", "jpg"), bytes };
+}
+
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([promise, new Promise<T>((_, reject) => { timer = setTimeout(() => reject(new Error("storage-timeout")), timeoutMs); })]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
 export const commerceRouter = router({
   catalog: router({
     bootstrap: protectedProcedure.query(async () => {
@@ -142,16 +162,20 @@ export const commerceRouter = router({
       trace("last-code-ready");
       const code = makeProductCode(last[0]?.code);
       const { imageDataUrl, initialQuantity, initialUnitCostCents, ...productInput } = input;
+      const image = decodeProductImage(imageDataUrl);
       const values = { ...productInput, code, supplierId: input.supplierId ?? null, supplierUrl: input.supplierUrl || null, team: input.team || null, league: input.league || null, collection: input.collection || null, category: input.category || null, shirtType: input.shirtType || null, size: input.size || null, predominantColor: input.predominantColor || null, notes: input.notes || null, quoteMicros: input.quoteMicros || settings.dollarQuoteMicros, createdByUserId: ctx.user.id };
       const result = await db.insert(products).values(values);
       const id = Number(result[0].insertId);
       trace(`product-inserted:${id}`);
-      if (imageDataUrl) {
-        const match = imageDataUrl.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
-        if (!match) throw new TRPCError({ code: "BAD_REQUEST", message: "A imagem enviada é inválida." });
-        const extension = match[1].split("/")[1].replace("jpeg", "jpg");
-        const stored = await storagePut(`products/${id}/${nanoid(12)}.${extension}`, Buffer.from(match[2], "base64"), match[1]);
-        await db.update(products).set({ imageKey: stored.key, imageUrl: stored.url }).where(eq(products.id, id));
+      let imageUploadFailed = false;
+      if (image) {
+        try {
+          const stored = await withTimeout(storagePut(`products/${id}/${nanoid(12)}.${image.extension}`, image.bytes, image.mimeType), 8000);
+          await db.update(products).set({ imageKey: stored.key, imageUrl: stored.url }).where(eq(products.id, id));
+        } catch (error) {
+          imageUploadFailed = true;
+          console.warn(`[ProductCreate] image upload skipped for ${id}:`, error);
+        }
       }
       if (initialQuantity > 0) {
         const unitCostCents = initialUnitCostCents ?? input.usdValueCents;
@@ -167,7 +191,7 @@ export const commerceRouter = router({
       trace("before-audit");
       await db.insert(auditLogs).values({ userId: ctx.user.id, entityType: "produto", entityId: id, action: "criado", afterData: { code, name: input.name } });
       trace("complete");
-      return { id, code };
+      return { id, code, imageUploadFailed };
     }),
     update: protectedProcedure.input(z.object({ id: z.number(), name: z.string().min(2).optional(), team: z.string().optional(), league: z.string().optional(), collection: z.string().optional(), category: z.string().optional(), shirtType: z.enum(["Casa", "Fora", "Especial", "Retrô"]).optional(), size: z.string().optional(), predominantColor: z.string().optional(), supplierId: z.number().nullable().optional(), supplierUrl: z.string().url().optional().nullable().or(z.literal("")), status: z.enum(["ativo", "inativo"]).optional(), listPriceCents: z.number().int().nonnegative().optional(), usdValueCents: z.number().int().nonnegative().optional(), quoteMicros: z.number().int().nonnegative().optional(), internationalShippingCents: z.number().int().nonnegative().optional(), domesticShippingCents: z.number().int().nonnegative().optional(), importFeesCents: z.number().int().nonnegative().optional(), packagingCostCents: z.number().int().nonnegative().optional(), otherCostsCents: z.number().int().nonnegative().optional(), notes: z.string().optional(), imageDataUrl: z.string().max(5_500_000).optional() })).mutation(async ({ ctx, input }) => {
       restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
