@@ -8,7 +8,7 @@
 - [x] Criar cálculos testáveis de precificação, incluindo custo total, preço mínimo, preço sugerido, lucro bruto, margem e markup.
 - [x] Implementar geração sequencial de código de produto no padrão COD001.
 - [x] Implementar cadastro, busca, filtros, edição, foto e inativação segura de produtos.
-- [ ] Implementar cadastro de fornecedores, clientes, canais de venda, formas de pagamento e parâmetros configuráveis.
+- [x] Implementar cadastro de fornecedores, clientes, canais de venda, formas de pagamento e parâmetros configuráveis.
 - [x] Implementar registro de compra com histórico de custo, lançamento financeiro e entrada de estoque.
 - [x] Implementar registro de venda rápido com cálculo de taxa, imposto, lucro, conta a receber e baixa de estoque por custo histórico.
 - [x] Implementar despesas, contas a pagar, contas a receber e fluxo de caixa.
@@ -71,7 +71,7 @@
 - [ ] Refinar layouts desktop e mobile com cards, filtros, gráficos e fluxos de poucos cliques.
 - [ ] Testar cadastro, precificação, compra, estoque, venda, desconto, margem, lucro, despesas, financeiro, dashboard, relatórios e responsividade.
 - [ ] Concluir integralmente os módulos restantes da segunda rodada, preservando todas as funcionalidades já publicadas.
-- [ ] Criar telas de cadastro e edição para fornecedores, clientes, canais de venda e formas de pagamento.
+- [x] Criar telas de cadastro e edição para fornecedores, clientes, canais de venda e formas de pagamento.
 - [ ] Adicionar filtros de período reais no dashboard e nos relatórios.
 - [ ] Implementar classificação ABC e relatórios dedicados de giro e estoque parado.
 - [ ] Ampliar a central de alertas para contas vencidas, giro, margens e reposição.

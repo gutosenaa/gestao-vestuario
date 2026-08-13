@@ -97,6 +97,22 @@ export const commerceRouter = router({
       const result = await db.insert(customers).values(values);
       return { id: Number(result[0].insertId) };
     }),
+    saveSaleChannel: protectedProcedure.input(z.object({ id: z.number().optional(), name: z.string().min(2), feeBps: z.number().int().min(0).max(10000), active: z.boolean().default(true) })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, ["Admin"]);
+      const db = await dbOrThrow();
+      const values = { name: input.name, feeBps: input.feeBps, active: input.active };
+      if (input.id) { await db.update(saleChannels).set(values).where(eq(saleChannels.id, input.id)); return { id: input.id }; }
+      const result = await db.insert(saleChannels).values(values);
+      return { id: Number(result[0].insertId) };
+    }),
+    savePaymentMethod: protectedProcedure.input(z.object({ id: z.number().optional(), name: z.string().min(2), feeBps: z.number().int().min(0).max(10000), active: z.boolean().default(true) })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, ["Admin"]);
+      const db = await dbOrThrow();
+      const values = { name: input.name, feeBps: input.feeBps, active: input.active };
+      if (input.id) { await db.update(paymentMethods).set(values).where(eq(paymentMethods.id, input.id)); return { id: input.id }; }
+      const result = await db.insert(paymentMethods).values(values);
+      return { id: Number(result[0].insertId) };
+    }),
   }),
 
   products: router({

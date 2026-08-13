@@ -44,6 +44,14 @@ export const dashboardRouter = router({
       productSales.set(item.productId, row);
     });
     const ranking = Array.from(productSales.entries()).map(([productId, row]) => ({ productId, name: productMap.get(productId)?.name ?? "Produto", code: productMap.get(productId)?.code ?? "", marginBps: row.revenue ? Math.round((row.profit * 10000) / row.revenue) : 0, ...row }));
+    const totalHistoricalRevenue = ranking.reduce((sum, row) => sum + Math.max(0, row.revenue), 0);
+    let cumulativeRevenue = 0;
+    const abcByProduct = new Map<number, "A" | "B" | "C">();
+    ranking.slice().sort((a, b) => b.revenue - a.revenue).forEach(row => {
+      cumulativeRevenue += Math.max(0, row.revenue);
+      const cumulativeShare = totalHistoricalRevenue ? (cumulativeRevenue * 10000) / totalHistoricalRevenue : 10000;
+      abcByProduct.set(row.productId, cumulativeShare <= 8000 ? "A" : cumulativeShare <= 9500 ? "B" : "C");
+    });
     const health = stockRows.map(({ product, stock }) => {
       const salesData = productSales.get(product.id);
       const sold90 = allItems.filter(item => item.productId === product.id && (salesById.get(item.saleId)?.soldAt ?? now) >= new Date(now.getTime() - 90 * 86400000)).reduce((sum, item) => sum + item.quantity, 0);
@@ -51,7 +59,7 @@ export const dashboardRouter = router({
       const daysWithoutSale = Math.max(0, Math.floor((now.getTime() - (lastSoldAt ?? product.createdAt).getTime()) / 86400000));
       const classification = stock <= 0 ? "Sem estoque" : sold90 >= 6 ? "Alta saída" : sold90 >= 2 ? "Saída normal" : daysWithoutSale >= settings.idleDaysThreshold ? "Encalhado" : "Baixa saída";
       const unitCost = lots.filter(lot => lot.productId === product.id && lot.availableQuantity > 0).reduce((sum, lot) => sum + lot.unitCostCents * lot.availableQuantity, 0) / Math.max(1, lots.filter(lot => lot.productId === product.id && lot.availableQuantity > 0).reduce((sum, lot) => sum + lot.availableQuantity, 0));
-      return { id: product.id, code: product.code, name: product.name, stock, sold90, daysWithoutSale, lastSoldAt, classification, unitCostCents: Math.round(unitCost), idleValueCents: Math.round(unitCost) * Math.max(0, stock), potentialProfitCents: Math.max(0, stock) * Math.max(0, product.listPriceCents - Math.round(unitCost)) };
+      return { id: product.id, code: product.code, name: product.name, stock, sold90, daysWithoutSale, lastSoldAt, classification, abcClass: abcByProduct.get(product.id) ?? "C", unitCostCents: Math.round(unitCost), idleValueCents: Math.round(unitCost) * Math.max(0, stock), potentialProfitCents: Math.max(0, stock) * Math.max(0, product.listPriceCents - Math.round(unitCost)) };
     });
     const previousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const previousSales = allSales.filter(sale => sale.soldAt >= previousMonth && sale.soldAt < currentMonth && sale.paymentStatus !== "cancelado");
