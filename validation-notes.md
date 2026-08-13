@@ -67,3 +67,7 @@ As ações do dashboard receberam nomes programáticos para período, relatório
 Os controles do relatório gerencial receberam nomes programáticos para período, impressão em PDF e exportação CSV para Excel. A checagem de tipos, os **8 testes** e a compilação de produção passaram após o ajuste; a ação de impressão continua sendo executada pelo navegador.
 
 Os botões de adicionar peça, compartilhar resumo, concluir venda e registrar compra receberam nomes programáticos orientados à ação. A checagem de tipos, os **8 testes** e o build de produção passaram após o ajuste.
+
+## Bloqueio OAuth
+
+A tentativa de autenticação manual retornou `invalid oauth state`. Nenhuma senha foi processada pelo agente e nenhum dado transacional de teste foi inserido. O aplicativo permanece publicado no estado estável; as validações técnicas, visuais do preview e de tipos/testes/build continuam registradas, enquanto os fluxos autenticados com produto real aguardam uma nova sessão OAuth válida.
