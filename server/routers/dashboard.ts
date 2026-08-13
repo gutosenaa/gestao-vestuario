@@ -80,9 +80,13 @@ export const dashboardRouter = router({
       const expenseTotal = expensesInMonth.reduce((sum, expense) => sum + expense.amountCents, 0);
       return { label: date.toLocaleDateString("pt-BR", { month: "short" }).replace(".", ""), faturamento: revenue / 100, custos: costs / 100, despesas: expenseTotal / 100, lucro: (salesInMonth.reduce((sum, sale) => sum + sale.profitCents, 0) - expenseTotal) / 100 };
     });
+    const overdueExpenses = allExpenses.filter(expense => expense.dueDate && expense.dueDate < now && expense.status !== "pago" && expense.status !== "cancelado");
+    const replenishmentRows = health.filter(item => item.stock <= settings.minimumStock && item.classification === "Alta saída");
     const decisionAlerts = [
       ...stockRows.filter(row => row.stock <= settings.minimumStock).slice(0, 4).map(row => ({ id: `estoque-${row.product.id}`, title: `Estoque baixo: ${row.product.name}`, message: `${row.stock} unidade(s) disponíveis; mínimo configurado: ${settings.minimumStock}.` })),
+      ...replenishmentRows.slice(0, 3).map(item => ({ id: `repor-${item.id}`, title: `Reposição prioritária: ${item.name}`, message: `Classe ABC ${item.abcClass}; alta saída e somente ${item.stock} unidade(s) disponíveis.` })),
       ...health.filter(item => item.classification === "Encalhado").slice(0, 3).map(item => ({ id: `encalhado-${item.id}`, title: `Produto parado: ${item.name}`, message: `${item.daysWithoutSale} dias sem venda e ${item.stock} unidade(s) em estoque.` })),
+      ...overdueExpenses.slice(0, 3).map(expense => ({ id: `vencido-${expense.id}`, title: `Conta vencida: ${expense.description}`, message: `Vencimento em ${expense.dueDate!.toLocaleDateString("pt-BR")}; valor de ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(expense.amountCents / 100)}.` })),
       ...(payablesCents > 0 ? [{ id: "contas-pagar", title: "Contas pendentes", message: `Há ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(payablesCents / 100)} a pagar no período.` }] : []),
       ...(settings.revenueGoalCents > 0 && now.getDate() > 10 && revenueCents < settings.revenueGoalCents * (now.getDate() / daysInMonth) * 0.8 ? [{ id: "meta-atrasada", title: "Meta em ritmo abaixo do esperado", message: `O faturamento atual está abaixo de 80% do ritmo necessário para a meta mensal.` }] : []),
     ];
@@ -96,6 +100,8 @@ export const dashboardRouter = router({
       topRevenue: ranking.sort((a, b) => b.revenue - a.revenue).slice(0, 10),
       topMargin: ranking.sort((a, b) => b.marginBps - a.marginBps).slice(0, 10),
       inventoryHealth: health,
+      topTurnover: health.filter(item => item.stock > 0).sort((a, b) => b.sold90 - a.sold90).slice(0, 10),
+      topIdleValue: health.filter(item => item.stock > 0).sort((a, b) => b.idleValueCents - a.idleValueCents).slice(0, 10),
       idleStock: health.filter(item => item.stock > 0 && item.daysWithoutSale >= settings.idleDaysThreshold).sort((a, b) => b.idleValueCents - a.idleValueCents),
       recommendations: health.map(item => ({ ...item, suggestion: item.stock <= settings.minimumStock && item.classification === "Alta saída" ? "RECOMPRAR" : item.classification === "Encalhado" || (item.stock > settings.minimumStock * 3 && item.sold90 < 2) ? "NÃO COMPRAR" : "OBSERVAR" })).sort((a, b) => b.sold90 - a.sold90),
     };

@@ -62,7 +62,7 @@
 - [x] Implementar metas de faturamento, lucro e peças com progresso, projeção e ritmo diário necessário.
 - [ ] Simplificar a venda rápida para celular com variação, desconto, margem e atualização financeira imediata.
 - [x] Ampliar clientes com histórico, classificação automática e dados de relacionamento.
-- [ ] Criar rankings de vendas, faturamento, lucro, margem, giro e produtos parados.
+- [x] Criar rankings de vendas, faturamento, lucro, margem, giro e produtos parados.
 - [x] Separar faturamento, recebimentos, custos, despesas, lucro bruto e lucro líquido no financeiro e fluxo de caixa.
 - [ ] Implementar central de alertas para estoque, giro, margens, contas, metas e reposição.
 - [x] Ampliar busca global para produtos, clientes, fornecedores, vendas, compras e códigos.
@@ -77,7 +77,7 @@
 - [ ] Ampliar a central de alertas para contas vencidas, giro, margens e reposição.
 - [x] Expandir a edição de produtos para todos os atributos comerciais modelados.
 - [ ] Adicionar simulador de desconto e promoção com recálculo imediato na precificação.
-- [ ] Criar rankings específicos de giro e produtos parados.
+- [x] Criar rankings específicos de giro e produtos parados.
 - [ ] Montar um relatório gerencial mensal completo com indicadores financeiros, comerciais e de estoque.
 - [ ] Adicionar seleção de tamanho ou variação à venda rápida e persistir a opção na experiência comercial.
 - [x] Incluir forma de pagamento e tamanho ou variação no resumo compartilhável da venda.
