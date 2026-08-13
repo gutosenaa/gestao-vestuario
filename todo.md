@@ -40,3 +40,8 @@
 - [ ] Exibir estados de erro para consultas principais do painel, catálogo, estoque e financeiro.
 - [ ] Executar uma verificação básica de acessibilidade da interface principal.
 - [x] Corrigir a ordem de hooks do DashboardLayout para eliminar a falha de renderização após autenticação.
+- [x] Permitir editar produtos existentes diretamente pelo catálogo.
+- [x] Permitir registrar quantidade inicial ou nova entrada de estoque a partir do fluxo de produto.
+- [x] Substituir campos repetitivos de cadastro por listas suspensas práticas para time, liga, coleção, categoria e tamanho.
+- [ ] Criar formulário completo de edição de produto no catálogo, com atributos comerciais e preço.
+- [x] Substituir os diálogos simples de edição e estoque por formulários validados na interface.

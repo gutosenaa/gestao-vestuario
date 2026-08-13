@@ -86,13 +86,13 @@ export const commerceRouter = router({
         return statusOk && queryOk;
       }).map(product => ({ ...product, stock: stockByProduct.get(product.id) ?? 0 }));
     }),
-    create: protectedProcedure.input(z.object({ name: z.string().min(2), team: z.string().optional(), league: z.string().optional(), collection: z.string().optional(), category: z.string().optional(), size: z.string().optional(), predominantColor: z.string().optional(), supplierId: z.number().optional(), supplierUrl: z.string().url().optional().or(z.literal("")), notes: z.string().optional(), listPriceCents: z.number().int().nonnegative(), usdValueCents: z.number().int().nonnegative(), quoteMicros: z.number().int().nonnegative().optional(), internationalShippingCents: z.number().int().nonnegative().default(0), domesticShippingCents: z.number().int().nonnegative().default(0), importFeesCents: z.number().int().nonnegative().default(0), packagingCostCents: z.number().int().nonnegative().default(0), otherCostsCents: z.number().int().nonnegative().default(0), imageDataUrl: z.string().max(5_500_000).optional() })).mutation(async ({ ctx, input }) => {
+    create: protectedProcedure.input(z.object({ name: z.string().min(2), team: z.string().optional(), league: z.string().optional(), collection: z.string().optional(), category: z.string().optional(), size: z.string().optional(), predominantColor: z.string().optional(), supplierId: z.number().optional(), supplierUrl: z.string().url().optional().or(z.literal("")), notes: z.string().optional(), listPriceCents: z.number().int().nonnegative(), usdValueCents: z.number().int().nonnegative(), quoteMicros: z.number().int().nonnegative().optional(), internationalShippingCents: z.number().int().nonnegative().default(0), domesticShippingCents: z.number().int().nonnegative().default(0), importFeesCents: z.number().int().nonnegative().default(0), packagingCostCents: z.number().int().nonnegative().default(0), otherCostsCents: z.number().int().nonnegative().default(0), initialQuantity: z.number().int().nonnegative().default(0), initialUnitCostCents: z.number().int().nonnegative().optional(), imageDataUrl: z.string().max(5_500_000).optional() })).mutation(async ({ ctx, input }) => {
       restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
       const db = await dbOrThrow();
       const settings = await ensureSettings();
       const last = await db.select({ code: products.code }).from(products).orderBy(desc(products.id)).limit(1);
       const code = makeProductCode(last[0]?.code);
-      const { imageDataUrl, ...productInput } = input;
+      const { imageDataUrl, initialQuantity, initialUnitCostCents, ...productInput } = input;
       const values = { ...productInput, code, supplierId: input.supplierId ?? null, supplierUrl: input.supplierUrl || null, team: input.team || null, league: input.league || null, collection: input.collection || null, category: input.category || null, size: input.size || null, predominantColor: input.predominantColor || null, notes: input.notes || null, quoteMicros: input.quoteMicros || settings.dollarQuoteMicros, createdByUserId: ctx.user.id };
       const result = await db.insert(products).values(values);
       const id = Number(result[0].insertId);
@@ -103,10 +103,17 @@ export const commerceRouter = router({
         const stored = await storagePut(`products/${id}/${nanoid(12)}.${extension}`, Buffer.from(match[2], "base64"), match[1]);
         await db.update(products).set({ imageKey: stored.key, imageUrl: stored.url }).where(eq(products.id, id));
       }
+      if (initialQuantity > 0) {
+        const unitCostCents = initialUnitCostCents ?? input.usdValueCents;
+        await db.transaction(async tx => {
+          await tx.insert(inventoryLots).values({ productId: id, sourceType: "entrada_manual", receivedAt: new Date(), initialQuantity, availableQuantity: initialQuantity, unitCostCents });
+          await tx.insert(inventoryMovements).values({ productId: id, type: "entrada_manual", quantity: initialQuantity, unitCostCents, notes: "Estoque inicial informado no cadastro", occurredAt: new Date(), createdByUserId: ctx.user.id });
+        });
+      }
       await db.insert(auditLogs).values({ userId: ctx.user.id, entityType: "produto", entityId: id, action: "criado", afterData: { code, name: input.name } });
       return { id, code };
     }),
-    update: protectedProcedure.input(z.object({ id: z.number(), status: z.enum(["ativo", "inativo"]).optional(), listPriceCents: z.number().int().nonnegative().optional(), usdValueCents: z.number().int().nonnegative().optional(), quoteMicros: z.number().int().nonnegative().optional(), internationalShippingCents: z.number().int().nonnegative().optional(), domesticShippingCents: z.number().int().nonnegative().optional(), importFeesCents: z.number().int().nonnegative().optional(), packagingCostCents: z.number().int().nonnegative().optional(), otherCostsCents: z.number().int().nonnegative().optional(), notes: z.string().optional() })).mutation(async ({ ctx, input }) => {
+    update: protectedProcedure.input(z.object({ id: z.number(), name: z.string().min(2).optional(), team: z.string().optional(), league: z.string().optional(), collection: z.string().optional(), category: z.string().optional(), size: z.string().optional(), predominantColor: z.string().optional(), status: z.enum(["ativo", "inativo"]).optional(), listPriceCents: z.number().int().nonnegative().optional(), usdValueCents: z.number().int().nonnegative().optional(), quoteMicros: z.number().int().nonnegative().optional(), internationalShippingCents: z.number().int().nonnegative().optional(), domesticShippingCents: z.number().int().nonnegative().optional(), importFeesCents: z.number().int().nonnegative().optional(), packagingCostCents: z.number().int().nonnegative().optional(), otherCostsCents: z.number().int().nonnegative().optional(), notes: z.string().optional() })).mutation(async ({ ctx, input }) => {
       restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
       const db = await dbOrThrow();
       const { id, ...changes } = input;
@@ -114,6 +121,18 @@ export const commerceRouter = router({
       if (!previous[0]) throw new TRPCError({ code: "NOT_FOUND", message: "Produto não encontrado." });
       await db.update(products).set(changes).where(eq(products.id, id));
       await db.insert(auditLogs).values({ userId: ctx.user.id, entityType: "produto", entityId: id, action: changes.status === "inativo" ? "inativado" : "atualizado", beforeData: previous[0], afterData: changes });
+      return { success: true };
+    }),
+    addStock: protectedProcedure.input(z.object({ productId: z.number(), quantity: z.number().int().positive(), unitCostCents: z.number().int().nonnegative(), notes: z.string().optional() })).mutation(async ({ ctx, input }) => {
+      restrictRoles(ctx.user.role, ["Admin", "Estoque"]);
+      const db = await dbOrThrow();
+      const [product] = await db.select().from(products).where(eq(products.id, input.productId)).limit(1);
+      if (!product) throw new TRPCError({ code: "NOT_FOUND", message: "Produto não encontrado." });
+      await db.transaction(async tx => {
+        await tx.insert(inventoryLots).values({ productId: input.productId, sourceType: "entrada_manual", receivedAt: new Date(), initialQuantity: input.quantity, availableQuantity: input.quantity, unitCostCents: input.unitCostCents });
+        await tx.insert(inventoryMovements).values({ productId: input.productId, type: "entrada_manual", quantity: input.quantity, unitCostCents: input.unitCostCents, notes: input.notes || "Entrada manual pelo catálogo", occurredAt: new Date(), createdByUserId: ctx.user.id });
+        await tx.insert(auditLogs).values({ userId: ctx.user.id, entityType: "estoque", entityId: input.productId, action: "entrada_manual", afterData: { quantity: input.quantity, unitCostCents: input.unitCostCents } });
+      });
       return { success: true };
     }),
     pricing: protectedProcedure.input(z.object({ productId: z.number() })).query(async ({ input }) => {
