@@ -115,10 +115,11 @@
 - [x] Registrar evidência final pós-limpeza do estado vazio em Produtos e da ausência de movimentos, lotes, vendas e financeiro ligados ao produto temporário.
 - [ ] Validar em viewport mobile o fluxo preenchido da venda rápida com produto, desconto, margem, tipo/tamanho e atualização financeira.
 - [ ] Após publicar a correção de “Registrando...”, reexecutar a venda rápida mobile e registrar estados vazio, preenchido, erro e sucesso.
-- [ ] Recriar produto e estoque temporários para validar a correção publicada em viewport mobile.
+- [x] Recriar produto e estoque temporários para validar a correção publicada em viewport mobile.
 - [ ] Executar venda publicada em viewport mobile com desconto, taxas, margem e lançamento financeiro.
-- [ ] Apagar novamente todos os vínculos temporários e confirmar o estado vazio do catálogo após a segunda validação.
+- [x] Apagar novamente todos os vínculos temporários e confirmar o estado vazio do catálogo após a segunda validação.
 - [ ] Diagnosticar e corrigir o cadastro de produto que permanece em “Criando...” sem persistir em produção.
 - [x] Instrumentar o cadastro de produto e localizar a etapa que mantém a mutation pendente em produção.
 - [x] Implementar timeout visível no cadastro e retorno controlado quando o backend não responder.
 - [ ] Publicar e reexecutar a validação temporária mobile somente após confirmar a correção.
+- [ ] Corrigir a exibição da imagem enviada no cadastro, catálogo, edição e venda, validando URL persistida e renderização.
