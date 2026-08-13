@@ -52,6 +52,7 @@
 - [x] Adicionar lista suspensa de tipo de camisa: Casa, Fora, Especial e Retrô.
 - [x] Exibir feedback quando o arquivo de imagem for inválido, grande demais ou não puder ser lido.
 - [ ] Validar visualmente o fluxo de anexo de imagem no cadastro de produto.
+- [ ] Inspecionar objetivamente a captura do menu móvel aberto e confirmar marca FEIRENSE, módulos, fechamento e perfil.
 - [x] Permitir editar a foto e o tipo de camisa de produtos já cadastrados.
 - [x] Exibir erro visível quando a atualização de produto, foto ou tipo de camisa falhar.
 - [ ] Validar o fluxo completo de edição de foto e tipo de camisa em produto existente.
