@@ -130,3 +130,4 @@
 - [x] Corrigir nomes programáticos dos campos do formulário de edição de produto identificados na auditoria manual
 - [x] Salvar uma edição de produto com imagem já persistida e reabrir o formulário para registrar evidência objetiva da continuidade da mesma imagem
 - [x] Alterar um campo inofensivo, salvar, confirmar o estado atualizado no catálogo e reabrir a edição com a mesma imagem persistida
+- [ ] Aplicar os aria-labels diretamente no trecho ProductEditForm, pois a primeira correção atingiu ocorrências do formulário de criação
