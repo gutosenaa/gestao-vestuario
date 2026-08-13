@@ -7,3 +7,5 @@ A interface utiliza contraste alto entre fundo escuro, ciano e laranja, rótulos
 ## Segunda rodada — painel de decisão
 
 O painel revisado foi conferido em desktop e em uma largura móvel de 375 px. Os novos indicadores de investimento, potencial de estoque, meta de peças e ritmo diário mantiveram leitura em cartões de coluna única no celular, sem cortes de texto nem sobreposição. Como a operação ainda está sem lançamentos após a limpeza solicitada, os cartões, gráfico, alertas e rankings exibiram estados vazios coerentes, com convite para registrar a primeira compra.
+
+O painel ampliado também foi confirmado em desktop largo e em 390 px de largura. No desktop, os oito indicadores formaram uma grade de duas linhas legível; no mobile, os cartões mantiveram hierarquia vertical e a barra inferior preservou acesso às ações essenciais sem sobrepor o conteúdo.
