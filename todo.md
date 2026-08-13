@@ -47,12 +47,12 @@
 - [x] Substituir os diálogos simples de edição e estoque por formulários validados na interface.
 - [x] Limpar produtos cadastrados e os movimentos comerciais relacionados para reiniciar o preenchimento.
 - [x] Verificar a substituição da marca por FEIRENSE no menu mobile e salvar a versão atualizada.
-- [ ] Salvar e confirmar visualmente o menu mobile aberto com a marca FEIRENSE.
+- [x] Salvar e confirmar visualmente o menu mobile aberto com a marca FEIRENSE.
 - [x] Adicionar anexo de imagem ao formulário prático de criação de produto.
 - [x] Adicionar lista suspensa de tipo de camisa: Casa, Fora, Especial e Retrô.
 - [x] Exibir feedback quando o arquivo de imagem for inválido, grande demais ou não puder ser lido.
 - [ ] Validar visualmente o fluxo de anexo de imagem no cadastro de produto.
-- [ ] Inspecionar objetivamente a captura do menu móvel aberto e confirmar marca FEIRENSE, módulos, fechamento e perfil.
+- [x] Inspecionar objetivamente a captura do menu móvel aberto e confirmar marca FEIRENSE, módulos, fechamento e perfil.
 - [x] Permitir editar a foto e o tipo de camisa de produtos já cadastrados.
 - [x] Exibir erro visível quando a atualização de produto, foto ou tipo de camisa falhar.
 - [ ] Validar o fluxo completo de edição de foto e tipo de camisa em produto existente.
@@ -61,7 +61,7 @@
 - [x] Criar saúde do estoque, relatório de estoque parado, giro, valor parado e recomendações de reposição.
 - [x] Evoluir a precificação com preço promocional, simulador de desconto e bloqueio confirmado para margem abaixo do mínimo.
 - [x] Implementar metas de faturamento, lucro e peças com progresso, projeção e ritmo diário necessário.
-- [ ] Simplificar a venda rápida para celular com produto único, tamanho e tipo visíveis, desconto, margem e atualização financeira imediata.
+- [x] Simplificar a venda rápida para celular com produto único, tamanho e tipo visíveis, desconto, margem e atualização financeira imediata.
 - [x] Ampliar clientes com histórico, classificação automática e dados de relacionamento.
 - [x] Criar rankings de vendas, faturamento, lucro, margem, giro e produtos parados.
 - [x] Separar faturamento, recebimentos, custos, despesas, lucro bruto e lucro líquido no financeiro e fluxo de caixa.
@@ -109,7 +109,9 @@
 - [x] Criar produto temporário autorizado para validação autenticada e registrar seu identificador para limpeza.
 - [ ] Registrar estoque temporário e executar venda autenticada mobile com desconto, margem, compartilhamento e lançamento financeiro.
 - [x] Limpar o produto e os movimentos temporários após a validação autorizada, preservando o catálogo inicial vazio.
-- [ ] Corrigir travamento da venda em “Registrando...” quando a notificação externa demora, com timeout e falha não bloqueante.
+- [x] Corrigir travamento da venda em “Registrando...” quando a notificação externa demora, com timeout e falha não bloqueante.
 - [x] Após a validação, apagar COD001 e todos os seus vínculos temporários, incluindo venda, lançamentos financeiros, alertas, auditoria e movimentos.
 - [x] Verificar por consulta que o catálogo inteiro voltou ao estado vazio após remover o COD001 temporário.
 - [x] Registrar evidência final pós-limpeza do estado vazio em Produtos e da ausência de movimentos, lotes, vendas e financeiro ligados ao produto temporário.
+- [ ] Validar em viewport mobile o fluxo preenchido da venda rápida com produto, desconto, margem, tipo/tamanho e atualização financeira.
+- [ ] Após publicar a correção de “Registrando...”, reexecutar a venda rápida mobile e registrar estados vazio, preenchido, erro e sucesso.
