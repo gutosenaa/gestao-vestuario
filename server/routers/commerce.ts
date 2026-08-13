@@ -272,8 +272,12 @@ export const commerceRouter = router({
         }
         return { saleId, totals };
       });
-      if (hasLowMarginAlert) await notifyOwner({ title: "Margem abaixo do mínimo", content: `A venda ${result.saleId} foi concluída com margem inferior ao parâmetro configurado.` });
-      if (hasZeroStockAlert) await notifyOwner({ title: "Estoque zerado", content: "Uma venda acabou de zerar o estoque de pelo menos um produto." });
+      if (hasLowMarginAlert) {
+        void notifyOwner({ title: "Margem abaixo do mínimo", content: `A venda ${result.saleId} foi concluída com margem inferior ao parâmetro configurado.` }).catch(error => console.warn("[Sales] Low-margin notification failed:", error));
+      }
+      if (hasZeroStockAlert) {
+        void notifyOwner({ title: "Estoque zerado", content: "Uma venda acabou de zerar o estoque de pelo menos um produto." }).catch(error => console.warn("[Sales] Zero-stock notification failed:", error));
+      }
       return result;
     }),
     list: protectedProcedure.query(async () => {

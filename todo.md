@@ -105,3 +105,11 @@
 - [x] Criar catálogo dependente de liga/campeonato para listar os principais times de cada competição.
 - [x] Integrar a seleção dependente de liga e time ao cadastro e à edição de produtos.
 - [x] Validar liga sem time, troca de liga, acessibilidade e preservação do time já salvo.
+
+- [x] Criar produto temporário autorizado para validação autenticada e registrar seu identificador para limpeza.
+- [ ] Registrar estoque temporário e executar venda autenticada mobile com desconto, margem, compartilhamento e lançamento financeiro.
+- [x] Limpar o produto e os movimentos temporários após a validação autorizada, preservando o catálogo inicial vazio.
+- [ ] Corrigir travamento da venda em “Registrando...” quando a notificação externa demora, com timeout e falha não bloqueante.
+- [x] Após a validação, apagar COD001 e todos os seus vínculos temporários, incluindo venda, lançamentos financeiros, alertas, auditoria e movimentos.
+- [x] Verificar por consulta que o catálogo inteiro voltou ao estado vazio após remover o COD001 temporário.
+- [x] Registrar evidência final pós-limpeza do estado vazio em Produtos e da ausência de movimentos, lotes, vendas e financeiro ligados ao produto temporário.

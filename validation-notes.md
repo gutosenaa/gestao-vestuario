@@ -103,3 +103,17 @@ A validação manual autenticada continuou sem persistência: a lista exibiu Bra
 ## Venda rápida autenticada sem estoque
 
 A abertura autenticada de `?view=venda` confirmou o estado vazio real: “Estoque indisponível” orienta registrar uma compra, o resumo mostra zero itens, desconto, canal, forma de pagamento, impacto financeiro com taxas/imposto zerados e total de R$ 0,00. Compartilhar e Concluir venda permanecem desabilitados sem itens, evitando uma operação inválida. Nenhum dado foi criado.
+
+## Produto temporário autorizado
+
+Foi criado, após confirmação explícita, o produto **COD001 — VALIDAÇÃO FEIRENSE TEMPORÁRIO**, com liga Brasileirão, time Flamengo, temporada 2026/27, tipo Casa, tamanho M, preço de venda de R$ 180,00, custo unitário de R$ 100,00 e estoque inicial de 2 unidades. O catálogo confirmou o produto ativo e disponível.
+
+## Venda autenticada com desconto e taxas
+
+No fluxo de venda rápida, o seletor mostrou COD001 com tipo Casa, tamanho M e saldo de 2 unidades. Foi adicionada 1 unidade a R$ 180,00, aplicado desconto de R$ 10,00, selecionado Mercado Livre (16,0%) e Pix. O resumo recalculou total de R$ 170,00, taxa de canal de R$ 27,20, pagamento sem taxa e valor a receber de R$ 142,80. A ação de compartilhar ficou disponível e o estado estava pronto para conclusão.
+
+O compartilhamento abriu a página oficial “Share on WhatsApp” com o resumo pré-preenchido: 1x COD001 — Casa • M, pagamento Pix, desconto de R$ 10,00 e total de R$ 170,00. A mensagem não foi enviada a nenhum contato; a validação confirmou apenas a geração do texto e a abertura externa.
+## Encerramento da validação autorizada
+
+As tentativas autenticadas de concluir a venda do COD001 permaneceram em “Registrando...” e consultas diretas confirmaram que nenhuma venda foi persistida. O COD001 foi removido junto com seus movimentos, lote, alertas, auditoria e variantes. A verificação final confirmou product_count=0, movement_count=0, lot_count=0, sale_count=0 e finance_count=0 para o identificador temporário. A correção técnica de timeout e despacho não bloqueante das notificações passou em `pnpm check` e nos 12 testes, mas requer publicação e nova validação autenticada para comprovar o retorno em produção.
+A tela autenticada de Produtos foi reaberta após a limpeza e exibiu “Seu catálogo começa aqui”, com as ações “Adicionar produto” e “Cadastrar primeira peça”; não há cartões de produtos. A consulta agregada confirmou total_products=0, total_inventory_movements=0, total_inventory_lots=0, total_sales=0 e total_financial_entries=0.

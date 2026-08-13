@@ -8,6 +8,7 @@ export type NotificationPayload = {
 
 const TITLE_MAX_LENGTH = 1200;
 const CONTENT_MAX_LENGTH = 20000;
+const NOTIFICATION_TIMEOUT_MS = 5000;
 
 const trimValue = (value: string): string => value.trim();
 const isNonEmptyString = (value: unknown): value is string =>
@@ -84,6 +85,9 @@ export async function notifyOwner(
 
   const endpoint = buildEndpointUrl(ENV.forgeApiUrl);
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), NOTIFICATION_TIMEOUT_MS);
+
   try {
     const response = await fetch(endpoint, {
       method: "POST",
@@ -94,6 +98,7 @@ export async function notifyOwner(
         "connect-protocol-version": "1",
       },
       body: JSON.stringify({ title, content }),
+      signal: controller.signal,
     });
 
     if (!response.ok) {
@@ -110,5 +115,7 @@ export async function notifyOwner(
   } catch (error) {
     console.warn("[Notification] Error calling notification service:", error);
     return false;
+  } finally {
+    clearTimeout(timeout);
   }
 }
