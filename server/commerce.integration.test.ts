@@ -63,9 +63,17 @@ describe("operações comerciais transacionais", () => {
     const [receivable] = await db.select().from(financialEntries).where(and(eq(financialEntries.sourceType, "venda"), eq(financialEntries.sourceId, saleId)));
     const [updatedLot] = await db.select().from(inventoryLots).where(eq(inventoryLots.id, lot!.id));
     const [storedSale] = await db.select().from(sales).where(eq(sales.id, saleId));
+    const [storedItem] = await db.select().from(saleItems).where(eq(saleItems.saleId, saleId));
+    const [saleMovement] = await db.select().from(inventoryMovements).where(and(eq(inventoryMovements.saleId, saleId), eq(inventoryMovements.type, "venda")));
+    const saleAlerts = await db.select().from(alerts).where(and(eq(alerts.referenceType, "venda"), eq(alerts.referenceId, saleId)));
+    const productAlerts = await db.select().from(alerts).where(and(eq(alerts.referenceType, "produto"), eq(alerts.referenceId, productId)));
     expect(receivable).toMatchObject({ kind: "receber", amountCents: 18000, status: "pendente" });
+    expect(saleAlerts).toHaveLength(0);
+    expect(productAlerts).toHaveLength(0);
     expect(updatedLot?.availableQuantity).toBe(1);
     expect(storedSale).toMatchObject({ costCents: 8000, netCents: 18000, profitCents: 10000 });
+    expect(storedItem).toMatchObject({ productId, quantity: 1, unitPriceCents: 18000, unitCostCents: 8000, totalCostCents: 8000 });
+    expect(saleMovement).toMatchObject({ productId, saleId, quantity: -1, unitCostCents: 8000 });
   });
 
   afterAll(async () => {

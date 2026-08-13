@@ -134,14 +134,17 @@
 
 ## Nova rodada autorizada — venda mobile, acessibilidade e limpeza
 
-- [ ] Implementar fluxo mobile transacional completo de venda, com produto/estoque, desconto, taxas, margem, compartilhamento e conclusão.
-- [ ] Adicionar ou ampliar testes automatizados do fluxo transacional mobile e das regras de baixa/financeiro.
-- [ ] Auditar acessibilidade dos módulos Dashboard, Precificação, Estoque, Compras, Despesas, Financeiro, Relatórios, Clientes, Fornecedores e Configurações.
-- [ ] Corrigir nomes acessíveis, foco, estados ARIA, mensagens de erro e navegação por teclado encontrados na auditoria dos módulos restantes.
-- [ ] Registrar evidências objetivas da auditoria de acessibilidade por módulo.
+- [x] Implementar fluxo mobile transacional completo de venda, com produto/estoque, desconto, taxas, margem, compartilhamento e conclusão.
+- [x] Adicionar ou ampliar testes automatizados do fluxo transacional mobile e das regras de baixa/financeiro.
+- [x] Auditar acessibilidade dos módulos Dashboard, Precificação, Estoque, Compras, Despesas, Financeiro, Relatórios, Clientes, Fornecedores e Configurações.
+- [x] Corrigir nomes acessíveis, foco, estados ARIA, mensagens de erro e navegação por teclado encontrados na auditoria dos módulos restantes.
+- [x] Registrar evidências objetivas da auditoria de acessibilidade por módulo.
 - [x] Limpar os dados de teste autorizados após a validação da venda e verificar catálogo, estoque, vendas, financeiro, alertas, auditoria e vínculos relacionados.
 
 - [x] Garantir que o desconto da venda seja exclusivamente manual, iniciado em zero, sem aplicar desconto automático de canal ou plataforma.
-- [ ] Reexecutar a venda mobile com desconto zero por padrão e aplicar desconto somente após entrada explícita do usuário.
+- [x] Reexecutar a venda mobile com desconto zero por padrão e aplicar desconto somente após entrada explícita do usuário.
 
 - [x] Corrigir controles sem nome acessível encontrados em Produtos, Estoque, Compras, Despesas e Configurações pela varredura estática.
+
+- [x] Adicionar testes da QuickSale para desconto zero, canal/pagamento obrigatórios, limite de desconto e estados das ações.
+- [x] Ampliar testes de integração da venda para validar baixa FIFO, saleItems, financialEntries e alertas no cenário equivalente ao fluxo mobile.

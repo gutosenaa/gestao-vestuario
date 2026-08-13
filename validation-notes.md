@@ -155,3 +155,15 @@ Para eliminar ambiguidade, a categoria do COD001 foi alterada de “Torcedor” 
 ## 2026-08-13 — Acessibilidade do ProductEditForm publicada
 
 Na publicação `c425c271`, o ProductEditForm foi aberto com cache bust e auditado no DOM. Foram encontrados 23 controles interativos no diálogo, todos com nome acessível por `aria-label`, `aria-labelledby`, label associado ou texto do controle; a contagem de controles sem nome foi zero. O preview persistido permaneceu visível com a URL `/manus-storage/products/1710001/6nEEDcEJDN9T_8599ce0f.jpg` e o texto “Foto atual persistida no produto.”. A captura também confirmou foco visível no campo ativo.
+
+## Auditoria autenticada de acessibilidade — publicação 99846dfc
+
+A auditoria percorreu Visão geral, Precificação, Estoque, Compras, Despesas, Financeiro, Relatórios, Clientes, Fornecedores e Configurações na sessão autenticada. Em cada módulo, todos os controles detectados possuíam nome acessível por `aria-label`, `aria-labelledby`, texto visível ou placeholder; não foram encontrados controles sem nome. As contagens observadas foram: Visão geral 27/27 nomeados; Precificação 23/23; Estoque 23/23; Compras 23/23; Despesas 27/27; Financeiro 23/23; Relatórios 26/26; Clientes 25/25; Fornecedores 25/25; Configurações 51/51.
+
+Após cada troca de módulo, o primeiro controle focável recebeu foco programaticamente e permaneceu em um botão navegável com nome “Visão geral”, sem perda para o `body`. Não foram encontrados elementos `[role="alert"]` ou `[aria-live]` ativos nos estados vazios auditados. A tela de venda vazia apresentou 28 controles, zero sem nome, botões de compartilhar/concluir desabilitados quando não havia itens e foco programático navegável.
+
+Limitação: esta etapa comprovou nomes acessíveis, foco programático, estados vazios e mensagens vivas presentes. Contraste visual com medição automatizada e leitura por leitor de tela completo ainda exigem validação manual assistida adicional.
+
+A medição complementar de contraste percorreu os dez módulos autenticados. O índice mínimo observado em cada módulo foi 14,49: Visão geral, Precificação, Estoque, Compras, Despesas, Financeiro, Relatórios, Clientes, Fornecedores e Configurações; nenhum elemento visível ficou abaixo de 4,5:1 nesta amostra. A verificação confirma a composição atual publicada, embora não substitua testes com leitor de tela real.
+
+A auditoria de teclado publicada percorreu os dez módulos. Não houve perda de foco para o `body` em nenhum módulo; os tab stops observados foram: Visão geral 21, Precificação 17, Estoque 18, Compras 17, Despesas 21, Financeiro 17, Relatórios 20, Clientes 19, Fornecedores 19 e Configurações 45 (35 primeiros percorridos nesta etapa). Os estados `aria-current` marcaram a seção ativa e `aria-expanded` identificou menu, filtros e seletores quando presentes. Não foram encontradas regiões de alerta ou live region ativas nos estados sem dados auditados.
