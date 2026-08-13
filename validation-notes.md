@@ -55,3 +55,9 @@ Compras e despesas receberam nomes programáticos para produto, fornecedor, pedi
 O preview permitiu capturar dashboard, produtos, estoque, financeiro, relatórios e venda rápida em desktop, além da venda rápida em mobile. Foram observados: identidade FEIRENSE no menu desktop, cards e CTAs sem sobreposição, estados vazios orientados, separação financeira, filtros e exportações visíveis, e a venda rápida com resumo compacto, desconto, canal, pagamento, impacto financeiro, compartilhamento e conclusão. O estado autenticado da venda rápida sem estoque foi validado em ambas as larguras; o sucesso transacional com produto real permanece dependente de haver estoque cadastrado para não inserir dados de teste.
 
 A abertura direta `?menu=open` confirmou visualmente o menu móvel em 375px: a marca FEIRENSE aparece no topo, o botão de fechamento é identificável, os módulos permanecem navegáveis em coluna e o bloco de perfil com saída fica acessível no rodapé.
+
+A tela de precificação recebeu nomes programáticos para o produto analisado e o preço promocional simulado. A checagem de tipos, os **8 testes** e a compilação de produção passaram novamente; a interação com dados reais segue condicionada à sessão autenticada.
+
+## Evidência estática complementar de acessibilidade
+
+A inspeção do código confirmou `aria-label`, `aria-current`, `aria-expanded`, `role="listbox"`, `role="option"`, regiões `role="alert"` e estilos `focus-visible` na navegação global, busca, menu móvel, alertas, cadastro de produto, upload de foto, precificação e simulador promocional. Essa evidência é técnica e não substitui a validação manual completa por teclado e leitor de tela nas telas autenticadas.
